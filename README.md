@@ -42,3 +42,5 @@ Strasol es una plataforma innovadora que transforma la manera en que los bolivia
 ### Beneficios
 
 - **Ahorro de Tiempo**: No más llamadas interminables o visitas a oficinas. Todo desde tu dispositivo.
+
+Visitanos en la [wiki](https://github.com/Strasol-S-r-l/strasolapp/wiki)
