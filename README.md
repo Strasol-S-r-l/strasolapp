@@ -5,7 +5,6 @@
 ### Strasol
 Tu puerta a la revolución de los seguros de automotor en Bolivia.
 
----
 
 ### El Desafío Actual
 
@@ -13,13 +12,11 @@ Tu puerta a la revolución de los seguros de automotor en Bolivia.
 - Tiempo consumido en comparaciones.
 - Falta de transparencia en precios y coberturas.
 
----
 
 ### Introduciendo Strasol
 
 Strasol es una plataforma innovadora que transforma la manera en que los bolivianos buscan, comparan y contratan seguros de automotor.
 
----
 
 ### ¿Qué nos hace únicos?
 
@@ -27,7 +24,6 @@ Strasol es una plataforma innovadora que transforma la manera en que los bolivia
 2. **Proceso simplificado**: Emite tu seguro al instante.
 3. **Múltiples opciones**: Aseguradoras líderes en Bolivia en una sola plataforma.
 
----
 
 ### Características de la App
 
@@ -35,7 +31,6 @@ Strasol es una plataforma innovadora que transforma la manera en que los bolivia
 - **Información Clara**: Todo lo que necesitas saber, presentado de manera sencilla.
 - **Seguridad Garantizada**: Tus datos están protegidos con nosotros.
 
----
 
 ### ¿Cómo funciona?
 
@@ -43,7 +38,6 @@ Strasol es una plataforma innovadora que transforma la manera en que los bolivia
 2. Espera mientras comparamos las ofertas.
 3. Elige y emite tu seguro de automotor en minutos.
 
----
 
 ### Beneficios
 
