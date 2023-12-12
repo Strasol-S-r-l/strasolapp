@@ -1,290 +1,397 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView,TouchableOpacity, Text, View, StyleSheet, Image, Alert, ImageBackground, ActivityIndicator, Dimensions } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Linking } from 'react-native';
+import Share from 'react-native-share';
+import tema from '../enviroments/tema.json'
 import api from '../enviroments/api.json'
-import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
-import IconComponent from './assets/icons/IconComponent';
+import Load from './Load';
 
 var navigation_:any;
 const PerfilProducto = ({route, navigation}:any) => {
     navigation_ = navigation;
     
-    const [data, setData] = useState(null);
+    const [state, setState] = React.useState({});
 
     useEffect(() => { 
         navigation_.setOptions({headerShown:false});
-         
-        const fetchData = async () => {
-          try {
-            const suser:any = await AsyncStorage.getItem("usuario");
-            if(!suser || suser==null){
-                navigation_.replace("Login");
-                return;
-            } 
-
-            const usuario = JSON.parse(suser);
-
+        const init = async()=>{
             const response = await fetch(api.url+'/app', 
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json',},
-                body: JSON.stringify({key:api.key, type:'getProducto', tipo:route.params.tipo, ID:route.params.ID}),                                       
+                body: JSON.stringify({key:api.key, type:'getProducto', tipo:"Certificado",ID:route.params.ID}),
             });
-            const data = await response.json();
-            setData(data.data);
-          } catch (error) {
-            return {estado:"error", error};
-          }
-        }
-        fetchData();
+            
+            const obj = await response.json();
+            
+            if(obj.estado === "error"){
+                state["certificado"] = obj;
+                setState({...obj});
+                return;
+            }
+            
+            state["certificado"] = obj.data;
+            setState({...state});
+        };
+        init();
     }, []);
 
-    const pintarDatos=()=>{
-        return  <View style={{...styles.card,marginBottom:20}}>
-        <Text style={{textAlign:'center', fontWeight:'bold', color:'#fff', marginTop:20}}>DATOS DEL PRODUCTO</Text>
-        <Text style={{...styles.texto, marginTop:20, textAlign:'center', textTransform:'capitalize'}}>{route.params.RIESGO}</Text>
-        <View style={styles.dato}>
-            <Text style={{...styles.texto,width:'48%'}}>Poliza.</Text>
-            <Text style={styles.texto}>:</Text>
-            <Text style={{...styles.texto,width:'48%',textAlign:'right'}}>{route.params.NUMERO_POLIZA}</Text>
-        </View>
-        {
-            route.params.tipo=='Certificado'?
-            <View style={styles.dato}>
-                <Text style={{...styles.texto,width:'48%'}}>Certificado.</Text>
-                <Text style={styles.texto}>:</Text>
-                <Text style={{...styles.texto,width:'48%',textAlign:'right'}}>{route.params.NUMERO_CERTIFICADO}</Text>
+    const getCliente=()=>{
+        return <View style={{marginTop:10}}>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'center', marginLeft:10, marginTop:10, marginRight:10}}>
+                <Text style={{color:tema.active, fontWeight:'bold'}}>Asegurado</Text>
             </View>
-            :<></>
-        }
-        {
-            route.params.tipo=='Aplicacion'?
-            <View style={styles.dato}>
-                <Text style={{...styles.texto,width:'48%'}}>Aplicacion.</Text>
-                <Text style={styles.texto}>:</Text>
-                <Text style={{...styles.texto,width:'48%',textAlign:'right'}}>{route.params.NUMERO_APLICACION}</Text>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Nit/Ci</Text>
+                <Text style={{color:tema.active}}>{state.certificado.CLIENTE.NIT_CI}{state.certificado.CLIENTE.LUGAR_EMISION_CI}</Text>
             </View>
-            :<></>
-        }
-        <View style={styles.dato}>
-            <Text style={{...styles.texto,width:'48%'}}>Valor asegurado.</Text>   
-            <Text style={styles.texto}>:</Text>         
-            <Text style={{...styles.texto,width:'48%',textAlign:'right'}}>{data.MONEDA.ACRONIMO} {data.VALOR_ASEGURADO.toLocaleString()}</Text>            
-        </View>
-        <View style={styles.dato}>
-            <Text style={{...styles.texto,width:'48%'}}>Prima.</Text> 
-            <Text style={styles.texto}>:</Text>       
-            <Text style={{...styles.texto,width:'48%',textAlign:'right'}}>{data.MONEDA.ACRONIMO} {data.PRIMA.toLocaleString()}</Text>        
-        </View>
-        <View style={styles.dato}>
-            <Text style={{...styles.texto,width:'48%'}}>Moneda.</Text> 
-            <Text style={styles.texto}>:</Text>
-            <Text style={{...styles.texto,width:'48%',textAlign:'right'}}>{data.MONEDA.DESCRIPCION}</Text> 
-        </View>
-        <View style={styles.dato}>
-            <Text style={{...styles.texto,width:'48%'}}>Registro.</Text>
-            <Text style={styles.texto}>:</Text>
-            <Text style={{...styles.texto,width:'48%',textAlign:'right'}}>{getFechaLiteral(data.FECHA_REGISTRO)}</Text>
-        </View>
-        <View style={styles.dato}>
-            <Text style={{...styles.texto,width:'48%'}}>Tipo pago.</Text>
-            <Text style={styles.texto}>:</Text>
-            <Text style={{...styles.texto,width:'48%',textAlign:'right'}}>{data.TIPO_PAGO}</Text>
-        </View>
-        <View style={{marginTop:10}}>
-            <Text style={{...styles.texto,textAlign:'center'}}>Vigencia</Text> 
-            <Text style={{...styles.texto, textAlign:'center', marginTop:5}}>{getFechaLiteral(route.params.VIGENCIA_INICIAL)} - {getFechaLiteral(route.params.VIGENCIA_FINAL)}</Text>        
-        </View>
-    </View>
-    };
-
-    const pintarEjecutivoAtiende=()=>{
-        return <View style={styles.card}>
-            <Text style={{textAlign:'center', fontWeight:'bold', color:'#fff', marginTop:20}}>EJECUTIVO QUE ATIENDE</Text>
-            <View style={{display:"flex", justifyContent:'center', alignItems:'center', marginTop:15}}>
-                <Image 
-                    style={{width:50, height:50, borderRadius:10}}
-                    source={{uri: api.url+"/imagesAdmin/"+data.EJECUTIVO_ATIENDE?.CI}}
-                />
-                <Text style={{color:'#fff'}}>{data.EJECUTIVO_ATIENDE?.PRIMER_APELLIDO} {data.EJECUTIVO_ATIENDE?.SEGUNDO_APELLIDO} {data.EJECUTIVO_ATIENDE?.PRIMER_NOMBRE} {data.EJECUTIVO_ATIENDE?.SEGUNDO_NOMBRE}</Text>
-                <Text style={{color:'#fff'}}>Telf. {data.EJECUTIVO_ATIENDE?.TELEFONO}</Text>
-                <Text style={{color:'#fff', marginBottom:20}}>{data.EJECUTIVO_ATIENDE?.EMAIL}</Text>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Nombre</Text>
+                <Text style={{color:tema.active}}>{state.certificado.CLIENTE.NOMBRE_COMPLETO}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Telefono</Text>
+                <TouchableOpacity 
+                onPress={openWhatsAppChat}>
+                    <Text style={{color:tema.primary, textDecorationLine:'underline'}}>{state.certificado.CLIENTE.CELULAR}</Text>
+                </TouchableOpacity>
             </View>
         </View>
-    };
-
-    const toBack=()=>{
-        navigation_.goBack();
+        
     }
-    const pintarPlanPagos=()=>{
-        return <View style={styles.card}>
-            <TouchableOpacity onPress={() =>toBack()}>
-                <IconComponent nameIcon="iconLeftCircle" alto="38px" ancho="38px" colors={{color_1:""}}></IconComponent>
-            </TouchableOpacity>
-            <Text style={{fontWeight:'bold', textAlign:'center', marginTop:20, marginBottom:20, ...styles.texto}}>PLAN DE PAGOS</Text>
+
+    const getPlanPagos=()=>{
+        return <View style={{marginTop:10}}>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'center', marginLeft:10, marginTop:10, marginRight:10}}>
+                <Text style={{color:tema.active, fontWeight:'bold'}}>Plan de pagos</Text>
+            </View>
             {
-                data.PLAN_PAGOS?
-                data.PLAN_PAGOS.map((plan_pago:any, i:any)=>{
-                    return <View key={i} style={styles.plan_pago}>
-                        {compararFecha(plan_pago.FECHA_PAGO,data?.FECHA_ACTUAL,plan_pago.ESTADO_PAGO,(i+1))}
-                        <Text style={{...styles.texto,width:'35%',textAlign:'right'}}>{data.MONEDA.ACRONIMO} {plan_pago.PRIMA.toLocaleString()}</Text>
-                        <Text style={{color:'white'}}>  {verificarEstadoPago(plan_pago.ESTADO_PAGO)}</Text>
+                state.certificado.PLAN_PAGOS.map((cuota, i)=>{
+                    return <View key={i} style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+                        <Text style={{color:tema.active, marginLeft:10}}>{i+1}</Text>
+                        <Text style={{color:tema.active}}>{cuota.FECHA_PAGO}</Text>
+                        <Text style={{color:tema.active}}>$us. {cuota.PRIMA}</Text>
+                        <Text style={{color:tema.active, marginRight:10}}>{cuota.ESTADO_PAGO==1?"Pendiente":"Pagada"}</Text>
                     </View>
-                }):<View key={0} style={styles.plan_pago}>
-                        <Text style={styles.texto}>{0+")"}</Text>
-                        <Text style={styles.texto}>Sin plan de pagos</Text>
-                    </View>
+                })
+            }
+        </View>
+        
+    }
+
+    const sharePdf=(titulo:string, url:string)=>{
+        let message = "*"+titulo+"*";
+        message += "\n\n";
+        message += "*Poliza #*: "+state.certificado.NUMERO_POLIZA.trim();
+        message += "\n";
+        message += "*Certificado #*: "+state.certificado.NUMERO_CERTIFICADO.trim();
+        message += "\n";
+        message += "*Marca*: "+state.certificado.AUTOMOTOR.MARCA.trim();
+        message += "\n";
+        message += "*Modelo*: "+state.certificado.AUTOMOTOR.MODELO.trim();
+        message += "\n";
+        message += "*Placa*: "+state.certificado.DATO_ADICIONAL.trim();
+        message += "\n";
+        message += "*Prima*: $us. "+state.certificado.PRIMA.toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2});
+        message += "\n\n";
+        message += "Descargue su documento ⬇️\n";
+        message += url;
+        Share.open({
+            title:titulo,
+            message
+            //type: 'application/pdf',
+        });
+    }
+
+    const getDocs=()=>{
+        let emision = state?.certificado?.EMISION;
+        
+        if(!emision) return <></>
+
+        emision = JSON.parse(emision);
+        
+        if(emision.sDocumentsEmi){
+            return <View style={{marginTop:30}}>
+                <View style={{display:'flex', flexDirection:'row', justifyContent:'center', margin:10}}>
+                    <Text style={{color:tema.active, fontWeight:'bold'}}>Documentos</Text>
+                </View>
+                <View style={{marginLeft:10, marginRight:10, marginTop:10, display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+                    
+                    {
+                        Object.values(emision.sDocumentsEmi).map((doc)=>{
+                            return <TouchableOpacity
+                                    onPress={()=>{
+                                        sharePdf(doc.sDescript,doc.sUrlFile)
+                                    }}
+                                    key={doc.sUrlFile}
+                                >
+                                <View style={{display:'flex', alignItems:'center'}}>
+                                    <Image 
+                                        style={{width:60, height:60}} 
+                                        source={require('../images/pdf.webp')} 
+                                    />
+                                    <Text style={{color:tema.active}}>{doc.sDescript}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        })
+                    }
+                    
+                </View>
+            </View>
+        }
+        if(emision.certificado){
+            return <View style={{marginTop:10}}>
+                <View style={{display:'flex', flexDirection:'row', justifyContent:'center', margin:10}}>
+                    <Text style={{color:tema.active, fontWeight:'bold'}}>Documentos</Text>
+                </View>
+                <View style={{marginLeft:10, marginRight:10, marginTop:10, display:'flex', flexDirection:'row', justifyContent:'center'}}>
+                     <TouchableOpacity
+                            onPress={()=>{
+                                sharePdf("Certificado",emision.certificado)
+                            }}
+                        >
+                        <View style={{display:'flex', alignItems:'center'}}>
+                            <Image 
+                                style={{width:60, height:60}} 
+                                source={require('../images/pdf.webp')} 
+                            />
+                            <Text style={{color:tema.active}}>Certificado</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        }
+
+        return <></>
+    }
+
+    const getAutomotor=()=>{
+        return <View style={{marginTop:30}}>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'center', marginLeft:10, marginTop:10, marginRight:10}}>
+                <Text style={{color:tema.active, fontWeight:'bold'}}>Automotor</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Marca</Text>
+                <Text style={{color:tema.active}}>{state.certificado.AUTOMOTOR.MARCA.trim()}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Modelo</Text>
+                <Text style={{color:tema.active}}>{state.certificado.AUTOMOTOR.MODELO.trim()}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Placa</Text>
+                <Text style={{color:tema.active}}>{state.certificado.DATO_ADICIONAL}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Año</Text>
+                <Text style={{color:tema.active}}>{state.certificado.AUTOMOTOR.ANO}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Tipo</Text>
+                <Text style={{color:tema.active}}>{state.certificado.AUTOMOTOR.TIPO.trim()}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Color</Text>
+                <Text style={{color:tema.active}}>{state.certificado.AUTOMOTOR.COLOR}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Plazas</Text>
+                <Text style={{color:tema.active}}>{state.certificado.AUTOMOTOR.PLAZAS}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Motor Cc.</Text>
+                <Text style={{color:tema.active}}>{state.certificado.AUTOMOTOR.MOTOR}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Chasis Nro.</Text>
+                <Text style={{color:tema.active}}>{state.certificado.AUTOMOTOR.CHASIS}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Motor Nro.</Text>
+                <Text style={{color:tema.active}}>{state.certificado.AUTOMOTOR.NUMERO_MOTOR}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Trancción</Text>
+                <Text style={{color:tema.active}}>{state.certificado.AUTOMOTOR.TRACCION}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Extraterritoriedad</Text>
+                <Text style={{color:tema.active}}>{state.certificado.AUTOMOTOR.EXTRATERRITORIALIDAD}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Zona de circulación</Text>
+                <Text style={{color:tema.active}}>{state.certificado.AUTOMOTOR.ZONA_CIRCULACION}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Ubicar</Text>
+                <Text style={{color:tema.active}}>{state.certificado.AUTOMOTOR.UBICAR}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Uso</Text>
+                <Text style={{color:tema.active}}>{state.certificado.AUTOMOTOR.USO}</Text>
+            </View>
+        </View>
+    }
+
+    const getDatosCertificado=()=>{
+        return <View style={{marginTop:30}}>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'center', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active, fontWeight:'bold'}}>Certificado</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between',  marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}># Póliza</Text>
+                <Text style={{color:tema.active}}>{state.certificado.NUMERO_POLIZA}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}># Certificado</Text>
+                <Text style={{color:tema.active}}>{state.certificado.NUMERO_CERTIFICADO}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Valor Asegurado</Text>
+                <Text style={{color:tema.active}}>$us. {state.certificado.VALOR_ASEGURADO.toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2})}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Tipo Pago</Text>
+                <Text style={{color:tema.active}}>{state.certificado.TIPO_PAGO}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Prima</Text>
+                <Text style={{color:tema.active}}>$us. {state.certificado.PRIMA.toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2})}</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:10, marginRight:10}}>
+                <Text style={{color:tema.active}}>Comisión</Text>
+                <Text style={{color:tema.active}}>$us. {state.certificado.COMISION.toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2})}</Text>
+            </View>
+            {
+            /*
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'center', marginLeft:10, marginTop:10, marginRight:10}}>
+                <Text style={{color:tema.active, fontWeight:'bold'}}>Vigencias</Text>
+            </View>
+            <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', marginLeft:50, marginRight:50}}>
+                <Text style={{color:tema.active}}>{state.certificado.VIGENCIA_INICIAL}</Text>
+                <Text style={{color:tema.active}}>{state.certificado.VIGENCIA_FINAL}</Text>
+            </View>*/
             }
         </View>
     };
 
-    const pintar=()=>{
-        return<View style={{flex:1}}> 
-            <View style={{position:'absolute',top:0,bottom:0,left:0,right:0}}> 
-                    <IconComponent nameIcon='fondo' alto='20px' ancho ='20px' colors={{color_1:"#BBEEAA",color_2:"#334477"}}></IconComponent>
-                </View>
-            <ScrollView style={{marginLeft:10,marginRight:10}}>
-                {pintarPlanPagos()}
-                {pintarEjecutivoAtiende()}
-                {pintarDatos()}
-            </ScrollView>
-        </View>
-    };
+    const openWhatsAppChat = () => {
+        let phoneNumber = '+591'+state.certificado.CLIENTE.CELULAR; // Número de teléfono al que deseas enviar el mensaje
 
+        
+        let message = "*Tu seguro fue emitido correctamente*";
+        message += "\n\n";
+        message += "*Ci Asegurado*: "+state.certificado.CLIENTE.NIT_CI+""+state.certificado.CLIENTE.LUGAR_EMISION_CI;
+        message += "\n";
+        message += "*Nombre Asegurado*: "+state.certificado.CLIENTE.NOMBRE_COMPLETO;
+        message += "\n";
+        message += "*Poliza #*: "+state.certificado.NUMERO_POLIZA.trim();
+        message += "\n";
+        message += "*Certificado #*: "+state.certificado.NUMERO_CERTIFICADO.trim();
+        message += "\n";
+        message += "*Valor asegurado*: $us. "+state.certificado.VALOR_ASEGURADO.toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2});
+        message += "\n";
+        message += "*Prima*: $us. "+state.certificado.PRIMA.toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2});
+        message += "\n";
+        message += "*Marca*: "+state.certificado.AUTOMOTOR.MARCA.trim();
+        message += "\n";
+        message += "*Modelo*: "+state.certificado.AUTOMOTOR.MODELO.trim();
+        message += "\n";
+        message += "*Placa*: "+state.certificado.DATO_ADICIONAL.trim();
+        message += "\n";
+        message += "*Ano*: "+state.certificado.AUTOMOTOR.ANO;
+        message += "\n";
+        message += "*Color*: "+state.certificado.AUTOMOTOR.COLOR;
+        message += "\n";
+        message += "*Motor cc.*: "+state.certificado.AUTOMOTOR.MOTOR;
+        message += "\n";
+        message += "*Motor #*: "+state.certificado.AUTOMOTOR.NUMERO_MOTOR;
+        message += "\n";
+        message += "*Chasis #*: "+state.certificado.AUTOMOTOR.CHASIS;
+        message += "\n\n";
+
+        let emision = state?.certificado?.EMISION;
+        
+        if(emision){
+            message += "Descargue sus documentos ⬇️\n";
+            message += "\n\n";
+            emision = JSON.parse(emision);
+        
+            if(emision.sDocumentsEmi){
+                Object.values(emision.sDocumentsEmi).map((doc)=>{
+                    message += "*"+doc.sDescript+"*\n";
+                    message += doc.sUrlFile+"\n\n";
+                })
+            }
+            if(emision.certificado){
+                message += "*Certificado*\n";
+                message += emision.certificado+"\n\n";
+            }
+        }
+
+        
+        // Elimina los espacios y otros caracteres no numéricos del número
+        phoneNumber = phoneNumber.replace(/[^0-9]/g, '');
+    
+        // Crea la URL para enviar el mensaje
+        let url = `whatsapp://send?text=${encodeURIComponent(message)}&phone=${phoneNumber}`;
+    
+        // Verifica si se pueden abrir URL
+        Linking.canOpenURL(url)
+        .then((supported) => {
+            if (!supported) {
+              console.log('No se puede abrir WhatsApp');
+            } else {
+              return Linking.openURL(url);
+            }
+        })
+        .catch((err) => console.error('Ocurrió un error', err));
+    };
+    
+    const pintar=()=>{
+        if(!state?.certificado) return <Load />;
+
+        
+
+        return <ScrollView style={{marginTop:20}}>
+            {getCliente()}
+            {getDatosCertificado()}
+            {getDocs()}
+            {getAutomotor()}
+            {getPlanPagos()}
+
+            <View style={{marginLeft:10, marginRight:10, marginTop:40}}>
+                <Text style={{color:tema.opaque, textAlign:'right'}}>{new Date(state.certificado.FECHA_REGISTRO).toLocaleString()}</Text>
+            </View>
+
+            <View style={{display:'flex', justifyContent:'center', alignItems:'center', marginTop:20, marginBottom:40}}>
+                <TouchableOpacity
+                    onPress={()=>{
+                        navigation_.replace("Home")
+                    }}
+                    style={{backgroundColor:tema.primary, height:50, width:130, borderRadius:10, justifyContent:'center', alignItems:'center'}}
+                >
+                    <Text style={{color:tema.active, textAlign:'center'}}>Volver al Menú</Text>
+                </TouchableOpacity>
+            </View>
+        </ScrollView>
+    };
 
     return (
         <View style={{flex:1}}>
-            <View style={{position:'absolute',top:-1}}>
-                    <IconComponent nameIcon="fondo" alto="20px" ancho="20px" colors={{color_1:"#BBEEAA",color_2:"#334477"}}/>             
+            <View>
+                <Text style={styles.subtitle}>Información del Certificado</Text>
             </View>
-            {
-                <>
-                <View style={{height:70}}>
-                    <Image 
-                        style={{width:'100%',height:'100%'}}
-                        resizeMode='stretch'
-                        source={{uri: api.url+"/perfilCia/"+route.params.NIT_COMPANIA+'_bar'}}
-                    />
-                </View>
-                {data?pintar():<View style={{flex:1, justifyContent:'center', alignItems:'center' ,backgroundColor:'rgba(0,0,0,0.7)'}}><ActivityIndicator size={'large'} color={'white'}/></View>}
-                </>
-           }
+            {pintar()}    
         </View>
     )
 };
-const getFechaLiteral =(fecha:any) =>{
-    if(!fecha || fecha == ''){
-        return '-*-'
-    }
-    var array = fecha.split('/');
-    switch(array[1]){
-        case '01':
-            array[1] = 'Enero';
-            break;
-        case '02':
-            array[1] = 'Febrero';
-            break;
-        case '03':
-            array[1] = 'Marzo';
-            break;
-        case '04':
-            array[1] = 'Abril';
-            break;
-        case '05':
-            array[1] = 'Mayo';
-            break;
-        case '06':
-            array[1] = 'Junio';
-            break;
-        case '07':
-            array[1] = 'Julio';
-            break;
-        case '08':
-            array[1] = 'Agosto';
-            break;
-        case '09':
-            array[1] = 'Septiembre';
-            break;
-        case '10':
-            array[1] = 'Octubre';
-            break;
-        case '11':
-            array[1] = 'Noviembre';
-            break;
-        case '12':
-            array[1] = 'Diciembre';
-        break;
-    }
-    return array[0] + ' de ' + array[1] + ' ' + array[2]
-}
-const verificarEstadoPago =(estado:Int32)=>{
-    if(estado == 1){
-        return <View style={{width:15}}>
-                <IconComponent nameIcon="iconCheckFalse" alto="25px" ancho="25px" colors={{color_1:"white"}}></IconComponent>
-            </View>
-    }else{
-        return <View style={{width:15}}>
-                <IconComponent nameIcon="iconCheckTrue" alto="25px" ancho="25px" colors={{color_1:"white"}}></IconComponent>
-            </View>
-    }
-}
-const compararFecha =(fechaProx:any,fechaActual:any,estado:any,pos:any)=>{
-    if(!fechaProx || fechaProx == ''){
-        return ''
-    }
-    if(!fechaActual || fechaActual == ''){
-        return ''
-    }
-    var aux_fechaProx = fechaProx.split('/');
-    var aux_fechaActual = fechaActual.split('/');
-    
-    var date_prox = new Date(fechaProx);
-    var date_actual = new Date(fechaActual);
 
-    date_prox = new Date(aux_fechaProx[2], aux_fechaProx[1],aux_fechaProx[0])
-    date_actual = new Date(aux_fechaActual[2], aux_fechaActual[1],aux_fechaActual[0]) 
-    if(estado === 0){
-        return <Text style={{color:'green',width:'55%'}}>{pos+')  '+ getFechaLiteral(fechaProx)}</Text>
-    }else{
-        if(date_prox > date_actual && estado > 0){
-            return <Text style={{color:'white',width:'55%'}}>{pos +')  '+ getFechaLiteral(fechaProx)}</Text>
-        }else{
-            return <Text style={{color:'red',width:'55%'}}>{pos+')  '+ getFechaLiteral(fechaProx)}</Text>
-        }
-    }    
-}
 const styles = StyleSheet.create({
-    titulo:{
-        textAlign:'center',
-        marginTop:10,
-        fontSize:14,
-        fontWeight:'bold'
-    },
-    texto:{
-        color:"#fff"
-    },
-    dato:{
-        display:'flex', flexDirection:'row', justifyContent:'space-between', marginTop:15
-    },
-    plan_pago:{
-        display:'flex', 
-        flexDirection:'row', 
-        justifyContent:'space-between',
-        margin:5,
-        padding:5,
-        borderColor:'#fff',
-        borderBottomWidth:1
-    },
-    card:{
-        marginTop:5, 
-        borderRadius:10,
-        backgroundColor:'#000000aa', 
-        padding:10,  
-        elevation: 5,
-        shadowColor: '#000',
-        shadowOpacity: 0.7,
-        shadowOffset: { width: 5, height: 5 },
-        shadowRadius: 4,              
+    subtitle:{
+        color:tema.primary, 
+        textAlign:'center', 
+        marginTop:10, 
+        fontSize:25
     }
 });
 export default PerfilProducto;

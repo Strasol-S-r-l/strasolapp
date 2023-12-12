@@ -1,7 +1,8 @@
 import React, {useEffect, useRef} from 'react';
-import { Alert, StyleSheet, View} from 'react-native';
+import { Alert, StyleSheet, Text, View} from 'react-native';
 import Video from 'react-native-video';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import tema from '../enviroments/tema.json'
 
 
 var navigation_:any;
@@ -16,19 +17,18 @@ const Splash = ({navigation}:any) => {
   const isLogued = async () => {
     try {
       const suser:any = await AsyncStorage.getItem("usuario");
-      console.log("======"+suser);
       if(!suser || suser==null){
         navigation_.replace("Login");
         return;
       } 
-      console.log(suser);
+      navigation_.replace("Cotizacion");
     } catch (error) {}
   }
 
   const onEnd=async()=>{
 
     try {
-      navigation_.replace("Ppl");
+      navigation_.replace("Cotizacion");
     } catch (error) {
       
       console.log(error); 
@@ -41,7 +41,7 @@ const Splash = ({navigation}:any) => {
   return (
     <View style={styles.container}>
       
-        <Video
+        {/*<Video
           onEnd={onEnd}
           ref={videoPlayer}
           source={require('../videos/algo.mp4')}
@@ -49,7 +49,8 @@ const Splash = ({navigation}:any) => {
           style={styles.mediaPlayer}
           volume={10}
 
-        />
+        />*/}
+        <Text style={{color:tema.active, textAlign:'center'}}>Cargando...</Text>
     </View>
   );
 };

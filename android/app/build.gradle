@@ -78,6 +78,7 @@ android {
         applicationId "com.strasolapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        vectorDrawables.useSupportLibrary = true
         versionCode 1
         versionName "1.0"
     }
@@ -104,6 +105,8 @@ android {
 }
 
 dependencies {
+
+    implementation 'com.facebook.fresco:animated-gif:2.5.0'
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 

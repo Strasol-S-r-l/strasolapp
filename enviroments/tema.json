@@ -1,3 +1,9 @@
 {
-    "buttons":"#aaaaaa"
+    "succes":"#258534",
+    "warning":"#cfe51d",
+    "danger":"#fa5977",
+    "active": "#000000",
+    "primary": "#34659e",
+    "opaque": "#00000055",
+    "background": "#ffffff"
 }
