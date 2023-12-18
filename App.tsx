@@ -11,7 +11,6 @@ import Login from './component/Login';
 import Ppl from './component/Ppl';
 import PerfilProducto from './component/PerfilProducto';
 import Perfil from './component/Perfil';
-import Mapa from './component/Mapa';
 import Videos from './component/Videos';
 import Cotizacion from './component/Cotizacion';
 import Automotor from './component/Automotor';
@@ -38,7 +37,6 @@ function App(): JSX.Element {
         <Stack.Screen name="Notificaciones" component={Notificaciones} />
         <Stack.Screen name="Ppl" component={Ppl} />
         <Stack.Screen name="PerfilProducto" component={PerfilProducto} />
-        <Stack.Screen name="Mapa" component={Mapa} />
         <Stack.Screen name="Perfil" component={Perfil} />
         <Stack.Screen name="Videos" component={Videos} />
         <Stack.Screen name="Cotizacion" component={Cotizacion} />

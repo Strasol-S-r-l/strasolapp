@@ -9,7 +9,6 @@ const data = [
     "Automotor",
     "Usuarios",
     "Ppl",
-    "Mapa",
     "Perfil",
     "Videos",
     "Siniestros"
