@@ -25,6 +25,7 @@ const Emision = ({ navigation }: any) => {
     const [state, setState] = React.useState({ porc_avance: 0, vigencia_inicial: new Date().toLocaleDateString() });
     const [tipoInfo, setTipoInfo] = React.useState(1);
 
+
     const cambiarPagina =(tipo:Int32)=>{
         aux_tipo = tipo;
         setTipoInfo(4);
@@ -35,6 +36,7 @@ const Emision = ({ navigation }: any) => {
     };
     useEffect(() => {
         navigation_.setOptions({ headerShown: false });
+        
         const init = async () => {
             let poliza = await AsyncStorage.getItem("poliza");
             state["poliza"] = JSON.parse(poliza);
@@ -66,17 +68,18 @@ const Emision = ({ navigation }: any) => {
                     automotor: state.automotor,
                     poliza: state.poliza
                 }),
-            }).then((response) => {
-                const obj = response.json();
+            }).then(async (response) => {
+                const obj = await response.json();
                 if (obj.estado === "error") {
                     state["error"] = obj.error;
                     state["emitiendo"] = false;
                     setState({ ...state });
                     return obj;
                 }
+                
                 state["emitiendo"] = false;
                 console.log(obj.data)
-                
+
                 let id = 0;
                 if(obj?.data?.ID){
                     id = obj?.data?.ID;
@@ -88,7 +91,7 @@ const Emision = ({ navigation }: any) => {
                 navigation_.replace("PerfilProducto", { ID: id });
                 return;
             }).catch(e => {
-                state["error"] = e + "";
+                state["error"] = state.error + "";
                 state["emitiendo"] = false;
                 console.log(state)
                 setState({ ...state });
