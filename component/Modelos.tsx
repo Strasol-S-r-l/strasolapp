@@ -41,16 +41,13 @@ const Modelos = (props:any) => {
         </View>
     } 
 
-
-
     return <View>
-        <Text style={{textAlign:'center', ...styles.observacion}}>Seleccione el modelo.</Text>
             <View style={{alignItems:'center'}}>
                 <TextInput
                     style={styles.input}
                     onChangeText={onChangeText}
                     value={text}
-                    placeholder='Buscar modelo'
+                    placeholder='Modelo Vehiculo'
                     placeholderTextColor={tema.opaque}
                     />
             </View>
@@ -84,7 +81,8 @@ const styles = StyleSheet.create({
         width:150, 
         borderRadius:15, 
         padding:5, 
-        borderWidth:1
+        borderWidth:1,
+        backgroundColor:tema.background
     },
     observacion:{
         marginTop:25,  
@@ -99,12 +97,13 @@ const styles = StyleSheet.create({
     },
     input: {
         height: 30,
-        borderWidth: 1,
+        borderWidth: 2,
         padding: 5,
-        width:"50%",
+        paddingLeft: 10,
+        width:"60%",
         borderRadius:10,
-        color:"#fff",
-        borderColor:tema.primary
+        color:tema.background,
+        borderColor:tema.opaque
         
       },
 });

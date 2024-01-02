@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View ,Image, Dimensions, StyleSheet} from 'react-native';
-
+import tema from '../enviroments/tema.json'
 const BarLeft = ( { titulo }: any) => {
 
     return( <View style={{...StyleSheet.absoluteFillObject,width:"30%"}}>
@@ -14,12 +14,16 @@ const BarLeft = ( { titulo }: any) => {
             source={require('./../images/bar_left.png')}
           />
           <View style={{position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
             justifyContent: 'center',
-            alignItems: 'flex-start',
-            width:"50%",
+            alignItems: 'center',
             height:Dimensions.get("window").height,
-            zIndex: 1,}}>
-            <Text style={{transform: [{ rotate: '90deg' }],fontSize: 18,fontWeight:"bold",color:"white"}}>{titulo}</Text>
+            width:"50%",
+            zIndex: 1,flex: 1, }}>
+            <Text style={{width: Dimensions.get('window').height-10,transform: [{ rotate: '90deg' }],fontSize: 24,fontWeight:"bold",color:tema.text }}>{titulo}</Text>
           </View>
         </View>
     )

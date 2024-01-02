@@ -43,17 +43,16 @@ const Marcas = (props:any) => {
 
     
     return <View>
-        <Text style={{textAlign:'center', ...styles.observacion}}>Seleccione la marca de su vehículo.</Text>
             <View style={{alignItems:'center'}}>
                 <TextInput
                     style={styles.input}
                     onChangeText={onChangeText}
                     value={text}
-                    placeholder='Buscar marca'
+                    placeholder='Marca Vehiculo'
                     placeholderTextColor={tema.opaque}
                     />
             </View>
-            <ScrollView  horizontal={true} style={{height:170}}>
+            <ScrollView  horizontal={true} style={{height:150}}>
             {
                 Object.values(props.state.marcas).sort((a:any,b:any)=>{ return a.DESCRIPCION>b.DESCRIPCION?1:-1 }).filter((marca:any)=>{return marca.DESCRIPCION.toUpperCase().indexOf(text.toUpperCase())>-1}).map((marca:any, key)=>{
                     return <TouchableOpacity 
@@ -68,7 +67,7 @@ const Marcas = (props:any) => {
                         <View style={{alignItems:'center'}}>
                             <Image 
                             key={key}
-                            style={{width:80, height:80, borderRadius:15, resizeMode:'contain'}} 
+                            style={{width:"90%", height:"80%", borderRadius:15, resizeMode:'stretch'}} 
                             source={{uri:api.url+'/getimagen/marcas/'+marca.ID+"?date="+new Date().getDay()}} />
                         </View>
                         <Text style={{textAlign:'center', color:tema.active}}>{marca.DESCRIPCION}</Text>
@@ -82,10 +81,11 @@ const Marcas = (props:any) => {
 const styles = StyleSheet.create({
     card:{
         margin:10, 
-        height:150, 
-        width:150, 
+        height:130, 
+        width:130, 
         borderRadius:15, 
         padding:5, 
+        backgroundColor:tema.background,
         borderWidth:1
     },
     observacion:{
@@ -101,13 +101,12 @@ const styles = StyleSheet.create({
     },
     input: {
         height: 30,
-        borderWidth: 1,
+        borderWidth: 2,
         padding: 5,
-        width:"50%",
-        borderRadius:10,
-        color:tema.active,
-        borderColor:tema.primary
-        
+        width:"60%",
+        borderRadius:15,
+        color:tema.background,
+        borderColor:tema.opaque
       },
 });
 

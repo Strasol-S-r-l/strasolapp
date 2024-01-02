@@ -1,33 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Clipboard, View, Text, ScrollView, Dimensions } from 'react-native';
-import TesseractOcr, { useEventListener } from '@devinikhiya/react-native-tesseractocr';
+import { Button, Clipboard, View, Text, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import Svg, { Line, TSpan, Text as SvgText } from 'react-native-svg';
 import api from '../enviroments/api.json'
 import RNFS from 'react-native-fs';
+import Load from './Load';
 
 const ReadText = (props:any) => {
     const [state, setState] = useState({ porc: 0, texto: null });
 
-    const fetchFromClipboard = async () => {
-        state.chasis = await Clipboard.getString();
+    const fetchFromClipboard = async (text:any) => {
         
-        setState({...state});
-        
-        // Aquí puedes hacer algo con el texto obtenido del portapapeles
+        props.setChasis(text)
     };
 
     useEffect(() => {
         const read = async () => {
             console.log("subiendo..........................")
-            /*
+            
             const imageBlob = await RNFS.readFile(props.photo.path, 'base64')
-            console.log(imageBlob)
+            //console.log(imageBlob)
             let send={
-                key:api.key,
-                image: imageBlob,
-                type:"setRuat"
+                requests:[
+                    {
+                        image: {content:imageBlob},
+                        features:[{type: "TEXT_DETECTION",maxResults: 1}]
+                    }
+                ]
             };
-            const uploadResponse = await fetch(api.url+'/app', {
+            const uploadResponse = await fetch(api.url_gvision, {
                 method: 'POST',
                 body: JSON.stringify(send), // FormData will be sent as multipart/form-data
             });
@@ -36,37 +36,10 @@ const ReadText = (props:any) => {
             }
             
             let text = await uploadResponse.json();
+            text = text["responses"][0]["textAnnotations"][0]["description"]
             console.log(text)
-            state["texto"] = text.data;
+            state["texto"] = text;
             setState({...state})
-            */
-            try {
-                let base64 = await new Promise(resolve=>{
-                    RNFS.readFile(props.photo.path, 'base64')
-                    .then(res =>{
-                        resolve(res);
-                    });
-                });
-                console.log(base64)
-                
-                /*console.log(props.photo)
-                const recognizedText = await TesseractOcr.recognize(
-                    props.photo.path,
-                    "spa",
-                    { 
-                        psm: 6, 
-                        oem: 1,
-                        whitelist: "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-                        blacklist: "O",
-                    }
-                );
-                console.log('text is', recognizedText);
-                */
-                state["texto"] = base64;
-                setState({...state});
-            } catch (error) {
-                console.error('Error en OCR:', error);
-            }
         }
 
         if(!state.texto) read();
@@ -81,42 +54,28 @@ const ReadText = (props:any) => {
         if(!state.texto) return (
             <View style={{display:'flex', justifyContent:'center', alignItems:'center', height:'100%'}}>
                 <Text style={{color:'#fff'}}>Analizando imagen</Text>
-                <Svg width={Dimensions.get('window').width} height={50} style={{marginTop:20}}>
-                    
-                    <Line strokeWidth={10} x1={10} y1={10} x2={(((Dimensions.get('window').width-10)*state.porc)/100)} y2={10} stroke={"#ffffffcc"} />
-                    <SvgText fill={"#ffffff"} fontSize={20}><TSpan x={15} y={40}>{state.porc} %</TSpan></SvgText>
-                </Svg>
+                <Load />
             </View>
         );
-
-        return <Text style={{color:'#fff'}} selectable={true}>{state.texto}</Text>
+        return <View style={{display:'flex', justifyContent:'center', alignItems:'center', height:'100%'}}>
+            <Text style={{color:'#fff'}}>Seleccione el chasis</Text>
+            {
+                state.texto.split("\n").map((tt:string, index:any)=>{
+                    return <TouchableOpacity key={index}
+                        onPress={()=>fetchFromClipboard(tt)} 
+                        style={{ margin:5, padding:5}}>
+                        <Text style={{color:'#fff'}} >{tt}</Text>
+                    </TouchableOpacity>
+                })
+            }
+            
+        </View>
+        
     }
-
-    const selectPendientes=()=>{
-
-        if(!state.chasis) {
-            return <View>
-            <View>
-                <Text style={{color:'#ffffff', fontSize:15, margin:15,}}>Seleccione el chasis, copie el texto y presione el boton chasis.</Text>
-            </View>
-            <View>
-                <Button title="Chasis" onPress={()=>{
-                    fetchFromClipboard();
-                }} />
-            </View>
-        </View>
-        }
-        return <>
-        <View style={{display:'flex', flexDirection:'row'}}>
-            <Text style={{color:'#ffffff',  margin:15,}}>Chasis</Text>
-            <Text style={{color:'#ffffff',  margin:15,}}>{state.chasis}</Text>
-        </View>
-        </>
-    };
 
     return (
         <View style={{alignItems:'center', backgroundColor:"#000000cc"}}>
-            {selectPendientes()}
+            
             <ScrollView style={{width:"100%", height:Dimensions.get('window').height-200}}>
                 {getText()}
             </ScrollView>

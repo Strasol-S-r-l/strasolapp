@@ -5,5 +5,7 @@
     "active": "#000000",
     "primary": "#34659e",
     "opaque": "#00000055",
-    "background": "#ffffff"
+    "placeholder": "#a5acaf",
+    "background": "#ffffff",
+    "text":"#ffffff"
 }

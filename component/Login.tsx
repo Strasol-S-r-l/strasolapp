@@ -55,6 +55,7 @@ const Login = ({ navigation }: any) => {
         body: JSON.stringify({ key: api.key, type: "login", user: usuario.user, pass: usuario.pass }),
       });
     const data = await response.json();
+    console.log(JSON.stringify(data))
     setLoad(false);
     if (data.estado == 'error') {
       setUsuario({ ...usuario, error: data.error })
@@ -70,7 +71,7 @@ const Login = ({ navigation }: any) => {
   }
 
   return (
-
+    <View style={{ position: 'absolute', width: "100%", height: Dimensions.get('window').height, backgroundColor: "rgba(68,125,209,1)" }}>
     <View style={{ flex: 1, position: 'relative' }}>
       <IconComponent nameIcon='fondo_login' ></IconComponent>
       <View style={{ display: "flex", justifyContent: 'center', alignItems: 'center', height: "20%" }}>
@@ -96,16 +97,16 @@ const Login = ({ navigation }: any) => {
         <View style={{ width: '100%', alignItems: 'center' }}>
           <View style={{ width: '80%' }}>
             <View>
-              <Text style={{ marginTop: 10, color: "white" ,fontWeight: 'bold'}}>Usuario</Text>
+              <Text style={{ marginTop: 10, color: tema.text, fontWeight: 'bold' }}>Usuario</Text>
               <TextInput placeholder='Nombre de Usuario' onChangeText={text => hanlechage({ text: text, id: "user" })} style={(usuario.tipo == 1 ? styles.error : styles.input)} autoCapitalize='none'></TextInput>
             </View>
             <View>
-              <Text style={{ marginTop: 10, color: "white" ,fontWeight: 'bold'}}>Contraseña</Text>
+              <Text style={{ marginTop: 10, color: tema.text, fontWeight: 'bold' }}>Contraseña</Text>
               <View style={{ display: 'flex', flexDirection: 'row' }}>
-                <TextInput secureTextEntry={!passwordVisible} value={usuario.pass} onChangeText={text => hanlechage({ text: text, id: "pass" })} placeholderTextColor={'gray'} placeholder='Contraseña' style={(usuario.tipo == 2 ? styles.input_password_error : styles.input_password)} autoCapitalize='none' ></TextInput>
+                <TextInput secureTextEntry={!passwordVisible} value={usuario.pass} onChangeText={text => hanlechage({ text: text, id: "pass" })} placeholderTextColor={tema.placeholder} placeholder='Contraseña' style={(usuario.tipo == 2 ? styles.input_password_error : styles.input_password)} autoCapitalize='none' ></TextInput>
                 <TouchableOpacity onPress={togglePasswordVisibility} style={{ backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', borderTopRightRadius: 10, borderBottomRightRadius: 10, borderColor: 'gray', borderTopWidth: 1, borderRightWidth: 1, borderBottomWidth: 1, width: 50 }}>
                   {
-                    passwordVisible ? <IconComponent  nameIcon="eye" alto="35px" ancho="35px" ></IconComponent> :
+                    passwordVisible ? <IconComponent nameIcon="eye" alto="35px" ancho="35px" ></IconComponent> :
                       <IconComponent nameIcon="eyeClose" alto="35px" ancho="35px" ></IconComponent>
                   }
                 </TouchableOpacity>
@@ -117,15 +118,17 @@ const Login = ({ navigation }: any) => {
               !load ?
                 (
                   <TouchableOpacity onPress={login} style={styles.input_button}>
-                    <Text style={{ textAlign: "center", color: "white", fontWeight: 'bold' }}>Conectar</Text>
+                    <Text style={{ textAlign: "center", color: tema.text, fontWeight: 'bold' }}>Conectar</Text>
                   </TouchableOpacity>
                 ) :
                 (
-                  <Text style={{ color: tema.active, textAlign: 'center' }}>Cargando...</Text>
+                    <View style={{ width: "100%", height: "30%", justifyContent: 'center', alignContent: "center", alignItems: "center" }}>
+                      <Image style={{ width: 60, height: 60 }} source={require('../images/load.gif')} />
+                    </View>
                 )
             }
           </View>
-          {/*<View>
+          {/*<View> 
                 <TouchableOpacity style={{ paddingTop: 20, }}>
                   <Text style={{ textAlign: "center", fontSize: 15, color: tema.warning, textDecorationLine: 'underline', }}> Solicitar contraseña</Text>
                 </TouchableOpacity>
@@ -150,26 +153,27 @@ const Login = ({ navigation }: any) => {
         </View>
 
         <View style={{ display: 'flex', justifyContent: 'center', height: "50%", alignItems: "center" }}>
-          <View style={{display:"flex",flexDirection:"row",alignItems:"center",}}>
-            <View style={{width:"18%",height:2,backgroundColor:"gray",}}></View>
-            <Text style={{color:tema.primary}}> Registrarse con </Text>
-            <View style={{width:"18%",height:2,backgroundColor:"gray",}}></View>
+          <View style={{ display: "flex", flexDirection: "row", alignItems: "center", }}>
+            <View style={{ width: "18%", height: 2, backgroundColor: "gray", }}></View>
+            <Text style={{ color: tema.primary }}> Registrarse con </Text>
+            <View style={{ width: "18%", height: 2, backgroundColor: "gray", }}></View>
           </View>
-          <View style={{display:"flex",flexDirection:"row"}}>
+          <View style={{ display: "flex", flexDirection: "row" }}>
             <Text style={{ color: tema.primary }}>No tiene una cuenta? </Text>
             <TouchableOpacity >
               <Text style={{ textAlign: "center", fontSize: 15, color: tema.primary, textDecorationLine: 'underline', fontWeight: "bold" }}> Registrarse</Text>
             </TouchableOpacity>
           </View>
           <View>
-            <TouchableOpacity  style={{display:"flex"}}>
-              <Text style={{color:tema.primary,fontSize:11}}>Para conectarse, usted declara que conoce y leyo </Text>
-              <Text style={{color:tema.primary,fontSize:11}}>las condiciones de los servicios <Text style={{fontWeight: 'bold',color:tema.primary}}>CloudBrokers Agreement.</Text></Text>
+            <TouchableOpacity style={{ display: "flex" }}>
+              <Text style={{ color: tema.primary, fontSize: 11 }}>Para conectarse, usted declara que conoce y leyo </Text>
+              <Text style={{ color: tema.primary, fontSize: 11 }}>las condiciones de los servicios <Text style={{ fontWeight: 'bold', color: tema.primary }}>CloudBrokers Agreement.</Text></Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
     </View>
+  </View>
   );
 };
 
@@ -235,8 +239,8 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: tema.background,
     color: tema.active,
-    borderLeftColor:  "#f00",
-    borderTopColor:  "#f00",
+    borderLeftColor: "#f00",
+    borderTopColor: "#f00",
     borderBottomColor: "#f00",
     borderRightColor: 'white'
   },

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Dimensions, ImageBackground, StyleSheet ,Image} from 'react-native';
-import Svg, { G, Path, Defs, LinearGradient, Stop, Rect, Circle, Text,  Ellipse } from 'react-native-svg';
-const IconComponent = ({ nameIcon, alto, ancho, colors }: any) => {
+import { View, Dimensions, ImageBackground, StyleSheet, Image } from 'react-native';
+import Svg, { G, Path, Defs, LinearGradient, Stop, Rect, Circle, Text, Ellipse } from 'react-native-svg';
+import tema from '../../../enviroments/tema.json';
+const IconComponent = ({ nameIcon, alto, ancho, colors ,data}: any) => {
     const screenWidth = Dimensions.get('window').width;
     const screenHeight = Dimensions.get('window').height;
 
@@ -28,6 +29,9 @@ const IconComponent = ({ nameIcon, alto, ancho, colors }: any) => {
             case "eye": return eye();
             case "eyeClose": return eyeClose();
             case "fondo_login": return fondo_login();
+            case "border_input": return border_input();
+            case "fondo_form": return fondo_form();
+            case "fondo_load": return fondo_load();
         }
 
     }
@@ -271,24 +275,49 @@ const IconComponent = ({ nameIcon, alto, ancho, colors }: any) => {
             </G>
         </Svg>
     }
+
     const fondo_login = () => {
         return <Image
-                style={styles.background}
-                source={require('./../../../images/main_fondo_02.png')}
-            />
+            style={styles.background}
+            source={require('./../../../images/main_fondo_02.png')}
+        />
+    }
+    const fondo_load = () => {
+        return <Image
+            style={styles.background}
+            source={require('./../../../images/fondo_load.png')}
+        />
+    }
+    const fondo_form = () => {
+        return <Image
+            style={styles.background}
+            source={require('./../../../images/fondo_form.png')}
+        />
     }
 
-
+    const border_input = () => {
+        return <Svg width="100%" height="100%">
+            <Defs>
+                <LinearGradient id={data.id} x1="0%" y1="0%" x2="100%" y2="0%">
+                    <Stop offset="5%" stopColor={tema.primary} stopOpacity={1}>
+                    </Stop>
+                    <Stop offset="90%" stopColor={data.color} stopOpacity={1}>
+                    </Stop>
+                </LinearGradient>
+            </Defs>
+            <Rect x="5%" y="5%" width="90%" height="90%" rx={15} ry={15} fill="none" stroke={"url(#"+data.id+")"} strokeWidth={5} />
+        </Svg>
+    }
     return <View>
         {paintIcon()}
     </View>
 };
 const styles = StyleSheet.create({
-    background:{
-        position:'absolute',
-        width: Dimensions.get("window").width ,
+    background: {
+        position: 'absolute',
+        width: Dimensions.get("window").width,
         height: Dimensions.get("window").height,
-        resizeMode:'stretch'
+        resizeMode: 'stretch'
     }
 });
 export default IconComponent;

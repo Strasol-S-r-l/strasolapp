@@ -172,8 +172,6 @@ const Automotor = ({navigation}:any) => {
         </>
     }
     
-
-
     navigation_ = navigation;
     return (
         <>

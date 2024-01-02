@@ -21,6 +21,10 @@ import Animation from './component/Animation';
 import Productos from './component/Productos';
 import RecCamera from './component/RecCamera';
 
+import FotoCarnet from './component/FotoCarnet';
+import FotoVehiculo from './component/RecCamera';
+import CamaraDoc from './component/CamaraDoc';
+
 const Stack = createNativeStackNavigator();
 
 function App(): JSX.Element {
@@ -48,6 +52,9 @@ function App(): JSX.Element {
         <Stack.Screen name="Select" component={Select} />
         <Stack.Screen name="Productos" component={Productos} />
         <Stack.Screen name="RecCamera" component={RecCamera} />
+        <Stack.Screen name="CamaraDoc" component={CamaraDoc} />
+        <Stack.Screen name="FotoVehiculo" component={FotoVehiculo} />
+        <Stack.Screen name="FotoCarnet" component={FotoCarnet} />
       </Stack.Navigator>
     </NavigationContainer>
   );

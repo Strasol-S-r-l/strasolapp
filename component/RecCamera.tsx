@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Image, Text, View, PermissionsAndroid, Platform, Dimensions } from 'react-native';
+import { Button, Image, Text, View, PermissionsAndroid, Platform, Dimensions, TouchableOpacity } from 'react-native';
 import tema from '../enviroments/tema.json'
 import { Camera, useCameraDevice, useCameraFormat} from 'react-native-vision-camera';
 import ReadText from './ReadText';
 import ImagePicker from 'react-native-image-crop-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-var navigation_:any;
-const RecCamera = ({navigation}:any) => {
-    navigation_ = navigation;
+
+const RecCamera = (navigation:any) => {
+    
     const device = useCameraDevice('back')
     const format = useCameraFormat(device, [
       { fps: 240 }
@@ -73,16 +74,31 @@ const RecCamera = ({navigation}:any) => {
     };
     
     useEffect(() => { 
-        navigation_.setOptions({headerShown:false});
+        navigation.navigation.setOptions({headerShown:false});
         if (Platform.OS === 'android') {
             requestCameraPermissionAndroid();
         }
         
     }, []);
 
+    const setChasis= async(chasis:any)=>{
+      //state.chasis=chasis;
+      console.log(chasis)
+      console.log(navigation.route.params)
+      let auto = await AsyncStorage.getItem("automotor");
+      
+      auto = JSON.parse(auto);
+      auto["CHASIS"] = chasis;
+      
+      await AsyncStorage.setItem("automotor", JSON.stringify(auto));
+      
+      navigation.navigation.replace("Emision");
+      
+    }
 
     const requestCameraPermissionAndroid = async () => {
         try {
+          
           const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.CAMERA,
             {
@@ -93,11 +109,14 @@ const RecCamera = ({navigation}:any) => {
               buttonPositive: "Aceptar"
             }
           );
+
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             console.log("Tienes acceso a la cámara");
+            setState({...state});
           } else {
             console.log("Permiso de cámara denegado");
           }
+
         } catch (err) {
           console.warn(err);
           setState({...state})
@@ -109,11 +128,12 @@ const RecCamera = ({navigation}:any) => {
         <Text style={{color:tema.active}}>No tienes camara</Text>
     </View>
 
+
     if(state.recorte){
       console.log(state.recorte)
         return <View>
             <Image source={{ uri: "file://"+state.recorte.path }} style={{ width: 400, height: 400 }} />
-            <ReadText  photo={state.recorte} tipo='chasis'/>
+            <ReadText  photo={state.recorte} setChasis={setChasis} tipo='chasis'/>
         </View>
     }
 

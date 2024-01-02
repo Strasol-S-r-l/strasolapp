@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Dimensions, Text, TouchableOpacity, Image, ScrollView, ImageBackground } from 'react-native';
+import { View, StyleSheet, Dimensions, Text, TouchableOpacity, Image, ScrollView, ImageBackground, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CurrencyInput from 'react-native-currency-input';
 import Load from './Load';
 import api from '../enviroments/api.json'
 import tema from '../enviroments/tema.json'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import IconComponent from './assets/icons/IconComponent';
 import Svg, { G, Path } from 'react-native-svg';
 import BarLeft from './BarLeft';
+import IconComponent from './assets/icons/IconComponent';
+import Splash from './Splash';
 
 
 var navigation_: any;
@@ -17,11 +18,16 @@ const Cotizacion = ({ navigation }: any) => {
     const [value, setValue] = React.useState(10000.00);
     const [state, setState] = React.useState({ tipoPago: 1 });
 
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const toggleDrawer = () => {
-        setIsDrawerOpen(!isDrawerOpen);
-    };
+    const [isEnabled, setIsEnabled] = useState(false);
 
+    const toggleSwitch = () => {
+        if (isEnabled) {
+            { changeCredito }
+        } else {
+            { changeContado }
+        }
+        setIsEnabled((previousState) => !previousState);
+    };
     useEffect(() => {
         navigation_.setOptions({ headerShown: false });
 
@@ -116,40 +122,38 @@ const Cotizacion = ({ navigation }: any) => {
             max = state.max_credito;
         }
 
-        return <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+        return <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignContent: "center", justifyContent: "center", }}>
             {
                 state.polizas.map((cia, key) => {
                     let prima = state.tipoPago == 1 ? cia.PRIMA_CONTADO : cia.PRIMA_CREDITO;
                     if (prima <= 0) return;
                     return <View key={key} style={{
-                        borderWidth: 1,
                         borderColor: tema.primary,
-                        padding: 10,
-                        margin: 5,
                         borderRadius: 15,
-                        marginBottom: 5,
-                        marginTop: 15,
-                        width: 185,
+                        marginBottom: 25,
+                        width: 210,
                     }}>
-                        <TouchableOpacity style={{ height: 200 }} onPress={() => { pressPoliza(cia) }}>
-                            <View style={{ alignItems: 'center', justifyContent: 'center', height: 100 }} >
-                                <Image
-                                    key={'images_' + cia.NIT}
-                                    style={{ width: "100%", height: "100%", borderRadius: 15, resizeMode: 'contain' }}
-                                    source={{ uri: api.url + '/perfilCia/' + cia.NIT + '_bar' }} />
+                        <TouchableOpacity style={{ height: 200, width: "100%" }} onPress={() => { pressPoliza(cia) }}>
+                            <View style={{ borderWidth: 1, justifyContent: "center", borderRadius: 10, backgroundColor: "rgba(34,68,119,0.5)" }}>
+                                <View style={{ alignItems: 'center', justifyContent: 'center', height: 100, padding: 5 }} >
+                                    <Image
+                                        key={'images_' + cia.NIT}
+                                        style={{ width: "100%", height: "100%", borderRadius: 15, resizeMode: 'contain' }}
+                                        source={{ uri: api.url + '/perfilCia/' + cia.NIT + '_bar' }} />
+                                </View>
+                                <View >
+                                    <Text style={{ color: tema.text, textAlign: "center" }}>{cia.NUMERO_POLIZA}</Text>
+                                    <Text style={{ color: tema.text, textAlign: "center" }}>Tasa: {cia.PORCENTAJE_TASA_REFERENCIAL} %</Text>
+                                    <Text style={{ color: tema.text, textAlign: "center", fontSize: 20 }}>Prima anual</Text>
+                                </View>
                             </View>
-                            <View style={{ margin: 1 }}>
-                                <Text style={{ color: tema.active }}>{cia.NUMERO_POLIZA}</Text>
-                                <Text style={{ color: tema.active }}>Tasa: {cia.PORCENTAJE_TASA_REFERENCIAL} %</Text>
-                                <Text style={{ color: tema.active, fontSize: 20 }}>Prima anual</Text>
-                            </View>
-                            <View style={{ alignItems: 'flex-end' }}>
+                            <View style={{ marginTop: 5 }}>
                                 <View style={{
                                     borderWidth: 1,
-                                    backgroundColor: (prima == max ? tema.danger : (prima == min ? tema.succes : tema.warning)),
-                                    width: 150, borderRadius: 10, alignItems: 'flex-end'
+                                    backgroundColor: (prima == max ? "rgba(153,0,0,0.5)" : (prima == min ? "rgba(0,102,51,0.5)" : "rgba(255,255,0,0.5)")),
+                                    width: 210, borderRadius: 10
                                 }}>
-                                    <Text style={{ fontSize: 20, color: '#000', fontWeight: 'bold' }}>{prima.toFixed(2)} $us</Text>
+                                    <Text style={{ textAlign: 'center', fontSize: 20, color: 'white', fontWeight: 'bold' }}>{prima.toFixed(2)} $us</Text>
                                 </View>
                             </View>
                         </TouchableOpacity>
@@ -160,177 +164,94 @@ const Cotizacion = ({ navigation }: any) => {
     };
 
     if (!state.usuario) {
-        return <><Text style={{ color: "black" }}>Cargando...</Text></>;
+        return <View style={{ position: "relative", width: "100%", height: "100%" }}>
+            <IconComponent nameIcon='fondo_load' ></IconComponent>
+            <View style={{ display: "flex", justifyContent: 'center', alignItems: 'center', height: "20%" }}>
+                <View style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ width: "80%", color: tema.primary, fontSize: 45, fontWeight: 'bold', textShadowColor: 'rgba(0, 0, 0, 0.75)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5, }}>Insurance<Text style={{ marginTop: 10, color: "black", fontSize: 45, fontWeight: 'bold' }}>Tech</Text> </Text>
+                </View>
+                <Text style={{ width: "80%", color: "black", fontSize: 45, fontWeight: 'bold', textShadowColor: 'rgba(0, 0, 0, 0.75)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5, }}>Bolivia</Text>
+            </View>
+            <View style={{ width: "100%", height: "30%", justifyContent: 'center', alignContent: "center", alignItems: "center" }}>
+                <Image style={{ width: 60, height: 60 }} source={require('../images/load.gif')} />
+            </View>
+        </View>;
     }
 
     return (
-        <View style={{ position:'relative', width: Dimensions.get("window").width, height: Dimensions.get('window').height ,padding:0,margin:0}}>
-            <SafeAreaView style={{ height: "100%"}}>
-                <View style={{ display: "flex", justifyContent: "space-between", flexDirection: "row", shadowColor: tema.danger, shadowOffset: { width: 2, height: 1 }, alignItems: "center", borderColor: tema.primary, borderWidth: 1 }}>
-                    <View style={{ display: "flex", flexDirection: "row", alignItems: 'center' }}>
-                        <View>
-                            <Image
-                                style={{ width: 50, height: 50, borderRadius: 10 }}
-                                source={{ uri: api.url + "/imagesAdmin/" + state.usuario.CI }}
-                            />
-                        </View>
-                        <View>
-                            <Text style={{ color: tema.primary }}>{state.usuario.USUARIO}</Text>
-                            <Text style={{ color: tema.primary }}>{(state.usuario.PRIMER_NOMBRE || "") + " " + (state.usuario.SEGUNDO_NOMBRE || "") + " " + (state.usuario.PRIMER_APELLIDO || "") + " " + (state.usuario.SEGUNDO_APELLIDO || "")}</Text>
+        <View style={{ position: 'relative', width: Dimensions.get("window").width, height: Dimensions.get('window').height, padding: 0, margin: 0, backgroundColor: "rgba(68,125,209,1)" }}>
+            <IconComponent nameIcon='fondo_form' ></IconComponent>
+            <SafeAreaView style={{ height: "100%" }}>
+                <View style={{ alignItems: 'center', height: "20%", width: "80", marginLeft: "20%" }}>
+                    <View style={{ width: "90%", margin: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <CurrencyInput
+                            style={styles.input}
+                            value={value}
+                            onChangeValue={setValue}
+                            delimiter=","
+                            separator="."
+                            precision={0}
+                            placeholder='Coloque el Valor Asegurado'
+                        />
+                        <View style={{ marginTop: 5, display: 'flex', flexDirection: 'row' }}>
+                            <Text style={{ color: tema.text, fontSize: 11 }}>Ingrese el valor comercial de su Vehículo en </Text>
+                            <Text style={{ color: tema.primary, fontSize: 11 }}>$us</Text>
                         </View>
                     </View>
                     <View>
-                        <TouchableOpacity onPress={toggleDrawer}>
-                            <Svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" >
-                                <G>
-                                    <Path id="Vector" d="M5 17H19M5 12H19M5 7H19" stroke="gray" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </G>
-                            </Svg>
-                        </TouchableOpacity>
-                    </View>
-
-    </View>
-                <View style={{ position: 'relative' }}>
-                   {isDrawerOpen && (
-                        <View style={styles.drawer}>
-                            <TouchableOpacity onPress={toggleDrawer}>
-                                <Text>Cerrar Barra Lateral</Text>
-                            </TouchableOpacity>
-                            
-                    <View style={{ display: 'flex' ,flexDirection: "row"}}>
-                        <View style={{
-                            width: 50,
-                            height: 50,
-                            display: 'flex',
-                            flexDirection: 'row'
-                        }}>
-                            <TouchableOpacity
-                                style={{
-                                    backgroundColor: tema.danger,
-                                    borderRadius: 5,
-                                    display: "flex",
-                                    width: 50,
-                                    height: 50,
-                                    marginRight: 5
-                                }}
-                                onPress={async () => {
-                                    await AsyncStorage.removeItem("usuario");
-                                    navigation_.replace("Splash");
-                                }}
-                            >
-                                <Text style={{ color: tema.active, textAlign: "center", padding: 5 }}>Salir</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={{
-                                    backgroundColor: tema.warning,
-                                    borderRadius: 5,
-                                    display: "flex",
-                                    width: 50,
-                                    height: 50,
-                                    marginRight: 5
-                                }}
-                                onPress={async () => {
-                                    navigation_.navigate("Productos");
-                                }}
-                            >
-                                <Text style={{ color: tema.active, textAlign: "center", padding: 5 }}>Certificados</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                style={{
-                                    borderRadius: 5,
-                                    display: "flex",
-                                    width: 50,
-                                    height: 50,
-                                    marginRight: 5,
-                                    justifyContent: 'center',
-                                    alignItems: 'center'
-                                }}
-                                onPress={() => {
-                                    navigation_.navigate("RecCamera")
-                                }}
-                            >
-                                <View style={{ width: 30, height: 30 }}>
-                                    <IconComponent nameIcon='Camara' colors={{ color: tema.primary }}></IconComponent>
-                                </View>
-                            </TouchableOpacity>
-
+                        <Text style={{ color: tema.opaque, fontSize: 11, textAlign: 'center' }}>Seleccione su forma de pago</Text>
+                        <View style={{ display: "flex", flexDirection: "row" }}>
+                            <Switch
+                                trackColor={{ false: '#767577', true: '#81b0ff' }}
+                                thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+                                ios_backgroundColor="#3e3e3e"
+                                onValueChange={toggleSwitch}
+                                value={isEnabled}
+                            />
+                            <View>
+                                <Text style={{ color: isEnabled ? tema.opaque : tema.text }}>Contado</Text>
+                                <Text style={{ color: !isEnabled ? tema.opaque : tema.text }}>Credito</Text>
+                            </View>
                         </View>
                     </View>
-                        </View>
-                    )}
+                </View>
+                <View style={{ alignItems: 'center', height: "60%", width: "80", marginLeft: "20%" }}>
+                    <Text style={{ textAlign: 'center', marginTop: 5, marginBottom: 5, color: tema.opaque, fontSize: 11 }}>Seleccione la póliza de su conveniencia</Text>
                     <ScrollView>
-                        <View style={{ alignItems: 'center' }}>
-                            <View style={{ height: 90, marginTop: 30, width: "90%", borderRadius: 15 }}>
-                                <Text key={"0"} style={{ fontSize: 30, color: tema.primary, textAlign: 'center', marginTop: 10 }} >Cotización de prima</Text>
-                            </View>
-                        </View>
-                        <View style={{ alignItems: 'center' }}>
-                            <View style={{ marginTop: 15, display: 'flex', flexDirection: 'row' }}>
-                                <Text style={{ color: tema.opaque, fontSize: 11 }}>Ingrese el valor comercial de su Vehículo en </Text>
-                                <Text style={{ color: tema.primary, fontSize: 11 }}>$us</Text>
-                            </View>
-
-                            <View style={{ margin: 15, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-
-                                <CurrencyInput
-                                    style={styles.input}
-                                    value={value}
-                                    onChangeValue={setValue}
-                                    delimiter=","
-                                    separator="."
-                                    precision={0}
-                                    placeholder='Coloque el Valor Asegurado'
-                                />
-                            </View>
-
-                        </View>
                         <View>
-                            <Text style={{ marginTop: 20, color: tema.opaque, fontSize: 11, textAlign: 'center' }}>Seleccione su forma de pago</Text>
-                        </View>
-                        <View style={{ marginTop: 5, flexDirection: 'row', justifyContent: 'space-evenly', }}>
-                            <TouchableOpacity
-                                onPress={changeContado}
-                                style={{
-                                    borderWidth: state.tipoPago == 1 ? 1 : 0,
-                                    borderColor: tema.primary,
-                                    padding: 10,
-                                    borderRadius: 10,
-                                    width: (Dimensions.get('window').width / 2) - 25
-                                }}>
-                                <View style={{ alignItems: 'center' }}>
-                                    <Image style={{ width: 60, height: 60 }} source={require('../images/cash.png')} />
-                                </View>
-                                <View>
-                                    <Text style={{ color: tema.active, textAlign: 'center' }}>Contado</Text>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={changeCredito}
-                                style={{
-                                    borderWidth: state.tipoPago == 2 ? 1 : 0,
-                                    borderColor: tema.primary,
-                                    padding: 10,
-                                    borderRadius: 10,
-                                    width: (Dimensions.get('window').width / 2) - 25
-                                }}>
-                                <View style={{ alignItems: 'center' }}>
-                                    <Image style={{ width: 60, height: 60 }} source={require('../images/credito.png')} />
-                                </View>
-                                <View>
-                                    <Text style={{ color: tema.active, textAlign: 'center' }}>Crédito</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                        <View>
-                            <Text style={{ textAlign: 'center', marginTop: 25, color: tema.opaque, fontSize: 11 }}>Seleccione la póliza de su conveniencia</Text>
                             {getCotizaciones()}
                         </View>
                     </ScrollView>
                 </View>
-                
+                <View style={{ width: "100%", height: "20%", backgroundColor: tema.background }}>
+                    <TouchableOpacity
+                        style={{
+                            backgroundColor: tema.danger,
+                            borderRadius: 5,
+                            display: "flex",
+                            width: "100%",
+                            height: 50,
+                            marginRight: 5
+                        }}
+                        onPress={async () => {
+                            await AsyncStorage.removeItem("usuario");
+                            navigation_.replace("Splash");
+                        }}
+                    >
+                        <Text style={{ color: tema.active, textAlign: "center", padding: 5 }}>Salir</Text>
+                    </TouchableOpacity>
+                    <Image
+                        style={{
+                            flex: 1,
+                            width: "100%",
+                            height: "100%",
+                            resizeMode: 'stretch'
+                        }}
+                        source={require('./../images/foot.png')}
+                    />
+                </View>
             </SafeAreaView>
-            <BarLeft titulo="HOLA MUNDO"></BarLeft>
+            <BarLeft titulo="Cotizacion de Prima en Linea"></BarLeft>
         </View>
     )
 };
@@ -339,7 +260,6 @@ const styles = StyleSheet.create({
     input: {
         height: 40,
         borderWidth: 1,
-        padding: 10,
         width: "100%",
         textAlign: 'center',
         borderRadius: 10,
