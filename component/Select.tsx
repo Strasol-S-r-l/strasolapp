@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Image, TextInput, FlatList } from 'react-native';
 import tema from '../enviroments/tema.json'
+import ItemSelect from './ItemSelect';
 
 const Select = (navigation:any) => {
     const [buscar, setBuscar] = React.useState("");
@@ -10,8 +11,9 @@ const Select = (navigation:any) => {
         
     }, []);
 
-    const renderItem = ({ item }) => (
-        <TouchableOpacity 
+    const renderItem = ({ item }:any) => (
+        <ItemSelect data={{item:item,navigation:navigation}}></ItemSelect>
+        /*<TouchableOpacity 
           key={item.key + Math.round} 
           style={styles.seleccionar}
           onPress={() => {
@@ -21,9 +23,8 @@ const Select = (navigation:any) => {
           <View style={{width:"90%"}}>
             <Text style={{color: tema.active}}>{item.value}</Text>        
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity>*/
     );
-
     const filteredAndSortedData = navigation.route.params.data
     .filter(a => a.value.toUpperCase().indexOf(buscar.toUpperCase()) > -1)
     .sort((a, b) => a.value > b.value ? 1 : -1);
@@ -44,7 +45,9 @@ const Select = (navigation:any) => {
                 <FlatList
                     data={filteredAndSortedData}
                     renderItem={renderItem}
-                    keyExtractor={item => item.key + Math.random()}
+                    keyExtractor={item => item.key +"_"+ Math.random}
+                    initialNumToRender={15} 
+                    maxToRenderPerBatch={15}
                     />
             </View>
             
