@@ -10,12 +10,12 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 const Documentos = (props: any) => {
     const [state, setState] = useState({});
-    const navegation = useNavigation();
+    const navigation = useNavigation();
     const route = useRoute();
 
     const action = (nav: String) => {
         let name = route.name;
-        navegation.navigate(nav);
+        navigation.navigate(nav);
     }
 
     useEffect(() => {
@@ -42,9 +42,14 @@ const Documentos = (props: any) => {
             }
 
             let obj = await uploadResponse.json();
-            console.log(obj)
             if (obj.estado == "error") {
                 console.log(obj.error)
+                setState({ ...state })
+                return;
+            }
+            if (!obj.data) {
+                state["estado"] = "error";
+                state["error"] = "No tiene documentos asignados";
                 setState({ ...state })
                 return;
             }
@@ -75,7 +80,7 @@ const Documentos = (props: any) => {
                             doc["url"] = "sadad";
                             if (!state["selected"]) state["selected"] = {};
                             state["selected"][doc.ID + ""] = { url: "hola" }
-                            navegation.navigate("CamaraDoc");
+                            navigation.navigate("CamaraDoc");
                             //await AsyncStorage.setItem("docSelected", JSON.stringify(state["selected"]));
                             //setState({ ...state })
                         }}
@@ -104,6 +109,13 @@ const navegar = (num:any) =>{
     if(state["documentos"]){
         return <ScrollView>
             {paintDocs()}
+        </ScrollView>
+    }
+    if(state["estado"] == "error"){
+        return <ScrollView>
+            <View>
+                <Text style={{color:tema.danger, textAlign:'center'}}>{state["error"]}</Text>
+            </View>
         </ScrollView>
     }
 

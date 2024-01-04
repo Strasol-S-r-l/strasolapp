@@ -45,10 +45,10 @@ const ReadText = (props:any) => {
         if(!state.texto) read();
     }, [props.photo, state.texto]); // Asegúrate de que las dependencias estén correctamente listadas aquí
 
-    useEventListener('onProgressChange', (p) => {
+    /*useEventListener('onProgressChange', (p) => {
         console.log(p.percent / 100)
         setState(prevState => ({ ...prevState, porc: p.percent }));
-    });
+    });*/
 
     const getText = () => {
         if(!state.texto) return (

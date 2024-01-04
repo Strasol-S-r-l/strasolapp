@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Image, Text, View, PermissionsAndroid, Platform, Dimensions, TouchableOpacity } from 'react-native';
 import tema from '../enviroments/tema.json'
@@ -13,7 +15,7 @@ const CamaraDoc = (navigation:any) => {
       { fps: 240 }
     ])
     const camera = useRef(null);
-    const [state, setState] = useState({});
+    const [state, setState] = useState({isActive:false});
 
     const takePhoto = async () => {
 
@@ -34,6 +36,13 @@ const CamaraDoc = (navigation:any) => {
           }
         }
     };
+
+    const espera = async ()=>{
+      await setTimeout(()=>{
+        state.isActive = true;
+        setState({...state})
+      }, 1000)
+    }
 
     const uploadPhoto = async () => {
 
@@ -115,7 +124,7 @@ const CamaraDoc = (navigation:any) => {
           } else {
             console.log("Permiso de cámara denegado");
           }
-
+          espera()
         } catch (err) {
           console.warn(err);
           setState({...state})
@@ -155,7 +164,7 @@ const CamaraDoc = (navigation:any) => {
                 ref={camera}
                 style={{ flex: 1 }}
                 device={device}
-                isActive={true}
+                isActive={state.isActive}
                 photo={true}
                 exposure={2}
                 format={format}
