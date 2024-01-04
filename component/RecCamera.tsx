@@ -15,7 +15,7 @@ const RecCamera = (navigation:any) => {
       { fps: 240 }
     ])
     const camera = useRef(null);
-    const [state, setState] = useState({});
+    const [state, setState] = useState({isActive:false});
 
     const takePhoto = async () => {
 
@@ -62,8 +62,8 @@ const RecCamera = (navigation:any) => {
         console.log(state.photo.path)
         ImagePicker.openCropper({
             path: "file://"+state.photo.path,
-            //width: 300,
-            //height: 400,
+            width: 300,
+            height: 400,
             freeStyleCropEnabled:true,
             cropperToolbarTitle:"Recorte el chasis",
             cropping:true
@@ -84,8 +84,12 @@ const RecCamera = (navigation:any) => {
     const setChasis= async(chasis:any)=>{
       //state.chasis=chasis;
       console.log(chasis)
-      console.log(navigation.route.params)
+      
       let auto = await AsyncStorage.getItem("automotor");
+      console.log(auto)
+      if(!auto){
+        auto = "{}";
+      }
       
       auto = JSON.parse(auto);
       auto["CHASIS"] = chasis;
@@ -112,17 +116,23 @@ const RecCamera = (navigation:any) => {
 
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             console.log("Tienes acceso a la cámara");
-            setState({...state});
+            
           } else {
             console.log("Permiso de cámara denegado");
           }
-
+          espera()
         } catch (err) {
           console.warn(err);
           setState({...state})
         }
     };
 
+    const espera = async ()=>{
+      await setTimeout(()=>{
+        state.isActive = true;
+        setState({...state})
+      }, 1000)
+    }
     
     if (device == null ) return <View>
         <Text style={{color:tema.active}}>No tienes camara</Text>
@@ -156,7 +166,7 @@ const RecCamera = (navigation:any) => {
                 ref={camera}
                 style={{ flex: 1 }}
                 device={device}
-                isActive={true}
+                isActive={state.isActive}
                 photo={true}
                 exposure={2}
                 format={format}

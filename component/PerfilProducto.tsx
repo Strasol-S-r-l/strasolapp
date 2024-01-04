@@ -276,7 +276,7 @@ const PerfilProducto = ({route, navigation}:any) => {
 
     const openWhatsAppChat = () => {
         let phoneNumber = '+591'+state.certificado.CLIENTE.CELULAR; // Número de teléfono al que deseas enviar el mensaje
-
+        console.log(phoneNumber)
         
         let message = "*Tu seguro fue emitido correctamente*";
         message += "\n\n";
@@ -333,11 +333,12 @@ const PerfilProducto = ({route, navigation}:any) => {
         phoneNumber = phoneNumber.replace(/[^0-9]/g, '');
     
         // Crea la URL para enviar el mensaje
-        let url = `whatsapp://send?text=${encodeURIComponent(message)}&phone=${phoneNumber}`;
+        let url = `whatsapp://send?text=${encodeURIComponent("message")}&phone=${phoneNumber}`;
     
         // Verifica si se pueden abrir URL
         Linking.canOpenURL(url)
         .then((supported) => {
+            console.log(supported);
             if (!supported) {
               console.log('No se puede abrir WhatsApp');
             } else {

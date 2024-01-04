@@ -90,8 +90,14 @@ const Emision = ({ navigation }: any) => {
                     id = obj?.data[0].ID;
                 }
 
+
                 state["dataClient"] = obj.data
                 navigation_.replace("PerfilProducto", { ID: id });
+                
+                await AsyncStorage.removeItem("poliza");
+                await AsyncStorage.removeItem("cliente");
+                await AsyncStorage.removeItem("automotor");
+
                 return;
             }).catch(e => {
                 state["error"] = state.error + "";
