@@ -1,15 +1,25 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Text, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Image, TouchableOpacity, TextInput, Dimensions } from 'react-native';
 import api from '../enviroments/api.json'
 import Load from './Load';
 import tema from '../enviroments/tema.json'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IconComponent from './assets/icons/IconComponent';
+import ModalCalendar from './ModalCalendar';
 
 var navigation_: any;
 const PerilCliente = (props: any) => {
     navigation_ = props.navigation;
     const [state, setState] = React.useState(props.state);
+    const [stateDataCliente, setStateData] = React.useState(props.state);
+    const [stateLoad, setStateLoad] = React.useState(false);
+    const [modalVisible, setModalVisible] = React.useState(false);
+    const openModal = () => {
+        setModalVisible(true);
+    }
+    const closeModal = () => {
+        setModalVisible(false);
+    }
 
     useEffect(() => {
         getStateDataClient();
@@ -28,15 +38,14 @@ const PerilCliente = (props: any) => {
             if (obj.estado === "error") {
                 return obj;
             }
-            state["dataClient"] = obj.data;
-
-            setState({ ...state });
+            setStateData({dataClient:obj.data});
         } catch (error) {
             return { estado: "error", error };
         }
     }
 
     const getCliente = async (key: string, valor: string) => {
+        setStateLoad(true);
         try {
             const response = await fetch(api.url + '/app',
                 {
@@ -51,103 +60,90 @@ const PerilCliente = (props: any) => {
                 }, 5000);
                 return obj;
             }
-            obj.data[key] = valor;
-            props.state["cliente"] = obj.data;
-
-            setState({ ...props });
-
+            if(!obj.data){
+                props.state["cliente"] = {};
+                props.state["cliente"].NIT_CI = valor;
+                AsyncStorage.setItem("cliente", JSON.stringify(props.state["cliente"]));
+                setState({...props});
+                props.onChangeCliente("NIT_CI", valor);
+            }else{
+                obj.data[key] = valor;
+                props.state["cliente"] = obj.data;
+                AsyncStorage.setItem("cliente", JSON.stringify(props.state["cliente"]));
+                setState({...props});
+                props.onChangeCliente("NIT_CI", valor);
+            }
+            setStateLoad(false);
         } catch (error) {
+            props.state["cliente"].NIT_CI = "";
+            setStateLoad(false);
             return { estado: "error", error };
         }
     }
-
+    const loadPage =()=>{
+        return <View style={{flex:1,height:Dimensions.get('window').height*0.4,justifyContent:'center',alignItems:'center',alignContent:'center',backgroundColor:"rgba(0,0,0,0.0)"}}>
+            <Load></Load>
+        </View>
+    }
     const selectTipoDoc = (data: any) => {
         props.onChangeCliente("TIPO_DOCUMENTO", data.key)
         props.state["cliente"]["TIPO_DOCUMENTO"] = data.value;
         AsyncStorage.setItem("cliente", JSON.stringify(props.state["cliente"]));
-        setState({ ...state });
+        setState({ ...props });
     };
     const selectExtencion = (data: any) => {
         props.onChangeCliente("LUGAR_EMISION_CI", data.key)
-        state["cliente"]["LUGAR_EMISION_CI"] = data.value;
-        AsyncStorage.setItem("cliente", JSON.stringify(state["cliente"]));
-        setState({ ...state });
+        props.state["cliente"]["LUGAR_EMISION_CI"] = data.value;
+        AsyncStorage.setItem("cliente", JSON.stringify(props.state["cliente"]));
+        setState({ ...props });
     };
     const selectGenero = (data: any) => {
         props.onChangeCliente("SEXO", data.key)
-        state["cliente"]["SEXO"] = data.value;
-        AsyncStorage.setItem("cliente", JSON.stringify(state["cliente"]));
-        setState({ ...state });
+        props.state["cliente"]["SEXO"] = data.value;
+        AsyncStorage.setItem("cliente", JSON.stringify(props.state["cliente"]));
+        setState({ ...props });
     };
     const selectECivil = (data: any) => {
         props.onChangeCliente("ESTADO_CIVIL", data.key)
-        state["cliente"]["ESTADO_CIVIL"] = data.value;
-        AsyncStorage.setItem("cliente", JSON.stringify(state["cliente"]));
-        setState({ ...state });
+        props.state["cliente"]["ESTADO_CIVIL"] = data.value;
+        AsyncStorage.setItem("cliente", JSON.stringify(props.state["cliente"]));
+        setState({ ...props });
     };
     const selectNacionalidad = (data: any) => {
         props.onChangeCliente("NACIONALIDAD", data.key)
-        state["cliente"]["NACIONALIDAD"] = data.value;
-        AsyncStorage.setItem("cliente", JSON.stringify(state["cliente"]));
-        setState({ ...state });
+        props.state["cliente"]["NACIONALIDAD"] = data.value;
+        AsyncStorage.setItem("cliente", JSON.stringify(props.state["cliente"]));
+        setState({ ...props });
     };
     const selectPaisResidencia = (data: any) => {
         props.onChangeCliente("PAIS_RESIDENCIA", data.key)
-        state["cliente"]["PAIS_RESIDENCIA"] = data.value;
-        AsyncStorage.setItem("cliente", JSON.stringify(state["cliente"]));
-        setState({ ...state });
+        props.state["cliente"]["PAIS_RESIDENCIA"] = data.value;
+        AsyncStorage.setItem("cliente", JSON.stringify(props.state["cliente"]));
+        setState({ ...props });
     };
 
     const selectCiudadResidencia = (data: any) => {
         props.onChangeCliente("CIUDAD", data.key)
-        state["cliente"]["CIUDAD"] = data.value;
-        AsyncStorage.setItem("cliente", JSON.stringify(state["cliente"]));
-        setState({ ...state });
+        props.state["cliente"]["CIUDAD"] = data.value;
+        AsyncStorage.setItem("cliente", JSON.stringify(props.state["cliente"]));
+        setState({ ...props });
     };
     const selectProfesion = (data: any) => {
         props.onChangeCliente("PROFESION", data.key)
-        state["cliente"]["PROFESION"] = data.value;
-        AsyncStorage.setItem("cliente", JSON.stringify(state["cliente"]));
-        setState({ ...state });
+        props.state["cliente"]["PROFESION"] = data.value;
+        AsyncStorage.setItem("cliente", JSON.stringify(props.state["cliente"]));
+        setState({ ...props });
     };
     const selectActividadEconomica = (data: any) => {
         props.onChangeCliente("ACTIVIDAD_ECONOMICA", data.key)
-        state["cliente"]["ACTIVIDAD_ECONOMICA"] = data.value;
-        AsyncStorage.setItem("cliente", JSON.stringify(state["cliente"]));
-        setState({ ...state });
+        props.state["cliente"]["ACTIVIDAD_ECONOMICA"] = data.value;
+        AsyncStorage.setItem("cliente", JSON.stringify(props.state["cliente"]));
+        setState({ ...props });
     };
 
     if (!state.cliente) state["cliente"] = {};
 
-    return  <View>
-        <View style={{ alignItems: 'center' }}>
-            <View style={{ position: "relative", width: "100%", height: 50,marginBottom:5 }}>
-                {state?.cliente?.TIPO_DOCUMENTO ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_tipo_doc" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_tipo_doc" ,color:tema.danger}}></IconComponent>}
-                <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
-                    <TouchableOpacity
-                        style={styles.input}
-                        onPress={() => {
-                            if (!state["dataClient"]) {
-                                getStateDataClient()
-                                return;
-                            }
-                            let tipoDocs: any = [];
-                            Object.values(state["dataClient"]["TIPO_DOCUMENTO_CLIENTE"]).map((tipo_doc) => {
-                                let obj = {
-                                    key: tipo_doc.ID + "",
-                                    value: tipo_doc.DESCRIPCION + ""
-                                }
-                                tipoDocs.push(obj);
-                            });
-
-                            navigation_.navigate("Select", { data: tipoDocs, func: selectTipoDoc });
-                        }}
-                    >
-                    {(props.state?.cliente?.TIPO_DOCUMENTO) ? <Text style={{ color: tema.text, fontSize: 11 }}>{(props.state?.cliente?.TIPO_DOCUMENTO)}</Text>: <Text style={{ color: tema.placeholder, fontSize: 11 }}>Tipo Documento</Text>}
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </View>
+    return  <View style={{flex:1}}>
         <View style={{ position: "relative", width: "100%", height: 50,marginBottom:5}}>
             {props?.state?.cliente?.NIT_CI ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_num_doc" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_num_doc" ,color:tema.danger}}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
@@ -163,19 +159,48 @@ const PerilCliente = (props: any) => {
                 />
             </View>
         </View>
+        {stateLoad ? loadPage():<View>
+        <View style={{  position: "relative", width: "100%", height: 50,marginBottom:5}}>
+            <View style={{ position: "relative", width: "100%", height: 50,marginBottom:5 }}>
+                {props.state?.cliente?.TIPO_DOCUMENTO ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_tipo_doc" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_tipo_doc" ,color:tema.danger}}></IconComponent>}
+                <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
+                    <TouchableOpacity
+                        style={styles.input}
+                        onPress={() => {
+                            if (!stateDataCliente?.dataClient) {
+                                //getStateDataClient()
+                                return;
+                            }
+                            let tipoDocs: any = [];
+                            Object.values(stateDataCliente["dataClient"]["TIPO_DOCUMENTO_CLIENTE"]).map((tipo_doc) => {
+                                let obj = {
+                                    key: tipo_doc.ID + "_tipo_documento",
+                                    value: tipo_doc.DESCRIPCION + ""
+                                }
+                                tipoDocs.push(obj);
+                            });
+
+                            navigation_.navigate("Select", { data: tipoDocs, func: selectTipoDoc });
+                        }}
+                    >
+                    {(props.state?.cliente?.TIPO_DOCUMENTO) ? <Text style={{ color: tema.text, fontSize: 11 }}>{(props.state?.cliente?.TIPO_DOCUMENTO)}</Text>: <Text style={{ color: tema.placeholder, fontSize: 11 }}>Tipo Documento</Text>}
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </View>
         <View style={{ position: "relative", width: "100%", height: 50 ,marginBottom:5}}>
-            {state?.cliente?.LUGAR_EMISION_CI ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_ext" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_ext" ,color:tema.danger}}></IconComponent>}
+            {props?.state?.cliente?.LUGAR_EMISION_CI ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_ext" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_ext" ,color:tema.danger}}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
                 <TouchableOpacity
                     style={styles.input}
                     onPress={() => {
-                        if (!state["dataClient"]) {
+                        if (!stateDataCliente?.dataClient) {
                             return;
                         }
                         let arr: any = [];
-                        Object.values(state["dataClient"]["REGIONALES"]).map((tipo_doc) => {
+                        Object.values(stateDataCliente?.dataClient["REGIONALES"]).map((tipo_doc) => {
                             let obj = {
-                                key: tipo_doc.ACRONIMO + "",
+                                key: tipo_doc.ID + "_emision_ci",
                                 value: tipo_doc.ACRONIMO + ""
                             }
                             arr.push(obj);
@@ -184,20 +209,33 @@ const PerilCliente = (props: any) => {
                         navigation_.navigate("Select", { data: arr, func: selectExtencion });
                     }}
                 >
-                    {(state?.cliente?.LUGAR_EMISION_CI) ? <Text style={{ color: tema.text, fontSize: 11 }}>{(state?.cliente?.LUGAR_EMISION_CI)}</Text>: <Text style={{ color: tema.placeholder, fontSize: 11 }}>Lugar Emision</Text>}
+                    {(props?.state?.cliente?.LUGAR_EMISION_CI) ? <Text style={{ color: tema.text, fontSize: 11 }}>{(props?.state?.cliente?.LUGAR_EMISION_CI)}</Text>: <Text style={{ color: tema.placeholder, fontSize: 11 }}>Lugar Emision</Text>}
                 </TouchableOpacity>
             </View>
         </View>
         <View style={{ position: "relative", width: "100%", height: 50 ,marginBottom:5 }}>
-            {props?.state?.cliente?.NOMBRE_COMPLETO ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_nombre" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_nombre" ,color:tema.danger}}></IconComponent>}
+            {props?.state?.cliente?.PRIMER_NOMBRE ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_nombre" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_nombre" ,color:tema.danger}}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
 
                 <TextInput
                     style={styles.input}
-                    onChangeText={text => { props.onChangeCliente("NOMBRE_COMPLETO", text) }}
-                    value={props?.state?.cliente?.NOMBRE_COMPLETO}
+                    onChangeText={text => { props.onChangeCliente("PRIMER_NOMBRE", text) }}
+                    value={props?.state?.cliente?.PRIMER_NOMBRE}
                     placeholderTextColor={tema.placeholder}
-                    placeholder='Nombres'
+                    placeholder='Primer Nombre'
+                />
+            </View>
+        </View>
+        <View style={{ position: "relative", width: "100%", height: 50 ,marginBottom:5 }}>
+            {props?.state?.cliente?.SEGUNDO_NOMBRE ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_nombre" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_nombre" ,color:tema.danger}}></IconComponent>}
+            <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
+
+                <TextInput
+                    style={styles.input}
+                    onChangeText={text => { props.onChangeCliente("SEGUNDO_NOMBRE", text) }}
+                    value={props?.state?.cliente?.SEGUNDO_NOMBRE}
+                    placeholderTextColor={tema.placeholder}
+                    placeholder='Segundo Nombre'
                 />
             </View>
         </View>
@@ -241,28 +279,29 @@ const PerilCliente = (props: any) => {
                 />
             </View>
         </View>
-        <View style={{ position: "relative", width: "100%", height: 50, marginBottom:5 }}>
+        <TouchableOpacity onPress={() => openModal()}>
+        <View style={{ position: "relative", width: "100%", height: 50, marginBottom:5 }} >
             {props?.state?.cliente?.FECHA_NACIMIENTO ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_fecha_nac" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_fecha_nac" ,color:tema.danger}}></IconComponent>}
-            <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
-
+            <View style={{ position: 'absolute', display:'flex',flexDirection:'row',alignItems:"center",top: '5%', left: '5%', width: '90%', height: '90%' }}>                
                 <TextInput
-                    style={styles.input}
+                    style={{...styles.input,backgroundColor:"red"}}
                     onChangeText={text => { props.onChangeCliente("FECHA_NACIMIENTO", text) }}
                     value={props?.state?.cliente?.FECHA_NACIMIENTO}
                     placeholderTextColor={tema.placeholder}
                     placeholder='Fecha de Nacimiento'
                 />
+                <IconComponent nameIcon='iconCalendar' colors={{color_1:tema.active}} ancho={24} alto={24}></IconComponent>
             </View>
-
         </View>
+        </TouchableOpacity>
         <View style={{ position: "relative", width: "100%", height: 50 ,marginBottom:5}}>
-            {state?.cliente?.SEXO ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_genero" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_genero" ,color:tema.danger}}></IconComponent>}
+            {props?.state?.cliente?.SEXO ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_genero" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_genero" ,color:tema.danger}}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
 
                 <TouchableOpacity
                     style={styles.input}
                     onPress={() => {
-                        if (!state["dataClient"]) {
+                        if (!stateDataCliente?.dataClient) {
                             return;
                         }
                         let arr: any = [];
@@ -274,23 +313,23 @@ const PerilCliente = (props: any) => {
                         navigation_.navigate("Select", { data: arr, func: selectGenero });
                     }}
                 >
-                    {state?.cliente?.SEXO ?<Text style={{ color: tema.text, fontSize: 11 }}>{state?.cliente?.SEXO}</Text>:<Text style={{ color: tema.placeholder, fontSize: 11 }}>Sexo</Text> }
+                    {props?.state?.cliente?.SEXO ?<Text style={{ color: tema.text, fontSize: 11 }}>{props?.state?.cliente?.SEXO}</Text>:<Text style={{ color: tema.placeholder, fontSize: 11 }}>Sexo</Text> }
                 </TouchableOpacity>
             </View>
         </View>
         <View style={{ position: "relative", width: "100%", height: 50, marginBottom:5 }}>
-            {state?.cliente?.ESTADO_CIVIL ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_estado_civil" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_estado_civil" ,color:tema.danger}}></IconComponent>}
+            {props?.state?.cliente?.ESTADO_CIVIL ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_estado_civil" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_estado_civil" ,color:tema.danger}}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
                 <TouchableOpacity
                     style={styles.input}
                     onPress={() => {
-                        if (!state["dataClient"]) {
+                        if (!stateDataCliente["dataClient"]) {
                             return;
                         }
                         let arr: any = [];
-                        Object.values(state["dataClient"]["ESTADO_CIVIL"]).map((oob) => {
+                        Object.values(stateDataCliente["dataClient"]["ESTADO_CIVIL"]).map((oob) => {
                             let obj = {
-                                key: oob.DESCRIPCION + "",
+                                key: oob.ID + "_estado_civil",
                                 value: oob.DESCRIPCION + ""
                             }
                             arr.push(obj);
@@ -299,7 +338,7 @@ const PerilCliente = (props: any) => {
                         navigation_.navigate("Select", { data: arr, func: selectECivil });
                     }}
                 >
-                    {state?.cliente?.ESTADO_CIVIL ?<Text style={{ color: tema.text, fontSize: 11 }}>{(state?.cliente?.ESTADO_CIVIL)}</Text>:<Text style={{ color: tema.placeholder, fontSize: 11 }}>Estado Civil</Text> }
+                    {props?.state?.cliente?.ESTADO_CIVIL ?<Text style={{ color: tema.text, fontSize: 11 }}>{(props?.state?.cliente?.ESTADO_CIVIL)}</Text>:<Text style={{ color: tema.placeholder, fontSize: 11 }}>Estado Civil</Text> }
                 </TouchableOpacity>
             </View>
         </View>
@@ -317,19 +356,19 @@ const PerilCliente = (props: any) => {
             </View>
         </View>
         <View style={{ position: "relative", width: "100%", height: 50 , marginBottom:5}}>
-            {state?.cliente?.NACIONALIDAD ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_nacionalidad" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_nacionalidad" ,color:tema.danger}}></IconComponent>}
+            {props?.state?.cliente?.NACIONALIDAD ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_nacionalidad" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_nacionalidad" ,color:tema.danger}}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
 
                 <TouchableOpacity
                     style={styles.input}
                     onPress={() => {
-                        if (!state["dataClient"]) {
+                        if (!stateDataCliente["dataClient"]) {
                             return;
                         }
                         let arr: any = [];
-                        Object.values(state["dataClient"]["NACIONALIDADES"]).map((oob) => {
+                        Object.values(stateDataCliente["dataClient"]["NACIONALIDADES"]).map((oob) => {
                             let obj = {
-                                key: oob.NACION + "",
+                                key: oob.ID + "_nacionalidad",
                                 value: oob.NACION + ""
                             }
                             arr.push(obj);
@@ -338,24 +377,24 @@ const PerilCliente = (props: any) => {
                         navigation_.navigate("Select", { data: arr, func: selectNacionalidad });
                     }}
                 >
-                    {state?.cliente?.NACIONALIDAD ?<Text style={{ color: tema.text, fontSize: 11 }}>{(state?.cliente?.NACIONALIDAD)}</Text>:<Text style={{ color: tema.placeholder, fontSize: 11 }}>Nacionalidad</Text> }
+                    {props?.state?.cliente?.NACIONALIDAD ?<Text style={{ color: tema.text, fontSize: 11 }}>{(props?.state?.cliente?.NACIONALIDAD)}</Text>:<Text style={{ color: tema.placeholder, fontSize: 11 }}>Nacionalidad</Text> }
                 </TouchableOpacity>
             </View>
         </View>
         <View style={{ position: "relative", width: "100%", height: 50,marginBottom:5 }}>
-            {state?.cliente?.PAIS_RESIDENCIA ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_pais" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_pais" ,color:tema.danger}}></IconComponent>}
+            {props?.state?.cliente?.PAIS_RESIDENCIA ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_pais" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_pais" ,color:tema.danger}}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
 
                 <TouchableOpacity
                     style={styles.input}
                     onPress={() => {
-                        if (!state["dataClient"]) {
+                        if (!stateDataCliente["dataClient"]) {
                             return;
                         }
                         let arr: any = [];
-                        Object.values(state["dataClient"]["NACIONALIDADES"]).map((oob) => {
+                        Object.values(stateDataCliente["dataClient"]["NACIONALIDADES"]).map((oob) => {
                             let obj = {
-                                key: oob.NOMBRE + "",
+                                key: oob.ID + "_pais_residencia",
                                 value: oob.NOMBRE + ""
                             }
                             arr.push(obj);
@@ -364,24 +403,24 @@ const PerilCliente = (props: any) => {
                         navigation_.navigate("Select", { data: arr, func: selectPaisResidencia });
                     }}
                 >
-                    {state?.cliente?.PAIS_RESIDENCIA ?<Text style={{ color: tema.text, fontSize: 11 }}>{(state?.cliente?.PAIS_RESIDENCIA)}</Text>:<Text style={{ color: tema.placeholder, fontSize: 11 }}>Pais Residencia</Text> }
+                    {props?.state?.cliente?.PAIS_RESIDENCIA ?<Text style={{ color: tema.text, fontSize: 11 }}>{(props?.state?.cliente?.PAIS_RESIDENCIA)}</Text>:<Text style={{ color: tema.placeholder, fontSize: 11 }}>Pais Residencia</Text> }
                 </TouchableOpacity>
             </View>
         </View>
         <View style={{ position: "relative", width: "100%", height: 50,marginBottom:5 }}>
-            {state?.cliente?.CIUDAD ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_ciudad" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_ciudad" ,color:tema.danger}}></IconComponent>}
+            {props?.state?.cliente?.CIUDAD ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_ciudad" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_ciudad" ,color:tema.danger}}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
 
                 <TouchableOpacity
                     style={styles.input}
                     onPress={() => {
-                        if (!state["dataClient"]) {
+                        if (!stateDataCliente["dataClient"]) {
                             return;
                         }
                         let arr: any = [];
-                        Object.values(state["dataClient"]["CIUDADES"]).map((oob) => {
+                        Object.values(stateDataCliente["dataClient"]["CIUDADES"]).map((oob) => {
                             let obj = {
-                                key: oob.DESCRIPCION + "",
+                                key: oob.ID + "_ciudad",
                                 value: oob.DESCRIPCION + ""
                             }
                             arr.push(obj);
@@ -390,7 +429,7 @@ const PerilCliente = (props: any) => {
                         navigation_.navigate("Select", { data: arr, func: selectCiudadResidencia });
                     }}
                 >
-                    {state?.cliente?.CIUDAD ?<Text style={{ color: tema.text, fontSize: 11 }}>{(state?.cliente?.CIUDAD)}</Text>:<Text style={{ color: tema.placeholder, fontSize: 11 }}>Ciudad</Text> }
+                    {props?.state?.cliente?.CIUDAD ?<Text style={{ color: tema.text, fontSize: 11 }}>{(props?.state?.cliente?.CIUDAD)}</Text>:<Text style={{ color: tema.placeholder, fontSize: 11 }}>Ciudad</Text> }
                 </TouchableOpacity>
             </View>
         </View>
@@ -408,18 +447,18 @@ const PerilCliente = (props: any) => {
             </View>
         </View>
         <View style={{ position: "relative", width: "100%", height: 50,marginBottom:5 }}>
-            {state?.cliente?.PROFESION ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_profecion" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_profecion" ,color:tema.danger}}></IconComponent>}
+            {props?.state?.cliente?.PROFESION ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_profecion" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_profecion" ,color:tema.danger}}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
                 <TouchableOpacity
                     style={styles.input}
                     onPress={() => {
-                        if (!state["dataClient"]) {
+                        if (!stateDataCliente["dataClient"]) {
                             return;
                         }
                         let arr: any = [];
-                        Object.values(state["dataClient"]["PROFESIONES"]).map((oob) => {
+                        Object.values(stateDataCliente["dataClient"]["PROFESIONES"]).map((oob) => {
                             let obj = {
-                                key: oob.DESCRIPCION + "",
+                                key: oob.ID + "_profesion",
                                 value: oob.DESCRIPCION + ""
                             }
                             arr.push(obj);
@@ -428,24 +467,24 @@ const PerilCliente = (props: any) => {
                         navigation_.navigate("Select", { data: arr, func: selectProfesion });
                     }}
                 >
-                   {state?.cliente?.PROFESION ?<Text style={{ color: tema.text, fontSize: 11 }}>{(state?.cliente?.PROFESION)}</Text>:<Text style={{ color: tema.placeholder, fontSize: 11 }}>Profesion</Text> }
+                   {props?.state?.cliente?.PROFESION ?<Text style={{ color: tema.text, fontSize: 11 }}>{(props?.state?.cliente?.PROFESION)}</Text>:<Text style={{ color: tema.placeholder, fontSize: 11 }}>Profesion</Text> }
                 </TouchableOpacity>
             </View>
         </View>
         <View style={{ position: "relative", width: "100%", height: 50 , marginBottom:5}}>
-            {state?.cliente?.ACTIVIDAD_ECONOMICA ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_ac_economica" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_ac_economica" ,color:tema.danger}}></IconComponent>}
+            {props?.state?.cliente?.ACTIVIDAD_ECONOMICA ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_ac_economica" ,color:tema.succes}}></IconComponent>:<IconComponent nameIcon='border_input' data={{ id: "sv_txt_ac_economica" ,color:tema.danger}}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
 
                 <TouchableOpacity
                     style={styles.input}
                     onPress={() => {
-                        if (!state["dataClient"]) {
+                        if (!stateDataCliente["dataClient"]) {
                             return;
                         }
                         let arr: any = [];
-                        Object.values(state["dataClient"]["ACTIVIDADES"]).map((oob) => {
+                        Object.values(stateDataCliente["dataClient"]["ACTIVIDADES"]).map((oob) => {
                             let obj = {
-                                key: oob.DESCRIPCION + "",
+                                key: oob.ID + "_actividad_economica",
                                 value: oob.DESCRIPCION + ""
                             }
                             arr.push(obj);
@@ -454,11 +493,14 @@ const PerilCliente = (props: any) => {
                         navigation_.navigate("Select", { data: arr, func: selectActividadEconomica });
                     }}
                 >
-                    {state?.cliente?.ACTIVIDAD_ECONOMICA ?<Text style={{ color: tema.text, fontSize: 11 }}>{(state?.cliente?.ACTIVIDAD_ECONOMICA)}</Text>:<Text style={{ color: tema.placeholder, fontSize: 11 }}>Actividad Economica</Text> }
+                    {props?.state?.cliente?.ACTIVIDAD_ECONOMICA ?<Text style={{ color: tema.text, fontSize: 11 }}>{(props?.state?.cliente?.ACTIVIDAD_ECONOMICA)}</Text>:<Text style={{ color: tema.placeholder, fontSize: 11 }}>Actividad Economica</Text> }
                 </TouchableOpacity>
             </View>
         </View>
+        </View>}
+        <ModalCalendar modalVisible={modalVisible} closeModal={closeModal} fecha={new Date()} id_modal={"date"}></ModalCalendar>
     </View>
+
 };
 
 const styles = StyleSheet.create({

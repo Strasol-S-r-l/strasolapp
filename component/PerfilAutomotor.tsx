@@ -266,11 +266,11 @@ const PerfilAutomotor = (props: any) => {
             </View>
         </View>
         <View style={{ position: "relative", height: 50, marginBottom: 10 }}>
-            {props?.state.vigencia_inicial ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_vigenc_inicial_auto", color: tema.danger }}></IconComponent> : <IconComponent nameIcon='border_input' data={{ id: "sv_txt_vigenc_inicial_auto", color: tema.danger }}></IconComponent>}
+            {props?.state?.vigencia_inicial ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_vigenc_inicial_auto", color: tema.danger }}></IconComponent> : <IconComponent nameIcon='border_input' data={{ id: "sv_txt_vigenc_inicial_auto", color: tema.danger }}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
                 <TextInput
                     style={styles.input}
-                    value={(props?.state.vigencia_inicial)}
+                    value={(props?.state?.vigencia_inicial)}
                     placeholder='Vigencia inicial'
                     placeholderTextColor={tema.placeholder}
                     editable={false}

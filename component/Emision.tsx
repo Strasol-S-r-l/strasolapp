@@ -44,7 +44,10 @@ const Emision = ({ navigation }: any) => {
             state["cliente"] = JSON.parse(cliente);
             let automotor = await AsyncStorage.getItem("automotor");
             state["automotor"] = JSON.parse(automotor);
-            state["automotor"]["vigencia_inicial"] = state.vigencia_inicial;
+            if(state["automotor"] ){
+                 state["automotor"]["vigencia_inicial"] = state.vigencia_inicial;
+            }
+           
             state["usuario"] = await AsyncStorage.getItem("usuario");
             state["usuario"] = JSON.parse(state["usuario"])
             setState({ ...state });
