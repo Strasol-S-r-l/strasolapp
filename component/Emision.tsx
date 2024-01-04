@@ -53,8 +53,61 @@ const Emision = ({ navigation }: any) => {
 
     }, []);
 
+    function uploadFiles(url, formData, onProgress) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+    
+            xhr.open('POST', url);
+    
+            xhr.onload = () => {
+                resolve(xhr.responseText);
+            };
+    
+            xhr.onerror = () => {
+                reject(new Error(xhr.statusText));
+            };
+    
+            xhr.upload.onprogress = (event) => {
+                if (event.lengthComputable) {
+                    const percentage = (event.loaded / event.total) * 100;
+                    onProgress(percentage);
+                }
+            };
+    
+            xhr.send(formData);
+        });
+    }
+    
+
     const emitir = async () => {
 
+        let documentos:any = await AsyncStorage.getItem("documentos");
+        if(documentos) documentos = JSON.parse(documentos)
+        else documentos = [];
+
+        const formData = new FormData();
+        formData.append('key', api.key);
+        formData.append('type', 'emitir');
+        formData.append('id_tomador', state.usuario.ID_CLIENTES);
+        formData.append('cliente', JSON.stringify(state.cliente)); // Asumiendo que es un objeto
+        formData.append('automotor', JSON.stringify(state.automotor)); // Asumiendo que es un objeto
+        formData.append('poliza', JSON.stringify(state.poliza)); // Asumiendo que es un objeto
+
+        documentos.forEach((documento, index) => {
+            const file = /* código para convertir URL en File o Blob */;
+            formData.append(`documento_${index}`, file);
+        });
+
+
+        // Agregar archivos y datos a formData
+        
+        uploadFiles('tu_url_de_subida', formData, (progress:any) => {
+            console.log(`Cargando: ${progress}%`);
+        }).then(response => {
+            console.log('Respuesta del servidor:', response);
+        }).catch(error => {
+            console.error('Error al subir:', error);
+        });
 
         fetch(api.url + '/app',
             {
@@ -94,6 +147,7 @@ const Emision = ({ navigation }: any) => {
                 await AsyncStorage.removeItem("poliza");
                 await AsyncStorage.removeItem("cliente");
                 await AsyncStorage.removeItem("automotor");
+                await AsyncStorage.removeItem("documentos");
 
                 return;
             }).catch(e => {

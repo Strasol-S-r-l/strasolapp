@@ -26,19 +26,46 @@ const CamaraDoc = (navigation:any) => {
               flash: 'off',
               enableShutterSound: false,
             });
-            console.log(photo.path)
-            state["photo"] = photo;
-
+            
+            croper(photo.path)
+            state.isActive = false;
             setState({...state})
-            // Haz algo con la foto
+           
           } catch (error) {
             console.error(error);
           }
         }
     };
 
+    const croper = async (path:any) =>{
+      ImagePicker.openCropper({
+        path: "file://"+path,
+        width: 300,
+        height: 300,
+        freeStyleCropEnabled:true,
+        cropperToolbarTitle:"Recorte el chasis",
+        cropping:true
+      }).then(async image => {
+
+        state["documentos"].map((doc:any)=>{
+          if(doc.ID == navigation.route.params.id){
+              doc["url"] = image.path;
+          }
+        })
+        
+        await AsyncStorage.setItem("documentos", JSON.stringify(state["documentos"]));
+        
+        navigation.navigation.replace("Emision")
+        
+      });
+    };
+
     const espera = async ()=>{
-      await setTimeout(()=>{
+
+      await setTimeout( async ()=>{  
+        let documentos = await AsyncStorage.getItem("documentos");
+        if(documentos) state["documentos"] = JSON.parse(documentos);
+        
         state.isActive = true;
         setState({...state})
       }, 1000)
@@ -53,32 +80,13 @@ const CamaraDoc = (navigation:any) => {
         freeStyleCropEnabled:true,
         cropping: true
       }).then(image => {
-        state["recorte"] = image;
+        
+        croper(image)
+        state.isActive = false;
         setState({...state})
       });
   };
     
-    
-    const cancelPhoto = async () => {
-        state.photo = false;
-        setState({...state});
-    };
-    
-    const recortarPhoto = async () => {
-        
-        console.log(state.photo.path)
-        ImagePicker.openCropper({
-            path: "file://"+state.photo.path,
-            //width: 300,
-            //height: 400,
-            freeStyleCropEnabled:true,
-            cropperToolbarTitle:"Recorte el chasis",
-            cropping:true
-          }).then(image => {
-            state["recorte"] = image;
-            setState({...state})
-          });
-    };
     
     useEffect(() => { 
         navigation.navigation.setOptions({headerShown:false});
@@ -88,24 +96,10 @@ const CamaraDoc = (navigation:any) => {
         
     }, []);
 
-    const setChasis= async(chasis:any)=>{
-      //state.chasis=chasis;
-      console.log(chasis)
-      console.log(navigation.route.params)
-      let auto = await AsyncStorage.getItem("automotor");
-      
-      auto = JSON.parse(auto);
-      auto["CHASIS"] = chasis;
-      
-      await AsyncStorage.setItem("automotor", JSON.stringify(auto));
-      
-      navigation.navigation.replace("Emision");
-      
-    }
 
     const requestCameraPermissionAndroid = async () => {
         try {
-          
+
           const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.CAMERA,
             {
@@ -116,11 +110,10 @@ const CamaraDoc = (navigation:any) => {
               buttonPositive: "Aceptar"
             }
           );
-          setState({...state});
 
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             console.log("Tienes acceso a la cámara");
-            setState({...state});
+            
           } else {
             console.log("Permiso de cámara denegado");
           }
@@ -131,32 +124,17 @@ const CamaraDoc = (navigation:any) => {
         }
     };
 
+    if(navigation.route.params.url){
+        return <>
+          <Text style={{color:tema.active}}>{navigation.route.params.url}</Text>
+        </>
+    }
     
     if (device == null ) return <View>
         <Text style={{color:tema.active}}>No tienes camara</Text>
     </View>
+    
 
-
-    if(state.recorte){
-      console.log(state.recorte)
-        return <View>
-            <Image source={{ uri: "file://"+state.recorte.path }} style={{ width: 400, height: 400 }} />
-            <ReadText  photo={state.recorte} setChasis={setChasis} tipo='chasis'/>
-        </View>
-    }
-
-    if(state.photo){
-        return <View style={{display:'flex', alignItems:'center'}}>
-            <Image source={{ uri: "file://"+state.photo.path }} style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }} />
-            
-            <View style={{position:'absolute', width:"100%"}}>
-                <View>
-                    <Button title="Cancelar" onPress={cancelPhoto} />
-                    <Button title="Recortar" onPress={recortarPhoto} />
-                </View>
-            </View>
-        </View>
-    }
 
     return (
         <View style={{ flex: 1 }}>
