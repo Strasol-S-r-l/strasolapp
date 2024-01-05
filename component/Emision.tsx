@@ -17,6 +17,7 @@ import BarLeft from './BarLeft';
 import PerfilAutomotor from './PerfilAutomotor';
 import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 import Documentos from './Documentos';
+import RNFS from 'react-native-fs';
 
 var navigation_: any;
 var aux_tipo = 1;
@@ -44,10 +45,7 @@ const Emision = ({ navigation }: any) => {
             state["cliente"] = JSON.parse(cliente);
             let automotor = await AsyncStorage.getItem("automotor");
             state["automotor"] = JSON.parse(automotor);
-            if(state["automotor"] ){
-                 state["automotor"]["vigencia_inicial"] = state.vigencia_inicial;
-            }
-           
+            state["automotor"]["vigencia_inicial"] = state.vigencia_inicial;
             state["usuario"] = await AsyncStorage.getItem("usuario");
             state["usuario"] = JSON.parse(state["usuario"])
             setState({ ...state });
@@ -56,61 +54,25 @@ const Emision = ({ navigation }: any) => {
 
     }, []);
 
-    function uploadFiles(url, formData, onProgress) {
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-    
-            xhr.open('POST', url);
-    
-            xhr.onload = () => {
-                resolve(xhr.responseText);
-            };
-    
-            xhr.onerror = () => {
-                reject(new Error(xhr.statusText));
-            };
-    
-            xhr.upload.onprogress = (event) => {
-                if (event.lengthComputable) {
-                    const percentage = (event.loaded / event.total) * 100;
-                    onProgress(percentage);
-                }
-            };
-    
-            xhr.send(formData);
-        });
-    }
-    
-
     const emitir = async () => {
 
-        let documentos:any = await AsyncStorage.getItem("documentos");
-        if(documentos) documentos = JSON.parse(documentos)
-        else documentos = [];
 
-        const formData = new FormData();
-        formData.append('key', api.key);
-        formData.append('type', 'emitir');
-        formData.append('id_tomador', state.usuario.ID_CLIENTES);
-        formData.append('cliente', JSON.stringify(state.cliente)); // Asumiendo que es un objeto
-        formData.append('automotor', JSON.stringify(state.automotor)); // Asumiendo que es un objeto
-        formData.append('poliza', JSON.stringify(state.poliza)); // Asumiendo que es un objeto
+        let documentos = await AsyncStorage.getItem("documentos");
+        if(documentos){
+            documentos = JSON.parse(documentos);
 
-        documentos.forEach((documento, index) => {
-            const file = /* código para convertir URL en File o Blob */;
-            formData.append(`documento_${index}`, file);
-        });
+            documentos = await Promise.all(
+                documentos.map(async (obj) => {
+                    if(obj.url){
+                        obj["image"] = await RNFS.readFile(obj.url, 'base64');
+                    }else {
+                        obj = null;
+                    }
+                    return obj;
+                })
+            );
+        } 
 
-
-        // Agregar archivos y datos a formData
-        
-        uploadFiles('tu_url_de_subida', formData, (progress:any) => {
-            console.log(`Cargando: ${progress}%`);
-        }).then(response => {
-            console.log('Respuesta del servidor:', response);
-        }).catch(error => {
-            console.error('Error al subir:', error);
-        });
 
         fetch(api.url + '/app',
             {
@@ -122,7 +84,8 @@ const Emision = ({ navigation }: any) => {
                     id_tomador: state.usuario.ID_CLIENTES,
                     cliente: state.cliente,
                     automotor: state.automotor,
-                    poliza: state.poliza
+                    poliza: state.poliza,
+                    documentos:documentos
                 }),
             }).then(async (response) => {
                 const obj = await response.json();

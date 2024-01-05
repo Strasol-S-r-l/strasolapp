@@ -81,7 +81,7 @@ const CamaraDoc = (navigation:any) => {
         cropping: true
       }).then(image => {
         
-        croper(image)
+        croper(image.path)
         state.isActive = false;
         setState({...state})
       });
