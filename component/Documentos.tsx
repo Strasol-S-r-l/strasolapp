@@ -18,49 +18,60 @@ const Documentos = (props: any) => {
         navigation.navigate(nav);
     }
 
+    const getDocumentos=async ()=>{
+        let send = {
+            key: api.key,
+            type: "getDocumentosAsignadosPoliza",
+            id_cabe: props.poliza.ID_CABE
+        };
+        const uploadResponse = await fetch(api.url + '/app', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', },
+            body: JSON.stringify(send), // FormData will be sent as multipart/form-data
+        });
+        if (!uploadResponse.ok) {
+            throw new Error(`Failed to upload image: ${uploadResponse.statusText}`);
+        }
+
+        let obj = await uploadResponse.json();
+        if (obj.estado == "error") {
+            console.log(obj.error)
+            setState({ ...state })
+            return;
+        }
+        if (!obj.data) {
+            state["estado"] = "error";
+            state["error"] = "No tiene documentos asignados";
+            setState({ ...state })
+            return;
+        }
+        await AsyncStorage.setItem("documentos", JSON.stringify(obj.data))
+        return obj.data;
+    }
+
     useEffect(() => {
 
         const init = async () => {
             //console.log(imageBlob)
 
-            let selected = await AsyncStorage.getItem("docSelected");
-            if (selected) selected = JSON.parse(selected);
-            state["selected"] = selected;
-
-            let send = {
-                key: api.key,
-                type: "getDocumentosAsignadosPoliza",
-                id_cabe: props.poliza.ID_CABE
-            };
-            const uploadResponse = await fetch(api.url + '/app', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', },
-                body: JSON.stringify(send), // FormData will be sent as multipart/form-data
-            });
-            if (!uploadResponse.ok) {
-                throw new Error(`Failed to upload image: ${uploadResponse.statusText}`);
+            let documentos = await AsyncStorage.getItem("documentos")
+            
+            if(!documentos){
+                documentos = await getDocumentos();
+            }else{
+                documentos = JSON.parse(documentos)
             }
-
-            let obj = await uploadResponse.json();
-            if (obj.estado == "error") {
-                console.log(obj.error)
-                setState({ ...state })
-                return;
-            }
-            if (!obj.data) {
-                state["estado"] = "error";
-                state["error"] = "No tiene documentos asignados";
-                setState({ ...state })
-                return;
-            }
-
-            state["documentos"] = obj.data;
+            
+            state["documentos"] = documentos;
             setState({ ...state })
         }
 
         init();
     }, []); // Asegúrate de que las dependencias estén correctamente listadas aquí
-
+    const getIcon=(doc:any)=>{
+        if(doc.url) return <Image source={{ uri: "file://"+doc.url }} style={{ width: 50, height: 50 }} /> 
+        return <IconComponent nameIcon="Camara" colors={{ color: tema.active }} ></IconComponent>
+    }
     const paintDocs = () => {
 
         return <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -79,18 +90,21 @@ const Documentos = (props: any) => {
                             console.log(doc.ID + " -> " + doc.DESCRIPCION)
                             doc["url"] = "sadad";
                             if (!state["selected"]) state["selected"] = {};
-                            state["selected"][doc.ID + ""] = { url: "hola" }
-                            navigation.navigate("CamaraDoc");
+                            
+                            state["selected"] = { id:doc.ID }
+                            navigation.navigate("CamaraDoc",state["selected"]);
                             //await AsyncStorage.setItem("docSelected", JSON.stringify(state["selected"]));
                             //setState({ ...state })
                         }}
                         style={{ backgroundColor:"white",justifyContent:"center",alignContent:"center",width: 120, height: 130, borderWidth: 1, borderColor: "yellow", borderRadius: 10, margin: 10, alignItems: 'center' }}>
                         <View style={{ height: 50, width: 50 }}>
-                            <IconComponent nameIcon="Camara" colors={{ color: color }} ></IconComponent>
+                            {getIcon(doc)}
+                            
                         </View>
                         <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 10,backgroundColor:"#40B05F",borderRadius:10,width:"90%" }}>
                             <Text style={{ color: tema.active, textAlign: 'center' }}>{doc.DESCRIPCION}</Text>
                         </View>
+                        
 
                     </TouchableOpacity>
                 })

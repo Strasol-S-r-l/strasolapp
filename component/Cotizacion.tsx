@@ -31,7 +31,10 @@ const Cotizacion = ({ navigation }: any) => {
     useEffect(() => {
         navigation_.setOptions({ headerShown: false });
 
+        //no borrar porque se fregan los documentos
+        
         const getUser = async () => {
+            await AsyncStorage.removeItem("documentos")
             const suser: any = await AsyncStorage.getItem("usuario");
             if (!suser || suser == null) {
                 navigation_.replace("Login");

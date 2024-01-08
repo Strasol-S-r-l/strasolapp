@@ -17,6 +17,7 @@ import BarLeft from './BarLeft';
 import PerfilAutomotor from './PerfilAutomotor';
 import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 import Documentos from './Documentos';
+import RNFS from 'react-native-fs';
 
 var navigation_: any;
 var aux_tipo = 1;
@@ -45,10 +46,7 @@ const Emision = ({ navigation }: any) => {
             state["cliente"] = JSON.parse(cliente);
             let automotor = await AsyncStorage.getItem("automotor");
             state["automotor"] = JSON.parse(automotor);
-            if (state["automotor"]) {
-                state["automotor"]["vigencia_inicial"] = state.vigencia_inicial;
-            }
-
+            state["automotor"]["vigencia_inicial"] = state.vigencia_inicial;
             state["usuario"] = await AsyncStorage.getItem("usuario");
             state["usuario"] = JSON.parse(state["usuario"])
             setState({ ...state });
@@ -58,6 +56,23 @@ const Emision = ({ navigation }: any) => {
     }, []);
 
     const emitir = async () => {
+
+
+        let documentos = await AsyncStorage.getItem("documentos");
+        if(documentos){
+            documentos = JSON.parse(documentos);
+
+            documentos = await Promise.all(
+                documentos.map(async (obj) => {
+                    if(obj.url){
+                        obj["image"] = await RNFS.readFile(obj.url, 'base64');
+                    }else {
+                        obj = null;
+                    }
+                    return obj;
+                })
+            );
+        } 
 
 
         fetch(api.url + '/app',
@@ -70,7 +85,8 @@ const Emision = ({ navigation }: any) => {
                     id_tomador: state.usuario.ID_CLIENTES,
                     cliente: state.cliente,
                     automotor: state.automotor,
-                    poliza: state.poliza
+                    poliza: state.poliza,
+                    documentos:documentos
                 }),
             }).then(async (response) => {
                 const obj = await response.json();
@@ -98,6 +114,7 @@ const Emision = ({ navigation }: any) => {
                 await AsyncStorage.removeItem("poliza");
                 await AsyncStorage.removeItem("cliente");
                 await AsyncStorage.removeItem("automotor");
+                await AsyncStorage.removeItem("documentos");
 
                 return;
             }).catch(e => {
