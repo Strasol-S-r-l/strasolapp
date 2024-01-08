@@ -7,11 +7,12 @@ import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 
 const ModalCalendar = (props: any) => {
     const [stateDate, setStateData] = React.useState(new Date());
-    const [stateDateInicial, setStateDataInicial] = React.useState(new Date());
+    const [stateDateInicial, setStateDataInicial] = React.useState(props.fecha_inicial);
     
     useEffect(() => {
+        setStateDataInicial(props.fecha_inicial);
         verificarFecha();
-    }, []);
+    }, [props.fecha_inicial]);
 
     const [modalVisibleMes, setModalVisibleMes] = React.useState(false);
     const openModalMes = useCallback(() => {
@@ -99,7 +100,6 @@ const ModalCalendar = (props: any) => {
         let container_item = [];
         let container = [];
         let count_days = 1;
-
         let year_inicial = stateDateInicial.getFullYear();
         let month_inicial = stateDateInicial.getMonth() - 1;
         let day_inicial = stateDateInicial.getDate();
@@ -276,7 +276,7 @@ const ModalCalendar = (props: any) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
                     <View>
-                        {paintCalendar()}
+                        {stateDateInicial? paintCalendar(): <></>}
                     </View>
                     <View>
                         <TouchableOpacity key={props.id_modal + '_md_close_btn'} onPress={props.closeModal} style={{ margin: 5, padding: 5, borderRadius: 5, height: 45, backgroundColor: tema.danger, justifyContent: 'center', shadowColor: 'black', shadowOffset: { width: 0, height: 2 }, shadowRadius: 5, shadowOpacity: 0.3 }}>
