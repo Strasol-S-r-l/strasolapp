@@ -44,14 +44,6 @@ const PerfilAutomotor = (props: any) => {
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
         setState({ ...props.state });
     };
-    const changeAutomotor = (key: string, value: string) => {
-        props.state["automotor"][key] = value;
-        AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
-        setState({ ...props.state });
-    };
-    const selectCameraChasis = (chasis: string) => {
-        changeAutomotor("CHASIS", chasis)
-    };
 
     return (<View style={{ flex: 1 }}>
 
@@ -122,7 +114,7 @@ const PerfilAutomotor = (props: any) => {
             {props?.state?.automotor?.PLACA ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_placa_auto", color: tema.succes }}></IconComponent> : <IconComponent nameIcon='border_input' data={{ id: "sv_txt_placa_auto", color: tema.danger }}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
                 <TextInput
-                    onChangeText={text => { changeAutomotor("PLACA", text) }}
+                    onChangeText={text => {props.changeAutomotor("PLACA", text) }}
                     style={styles.input}
                     value={(props?.state?.automotor?.PLACA)}
                     placeholderTextColor={tema.placeholder}
@@ -134,7 +126,7 @@ const PerfilAutomotor = (props: any) => {
             {props?.state?.automotor?.NUMERO_MOTOR ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_num_motor_auto", color: tema.succes }}></IconComponent> : <IconComponent nameIcon='border_input' data={{ id: "sv_txt_num_motor_auto", color: tema.danger }}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
                 <TextInput
-                    onChangeText={text => { changeAutomotor("NUMERO_MOTOR", text) }}
+                    onChangeText={text => {  props.changeAutomotor("NUMERO_MOTOR", text) }}
                     style={styles.input}
                     value={(props?.state?.automotor?.NUMERO_MOTOR)}
                     placeholderTextColor={tema.placeholder}
@@ -148,7 +140,7 @@ const PerfilAutomotor = (props: any) => {
 
                 <View style={{ display: "flex", flexDirection: "row" }}>
                     <TextInput
-                        onChangeText={text => { changeAutomotor("CHASIS", text) }}
+                        onChangeText={text => {  props.changeAutomotor("CHASIS", text) }}
                         style={{ ...styles.input, }}
                         value={(props?.state?.automotor?.CHASIS)}
                         placeholderTextColor={tema.placeholder}
@@ -156,7 +148,7 @@ const PerfilAutomotor = (props: any) => {
                     />
                     <TouchableOpacity
                         onPress={() => {
-                            navigation_.navigate("RecCamera", selectCameraChasis);
+                            navigation_.navigate("RecCamera", props.selectCameraChasis);
                         }}
                         style={{ width: 40, height: 40, padding: 5 }}>
                         <IconComponent nameIcon="Camara" colors={{ color: "#000" }} ></IconComponent>
@@ -169,7 +161,7 @@ const PerfilAutomotor = (props: any) => {
             {props?.state?.automotor?.COLOR ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_color_auto", color: tema.succes }}></IconComponent> : <IconComponent nameIcon='border_input' data={{ id: "sv_txt_calor_auto", color: tema.danger }}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
                 <TextInput
-                    onChangeText={text => { changeAutomotor("COLOR", text) }}
+                    onChangeText={text => {  props.changeAutomotor("COLOR", text) }}
                     style={styles.input}
                     value={(props?.state?.automotor?.COLOR)}
                     placeholderTextColor={tema.placeholder}
@@ -238,7 +230,7 @@ const PerfilAutomotor = (props: any) => {
             {props?.state?.automotor?.ZONA_CIRCULACION ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_zona_cir_auto", color: tema.succes }}></IconComponent> : <IconComponent nameIcon='border_input' data={{ id: "sv_txt_zona_cir_auto", color: tema.danger }}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
                 <TextInput
-                    onChangeText={text => { changeAutomotor("ZONA_CIRCULACION", text) }}
+                    onChangeText={text => {  props.changeAutomotor("ZONA_CIRCULACION", text) }}
                     style={styles.input}
                     value={(props?.state?.automotor?.ZONA_CIRCULACION)}
                     placeholderTextColor={tema.placeholder}
