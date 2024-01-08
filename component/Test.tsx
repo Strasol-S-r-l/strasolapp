@@ -42,15 +42,7 @@ const Test = ({navigation}:any) => {
     return (
         <View style={{position:'absolute', width:"100%",height:Dimensions.get('window').height}}>
             <SafeAreaView style={{height:"100%", backgroundColor:tema.background}}>
-                <ScrollView>
-                    <Text style={{
-                        fontSize:30, 
-                        color:tema.primary, 
-                        textAlign:'center', 
-                        marginTop:50
-                        }} >Bienvenido</Text>           
-                    <Logs navigation={navigation_}/>
-                </ScrollView>
+                <Logs navigation={navigation_}/>
             </SafeAreaView>
         </View>
     )

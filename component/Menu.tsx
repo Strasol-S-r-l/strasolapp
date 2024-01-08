@@ -6,12 +6,10 @@ import BarFooter from './BarFooter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const data = [
-    "Automotor",
-    "Usuarios",
-    "Ppl",
-    "Perfil",
-    "Videos",
-    "Siniestros"
+    {title:"Inicio", action:"Cotizacion"},
+    {title:"Mi perfil", action:"Perfil"},
+    {title:"Video tutoriales", action:"Videos"},
+    {title:"Comisiones", action:"Test"}
 ];
 
 const action=(algo:string)=>{
@@ -32,10 +30,10 @@ const paintButtons=()=>{
     return  data.map((algo:any, i:Int32)=>{
         return <TouchableOpacity
                 key={i} 
-                onPress={() => action(algo)}
-                style={{margin:5, padding:5, borderRadius:5, height:55, backgroundColor:'#0000FF33', borderColor:'#0000ffaa', borderWidth:1, justifyContent:'center' }}
+                onPress={() => action(algo.action)}
+                style={{margin:5, padding:5, borderRadius:5, height:55, backgroundColor:'#00000033', borderColor:'#000000', borderWidth:1, justifyContent:'center' }}
                 >
-            <Text style={{textAlign:"center", color:'#fff', textShadowColor:'#00f', textShadowRadius:2, textShadowOffset:{height:4, width:0}, fontWeight:'bold'}}>{algo}</Text>
+            <Text style={{textAlign:"center", color:'#fff', textShadowColor:'#000', textShadowRadius:2, textShadowOffset:{height:4, width:0}, fontWeight:'bold'}}>{algo.title}</Text>
         </TouchableOpacity>
     })
 };
@@ -55,20 +53,21 @@ const Menu = ({navigation}:any) => {
     return (
         <View style={{backgroundColor:'#000'}}>
             <ImageBackground
-                source={require('../images/fondo.gif')}
-                style={{height:'100%', width:'100%'}}>
+                source={require('../images/fondo_main.png')}
+                style={{height:'110%', width:'100%'}}>
                 <ScrollView>
                     <View style={{height:40}}></View>
-                    <TextNotifier obj={{text:'Bienvenido a la app de Universal Brokers, estamos para ayudarte en lo que necesites.'}} />
+                    
                     {paintButtons()}
                     <TouchableOpacity
                         onPress={() => salir()}
-                        style={{backgroundColor:'#000000', margin:5, padding:5, borderRadius:5 }}
+                        style={{backgroundColor:'#000000', margin:5, padding:10, borderRadius:5 }}
                         >
-                        <Text style={{textAlign:"center", color:"#F00"}}>Salir</Text>
+                        <Text style={{textAlign:"center", color:"#F00", fontSize:25, fontWeight:'bold'}}>Salir</Text>
                     </TouchableOpacity>
                 </ScrollView>
-                <BarFooter/>
+                {/*<BarFooter/>*/}
+                
             </ImageBackground>
         </View>
     )

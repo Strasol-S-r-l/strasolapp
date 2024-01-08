@@ -27,18 +27,17 @@ const Emision = ({ navigation }: any) => {
     const [tipoInfo, setTipoInfo] = React.useState(1);
 
 
-    const cambiarPagina = (tipo: Int32) => {
+    const cambiarPagina =(tipo:Int32)=>{
         aux_tipo = tipo;
         setTipoInfo(4);
-        setTimeout(sleepFunction, 1000);
+        setTimeout(sleepFunction,1000);
     }
-    const sleepFunction = () => {
+    const sleepFunction =()=>{
         setTipoInfo(aux_tipo);
     };
     useEffect(() => {
-        aux_tipo = 1;
         navigation_.setOptions({ headerShown: false });
-
+        
         const init = async () => {
             let poliza = await AsyncStorage.getItem("poliza");
             state["poliza"] = JSON.parse(poliza);
@@ -96,21 +95,21 @@ const Emision = ({ navigation }: any) => {
                     setState({ ...state });
                     return obj;
                 }
-
+                
                 state["emitiendo"] = false;
                 console.log(obj.data)
 
                 let id = 0;
-                if (obj?.data?.ID) {
+                if(obj?.data?.ID){
                     id = obj?.data?.ID;
-                } else {
+                }else{
                     id = obj?.data[0].ID;
                 }
 
 
                 state["dataClient"] = obj.data
                 navigation_.replace("PerfilProducto", { ID: id });
-
+                
                 await AsyncStorage.removeItem("poliza");
                 await AsyncStorage.removeItem("cliente");
                 await AsyncStorage.removeItem("automotor");
@@ -126,14 +125,6 @@ const Emision = ({ navigation }: any) => {
             });
 
         state["emitiendo"] = true;
-        setState({ ...state });
-    };
-    const limpiarDatos = () => {
-        state["automotor"] = {};
-        state["cliente"] = {};
-        AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
-        AsyncStorage.setItem("cliente", JSON.stringify(state["cliente"]));
-
         setState({ ...state });
     };
     const getEmitir = (porcentaje: any) => {
@@ -192,7 +183,7 @@ const Emision = ({ navigation }: any) => {
 
     const getSvg = () => {
 
-        let width = Dimensions.get('window').width * 0.8;
+        let width = Dimensions.get('window').width*0.8;
         let ini = 15;
         let medium = width / 2;
         let fin = width - 15;
@@ -200,42 +191,43 @@ const Emision = ({ navigation }: any) => {
 
         let porcentaje = getPorcentajeAvance();
         //let anchoBarrra = (ini + 30) + (anchoBarraPorcentaje * porcentaje) / 100;
-        let anchoBarrra = ((width * 0.9) * porcentaje) / 100;
+        let anchoBarrra = ((width*0.9)*porcentaje)/100;
 
+        let porcCli = getPorcentajeAvanceCliente();
+        let porcAuto = getPorcentajeAvanceAutomotor();
+        let porcDoc = getPorcentajeDocumentosRespaldo();
 
         return <View style={{ marginTop: 15 }}>
-            <TouchableOpacity onPress={()=>limpiarDatos()} style={{height:20, marginRight:"5%",marginLeft:"5%",width:"90%" ,backgroundColor:tema.primary,borderRadius:10}}>
-                <Text style={{textAlign:"center"}}>Borrar Datos</Text>
-            </TouchableOpacity>
-            <Svg width={width} height={Dimensions.get('window').height * 0.2}>
-
+           
+            <Svg width={width} height={ Dimensions.get('window').height*0.2}>
+            
                 <Line x1="5%" y1="15%" x2="90%" y2="15%" stroke={tema.primary + "55"} strokeWidth={6} />
                 <Line x1="5%" y1="15%" x2={anchoBarrra} y2="15%" stroke={tema.primary} strokeWidth={6} />
                 <SvgText fill={"white"} fontSize={12}><TSpan x={width - 60} y="10%">{porcentaje.toFixed(0)} %</TSpan></SvgText>
                 <SvgText fill={"white"} fontSize={12}><TSpan x="20%" y="25%">Complete sus datos para la emision</TSpan></SvgText>
 
-                <Line x1={ini} y1="45%" x2={fin} y2="45%" stroke={"white"} strokeWidth={2} />
-
+                <Line x1={ini} y1="45%" x2={fin} y2="45%" stroke={"white"} strokeWidth={2}/>
+                
                 <Circle cx={medium - 120} cy="45%" r="11" stroke={"white"} fill={tema.primary} id="svgCircle1" />
-                {aux_tipo == 1 ? <Circle cx={medium - 120} cy="45%" r="10" fill={"white"} id="svgCircle1" /> : <View></View>}
-                <SvgText fill={aux_tipo == 1 ? tema.active : tema.text} fontSize={12}><TSpan x={medium - 120 - 3} y="47.5%">1</TSpan></SvgText>
+                {aux_tipo == 1 ? <Circle cx={medium - 120} cy="45%" r="10" fill={"white"} id="svgCircle1"/> : <View></View>}
+                <SvgText  fill={aux_tipo == 1 ?  tema.active :tema.text} fontSize={12}><TSpan x={medium - 120 - 3} y="47.5%">1</TSpan></SvgText>
                 <SvgText fill={aux_tipo == 1 ? tema.text : tema.opaque} fontSize={12}><TSpan x={medium - 120 - 30} y="65%">Información</TSpan><TSpan x={medium - 120 - 20} y="75%">Personal</TSpan></SvgText>
 
-                <Circle cx={medium} cy="45%" r="11" stroke={"white"} fill={tema.primary} id="svgCircle1" />
+                <Circle cx={medium} cy="45%" r="11" stroke={"white"} fill={tema.primary} id="svgCircle1"  />
                 {aux_tipo == 2 ? <Circle cx={medium} cy="45%" r="10" fill={"white"} /> : <View></View>}
-                <SvgText fill={aux_tipo == 2 ? tema.active : tema.text} fontSize={12}><TSpan x={medium - 3} y="47.5%">2</TSpan></SvgText>
-                <SvgText fill={aux_tipo == 2 ? tema.text : tema.opaque} fontSize={12}><TSpan x={medium - 40} y="65%">Información del</TSpan><TSpan x={medium - 20} y="75%">Vehículo</TSpan></SvgText>
+                <SvgText fill={aux_tipo == 2 ?tema.active :tema.text} fontSize={12}><TSpan x={medium - 3} y="47.5%">2</TSpan></SvgText>
+                <SvgText fill={aux_tipo == 2 ?  tema.text : tema.opaque} fontSize={12}><TSpan x={medium - 40} y="65%">Información del</TSpan><TSpan x={medium - 20} y="75%">Vehículo</TSpan></SvgText>
 
 
-                <Circle cx={medium + 120} cy="45%" r="11" stroke={"white"} fill={tema.primary} />
+                <Circle cx={medium + 120} cy="45%" r="11"  stroke={"white"} fill={tema.primary} />
                 {aux_tipo == 3 ? <Circle cx={medium + 120} cy="45%" r="10" fill={"white"} /> : <View></View>}
                 <SvgText fill={aux_tipo == 3 ? tema.active : tema.text} fontSize={12}><TSpan x={medium + 120 - 3} y="47.5%">3</TSpan></SvgText>
-                <SvgText fill={aux_tipo == 3 ? tema.text : tema.opaque} fontSize={12}><TSpan x={medium + 120 - 35} y="65%">Documentos</TSpan><TSpan x={medium + 120 - 25} y="75%">Respaldo</TSpan></SvgText>
-
-                <Rect onPress={() => { cambiarPagina(1) }} x={0} y={0} width={width / 3} height={Dimensions.get('window').height * 0.2}></Rect>
-                <Rect onPress={() => { cambiarPagina(2) }} x={width / 3} y={0} width={width / 3} height={Dimensions.get('window').height * 0.2}></Rect>
-                <Rect onPress={() => { cambiarPagina(3) }} x={(width / 3) * 2} y={0} width={width / 3} height={Dimensions.get('window').height * 0.2}></Rect>
-
+                <SvgText fill={aux_tipo == 3 ?  tema.text  : tema.opaque} fontSize={12}><TSpan x={medium + 120 - 35} y="65%">Documentos</TSpan><TSpan x={medium + 120 - 25} y="75%">Respaldo</TSpan></SvgText>
+            
+                <Rect onPress={() => { cambiarPagina(1) }}  x={0} y={0} width={width/3}  height={Dimensions.get('window').height*0.2}></Rect>
+                <Rect onPress={() => { cambiarPagina(2) }} x={width/3} y={0} width={width/3}  height={Dimensions.get('window').height*0.2}></Rect>
+                <Rect onPress={() => { cambiarPagina(3) }} x={(width/3)*2} y={0} width={width/3} height={Dimensions.get('window').height*0.2}></Rect>
+                
             </Svg>
         </View>
     };
@@ -427,7 +419,7 @@ const Emision = ({ navigation }: any) => {
     };
     const getInfoAutomotor = () => {
         return <ScrollView style={{ marginTop: 15 }}>
-            <PerfilAutomotor navigation={navigation_} state={state} changeAutomotor={changeAutomotor} selectCameraChasis={selectCameraChasis} />
+            <PerfilAutomotor navigation={navigation_} state={state} />
         </ScrollView>
     }
     const getInfoVehiculo = () => {
@@ -445,7 +437,7 @@ const Emision = ({ navigation }: any) => {
 
         }
 
-        return <View style={{ marginTop: 15, backgroundColor: "red" }}>
+        return <View style={{ marginTop: 15 ,backgroundColor:"red"}}>
             <View>
                 <Text style={styles.subtitle}>Información del Vehículo</Text>
             </View>
@@ -527,7 +519,7 @@ const Emision = ({ navigation }: any) => {
                     />
                     <TouchableOpacity
                         onPress={() => {
-                            navigation_.navigate("RecCamera", selectCameraChasis);
+                            navigation_.navigate("RecCamera",  selectCameraChasis );
                         }}
                         style={{ width: 20, height: 20, marginLeft: 10 }}>
                         <IconComponent nameIcon="Camara" colors={{ color: "#000" }} ></IconComponent>
@@ -592,7 +584,7 @@ const Emision = ({ navigation }: any) => {
                         navigation_.navigate("Select", { data: aux, func: selectExtraterritorialidad });
                     }}
                 >
-                    <Text style={{ color: tema.active, fontSize: 11 }}>{(state?.automotor?.EXTRATERRITORIALIDAD)}</Text>
+                <Text style={{ color: tema.active, fontSize: 11 }}>{(state?.automotor?.EXTRATERRITORIALIDAD)}</Text>
                 </TouchableOpacity>
             </View>
 
@@ -648,9 +640,9 @@ const Emision = ({ navigation }: any) => {
             </View>
         }
 
-        return <View style={{ marginTop: 15, flex: 1 }}>
-            <View style={{ flex: 1 }}>
-                <Documentos poliza={state.poliza} />
+        return <View style={{ marginTop: 15, flex:1}}>
+            <View style={{flex:1}}>
+                <Documentos poliza={state.poliza} /> 
                 <Text style={styles.subtitle} onPress={() => { navigation_.navigate("Test") }}>Test</Text>
             </View>
         </View>
@@ -659,39 +651,39 @@ const Emision = ({ navigation }: any) => {
 
     return (
         <View style={{ position: 'absolute', width: "100%", height: Dimensions.get('window').height, backgroundColor: "rgba(68,125,209,1)" }}>
-            <SafeAreaView style={{ position: "relative", height: "100%" }}>
+            <SafeAreaView style={{position:"relative", height: "100%" }}>
                 <IconComponent nameIcon='fondo_form' ></IconComponent>
-                <View style={{ width: "80%", marginLeft: "20%", height: "20%" }}>
+                <View style={{width:"80%",marginLeft:"20%",height:"20%"}}>
                     {getSvg()}
                 </View>
-                <View style={{ width: "80%", marginLeft: "20%", height: "60%" }}>
-
-                    <View style={{ display: "flex" }}>
-                        <Text style={{ color: "white", textAlign: "center" }}>
-                            {
-                                aux_tipo == 1 ? "Informacion Personal" : (aux_tipo == 2 ? "Informacion del Vehiculo" : "Documentacion de respaldo")
-                            }
-                        </Text>
-                        <View style={{ backgroundColor: "gray", width: "100%", height: 2 }}></View>
-                    </View>
-                    <View style={{ flex: 1 }}>
+                <View style={{width:"80%",marginLeft:"20%",height:"60%"}}>
+                
+                    <View style={{display:"flex"}}>
+                        <Text style={{color:"white",textAlign:"center"}}>
                         {
-
-                            tipoInfo == 1 ? getInfoPersonal() : <></>
+                            aux_tipo == 1 ? "Informacion Personal" : (aux_tipo == 2 ? "Informacion del Vehiculo" : "Documentacion de respaldo")
+                        }
+                        </Text>
+                        <View style={{backgroundColor:"gray",width:"100%",height:2}}></View>
+                    </View>
+                    <View style={{flex:1}}>
+                        {
+                            
+                            tipoInfo == 1 ? getInfoPersonal() :<></>
                         }
                         {
-                            tipoInfo == 2 ? getInfoAutomotor() : <></>
+                            tipoInfo == 2 ? getInfoAutomotor() :<></>
                         }
                         {
                             tipoInfo == 3 ? getInfoRespaldo() : <></>
                         }
                         {
-                            tipoInfo == 4 ? <Load></Load> : <></>
+                            tipoInfo == 4 ? <Load></Load>: <></>
                         }
                     </View>
                     {getEmitir(getPorcentajeAvance())}
                 </View>
-                <View style={{ width: "100%", height: "20%" }}>
+                <View style={{ width: "100%", height: "20%"}}>
                     <Image
                         style={{
                             flex: 1,

@@ -229,19 +229,19 @@ const Cotizacion = ({ navigation }: any) => {
                 <View style={{ width: "100%", height: "20%", backgroundColor: tema.background }}>
                     <TouchableOpacity
                         style={{
-                            backgroundColor: tema.danger,
-                            borderRadius: 5,
+                            backgroundColor: tema.active+"aa",
                             display: "flex",
                             width: "100%",
                             height: 50,
-                            marginRight: 5
+                            marginRight: 5,
+                            justifyContent:'center'
                         }}
                         onPress={async () => {
-                            await AsyncStorage.removeItem("usuario");
-                            navigation_.replace("Splash");
+                            //await AsyncStorage.removeItem("usuario");
+                            navigation_.replace("Menu");
                         }}
                     >
-                        <Text style={{ color: tema.active, textAlign: "center", padding: 5 }}>Salir</Text>
+                        <Text style={{ color: "#fff", textAlign: "center", padding: 5, fontSize:20 }}>Menú</Text>
                     </TouchableOpacity>
                     <Image
                         style={{
