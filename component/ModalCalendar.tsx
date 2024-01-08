@@ -100,9 +100,17 @@ const ModalCalendar = (props: any) => {
         let container_item = [];
         let container = [];
         let count_days = 1;
-        let year_inicial = stateDateInicial.getFullYear();
-        let month_inicial = stateDateInicial.getMonth() - 1;
-        let day_inicial = stateDateInicial.getDate();
+        let year_inicial;
+        let month_inicial;
+        let day_inicial;
+        try {
+            year_inicial = stateDateInicial.getFullYear();
+            month_inicial = stateDateInicial.getMonth() - 1;
+            day_inicial = stateDateInicial.getDate();  
+        } catch (error) {
+            return<View></View>;
+        }
+        
         for (let index = 0; index < numberOfDays; index++) {
             if ((index % 7) == 0) {
                 container.push(<View key={"semana_" + index} style={{ width: "100%", display: "flex", flexDirection: "row" }}>{container_item}</View>);

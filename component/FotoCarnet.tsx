@@ -36,7 +36,7 @@ const FotoCarnet = () => {
                 </View>
             </View>
         </SafeAreaView>
-        <BarLeft titulo="Fotografias de Identidad"></BarLeft>
+        <BarLeft titulo={"Fotografias de Identidad"}/>
     </View>
     )
 

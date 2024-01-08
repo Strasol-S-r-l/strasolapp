@@ -703,7 +703,7 @@ const Emision = ({ navigation }: any) => {
                     />
                 </View>
             </SafeAreaView>
-            <BarLeft titulo="Datos Personales"></BarLeft>
+            <BarLeft back={true} titulo={"Datos Personales"}/>
         </View>
     )
 };

@@ -96,8 +96,8 @@ const RecCamera = (navigation:any) => {
       
       await AsyncStorage.setItem("automotor", JSON.stringify(auto));
       
-      navigation.navigation.replace("Emision");
-      
+      //navigation.navigation.replace("Emision");
+      navigation.navigation.goBack();
     }
 
     const requestCameraPermissionAndroid = async () => {
