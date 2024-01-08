@@ -94,8 +94,8 @@ const Perfil = ({navigation}:any) => {
     return (
         <View style={{height:Dimensions.get('screen').height}}>
              <ImageBackground 
-                source={require('../images/fondoBlanco.jpeg')}
-                style={{height:'100%', width:'100%'}}>
+                source={require('../images/fondo_main.png')}
+                style={{height:'110%', width:'100%'}}>
                 <ScrollView>
                     {pintarEjecutivoAtiende()}
                 </ScrollView>

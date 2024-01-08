@@ -36,10 +36,8 @@ function App(): JSX.Element {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Usuarios" component={Usuarios} />
         <Stack.Screen name="Companias" component={Companias} />
         <Stack.Screen name="Notificaciones" component={Notificaciones} />
-        <Stack.Screen name="Ppl" component={Ppl} />
         <Stack.Screen name="PerfilProducto" component={PerfilProducto} />
         <Stack.Screen name="Perfil" component={Perfil} />
         <Stack.Screen name="Videos" component={Videos} />

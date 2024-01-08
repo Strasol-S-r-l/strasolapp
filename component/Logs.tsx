@@ -1,14 +1,52 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, ImageBackground } from 'react-native';
 import Load from './Load';
 import api from '../enviroments/api.json'
 import tema from '../enviroments/tema.json'
+import AMCharts from 'react-native-amcharts';
 
 
 const Logs = (props:any) => {
 
+    const config = {
+        "type": "XYChart",
+        "data": [
+        ],
+        "xAxes": [
+          {
+            "type": "DateAxis",
+            "baseInterval": {
+              "timeUnit": "day",
+              "count": 1
+            }
+          }
+        ],
+        "yAxes": [
+          {
+            "type": "ValueAxis"
+          }
+        ],
+        "series": [
+          {
+            "type": "LineSeries",
+            "dataFields": {
+              "dateX": "fecha",
+              "valueY": "monto"
+            },
+            "tooltipText": "Monto: {valueY}"
+          }
+        ],
+        "cursor": {
+          "type": "XYCursor",
+          "behavior": "panX"
+        },
+        "scrollbarX": {
+          "type": "Scrollbar"
+        }
+      }
+      
     
-    const [state, setState] = React.useState(false);
+    const [state, setState] = React.useState({config});
 
     const INGRESO_AL_SISTEMA = 0;
     const INGRESO_FALLIDO_AL_SISTEMA = 1;
@@ -46,17 +84,36 @@ const Logs = (props:any) => {
         try {
 
           
-          const response = await fetch(api.url+'/app', 
-          {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json',},
-              body: JSON.stringify({key:api.key, type:'getLogs'}),
-          });
-          const obj = await response.json();
+            const response = await fetch(api.url+'/app', 
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json',},
+                body: JSON.stringify({key:api.key, type:'getLogs'}),
+            });
+            const obj = await response.json();
+            
+            if(obj.estado === "error"){
+                return obj;
+            }
+
           
-          if(obj.estado === "error"){
-              return obj;
-          }
+            let emisiones = [];
+          //obj.data.map((obj)=>{
+
+            emisiones.push({monto:10, fecha:'2023-10-01'});
+            emisiones.push({monto:15, fecha:'2023-10-02'});
+            emisiones.push({monto:20, fecha:'2023-10-03'});
+            emisiones.push({monto:30, fecha:'2023-10-04'});
+            emisiones.push({monto:30, fecha:'2023-10-05'});
+            emisiones.push({monto:40, fecha:'2023-10-06'});
+            emisiones.push({monto:40, fecha:'2023-10-07'});
+            emisiones.push({monto:45, fecha:'2023-10-08'});
+            emisiones.push({monto:50, fecha:'2023-10-09'});
+            emisiones.push({monto:55, fecha:'2023-10-10'});
+            
+          //});
+          
+            state.config["data"] = emisiones;
           
           
           setState({...state, logs:obj.data});
@@ -121,6 +178,13 @@ const Logs = (props:any) => {
                     <Text style={{color:tema.primary}}>Gltf</Text>
                 </TouchableOpacity>
             </View>
+            <ScrollView style={{marginLeft:5}}>
+                <AMCharts
+                    type="XYChart"
+                    config={state.config}
+                    style={{height: 400, width:Dimensions.get('window').width-10}}
+                />
+            </ScrollView>
             {
                 state?.logs.map((log:any, key:string)=>{
                     return <View key={key} style={{
@@ -128,7 +192,8 @@ const Logs = (props:any) => {
                         borderColor:tema.primary,
                         margin:10,
                         padding:10,
-                        borderRadius:10
+                        borderRadius:10,
+                        backgroundColor:'#ffffffdd'
                         }}>
                         <Text style={{color:tema.active}}>{log.USUARIO}</Text>
                         <Text style={{color:tema.active}}>{getTipoEvento(log.TIPO_EVENTO)}</Text>
@@ -145,8 +210,15 @@ const Logs = (props:any) => {
 
 
     return (
-        <View style={{width:"100%"}}>
-            {pintarLogs()}
+        <View style={{height:Dimensions.get('screen').height}}>
+             <ImageBackground 
+                source={require('../images/fondo_main.png')}
+                style={{height:'110%', width:'100%'}}>
+                <ScrollView>
+                    {pintarLogs()}
+                </ScrollView>
+            </ImageBackground>
+            
         </View>
     )
 };
