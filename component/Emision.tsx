@@ -45,10 +45,12 @@ const Emision = ({ navigation }: any) => {
             state["cliente"] = JSON.parse(cliente);
             let automotor = await AsyncStorage.getItem("automotor");
             state["automotor"] = JSON.parse(automotor);
-            state["automotor"]["vigencia_inicial"] = state.vigencia_inicial;
+            if(state["automotor"]){
+                state["automotor"]["vigencia_inicial"] = state.vigencia_inicial;
+            }
             state["usuario"] = await AsyncStorage.getItem("usuario");
             state["usuario"] = JSON.parse(state["usuario"])
-            state["documentos"] = await getDocumentos();
+            //state["documentos"] = await getDocumentos();
             setState({ ...state });
         };
         init();
@@ -132,9 +134,10 @@ const Emision = ({ navigation }: any) => {
     const getDocumentos=async ()=>{
 
         let documentos = await AsyncStorage.getItem("documentos")    
+        console.log(documentos)
         if(documentos){
             return JSON.parse(documentos)
-        } 
+        }
 
         let send = {
             key: api.key,
@@ -218,7 +221,13 @@ const Emision = ({ navigation }: any) => {
             <Text>Pendiente...</Text>
         </View>
     }
-
+    const limpiarFormulario=()=>{
+        state["cliente"] = {};
+        state["automotor"] = {};
+        AsyncStorage.removeItem("cliente");
+        AsyncStorage.removeItem("automotor");
+        setState({...state});
+    }
     const getSvg = () => {
 
         let width = Dimensions.get('window').width*0.8;
@@ -236,7 +245,9 @@ const Emision = ({ navigation }: any) => {
         let porcDoc = getPorcentajeDocumentosRespaldo();
 
         return <View style={{ marginTop: 15 }}>
-           
+            <TouchableOpacity style={{width:"90%",height:25,backgroundColor:tema.primary,justifyContent:'center',alignItems:"center", borderRadius:10}} onPress={limpiarFormulario}>
+                <Text style={styles.buttonText} >Limpiar Formulario</Text>
+            </TouchableOpacity>
             <Svg width={width} height={ Dimensions.get('window').height*0.2}>
             
                 <Line x1="5%" y1="15%" x2="90%" y2="15%" stroke={tema.primary + "55"} strokeWidth={6} />
@@ -463,13 +474,18 @@ const Emision = ({ navigation }: any) => {
         AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
         setState({ ...state });
     };
+    const selectMarcaModelo= (data: any) => {
+        state["automotor"] = { ...state["automotor"], data };
+        AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
+        setState({ ...state });
+    };
 
     const selectCameraChasis = (chasis: string) => {
         changeAutomotor("CHASIS", chasis)
     };
     const getInfoAutomotor = () => {
         return <ScrollView style={{ marginTop: 15 }}>
-            <PerfilAutomotor navigation={navigation_} state={state} />
+            <PerfilAutomotor navigation={navigation_} state={state} changeAutomotor={changeAutomotor} selectMarcaModelo={selectMarcaModelo}/>
         </ScrollView>
     }
     const getInfoVehiculo = () => {
@@ -716,18 +732,19 @@ const Emision = ({ navigation }: any) => {
                         <View style={{backgroundColor:"gray",width:"100%",height:2}}></View>
                     </View>
                     <View style={{flex:1}}>
+                        
                         {
-                            
-                            tipoInfo == 1 ? getInfoPersonal() :<></>
-                        }
-                        {
-                            tipoInfo == 2 ? getInfoAutomotor() :<></>
-                        }
-                        {
-                            tipoInfo == 3 ? getInfoRespaldo() : <></>
-                        }
-                        {
-                            tipoInfo == 4 ? <Load></Load>: <></>
+                            tipoInfo == 4 ? <Load></Load>: <>
+                            {
+                                aux_tipo == 1 ? getInfoPersonal() :<></>
+                            }
+                            {
+                                aux_tipo == 2 ? getInfoAutomotor() :<></>
+                            }
+                            {
+                                aux_tipo == 3 ? getInfoRespaldo() : <></>
+                            }
+                            </>
                         }
                     </View>
                     {getEmitir(getPorcentajeAvance())}

@@ -14,33 +14,38 @@ const PerfilAutomotor = (props: any) => {
         delete props.state?.selectMarca;
         delete props.state?.modelos;
         delete props.state?.automotor?.modelo;
+        console.log(marca)
         props.state["automotor"] = { ...props.state["automotor"], marca };
-        setState({ ...props.state });
+        props.selectMarcaModelo(marca);
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
     };
     const selectModelo = (modelo: any) => {
         delete props.state.selectModelo;
+        console.log(modelo)
         props.state["automotor"] = { ...props.state["automotor"], modelo };
-        setState({ ...props.state });
+        props.selectMarcaModelo(modelo);
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
     };
     const selectAno = (data: any) => {
-        props.state["automotor"] = { ...props.state["automotor"], ANO: data.value };
+        props.changeAutomotor("ANO", data.value);
+        //props.state["automotor"] = { ...props.state["automotor"], ANO: data.value };
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
         setState({ ...props.state });
     };
     const selectTraccion = (data: any) => {
-        props.state["automotor"] = { ...props.state["automotor"], TRACCION: data.value };
+        props.changeAutomotor("TRACCION", data.value);
+        //props.state["automotor"] = { ...props.state["automotor"], TRACCION: data.value };
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
         setState({ ...props.state });
     };
     const selectExtraterritorialidad = (data: any) => {
-        props.state["automotor"] = { ...props.state["automotor"], EXTRATERRITORIALIDAD: data.value };
+        props.changeAutomotor("EXTRATERRITORIALIDAD", data.value);
+        //props.state["automotor"] = { ...props.state["automotor"], EXTRATERRITORIALIDAD: data.value };
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
         setState({ ...props.state });
     };
     const selectEstado = (data: any) => {
-        props.state["automotor"] = { ...props.state["automotor"], ESTADO: data.value };
+        props.changeAutomotor("ESTADO", data.value);
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
         setState({ ...props.state });
     };
@@ -48,6 +53,9 @@ const PerfilAutomotor = (props: any) => {
     return (<View style={{ flex: 1 }}>
         <View>
             <Text style={{color:tema.text}}>Subrogatario</Text>
+            <View>
+                
+            </View>
         </View>
         <Marcas state={props.state} selectMarca={selectMarca} />
         <Modelos state={props.state} selectModelo={selectModelo} />
@@ -224,7 +232,7 @@ const PerfilAutomotor = (props: any) => {
                         navigation_.navigate("Select", { data: aux, func: selectExtraterritorialidad });
                     }}
                 >
-                    {props?.state?.automotor?.TRACCION ? <Text style={{ color: tema.text, fontSize: 11 }}>{(props?.state?.automotor?.EXTRATERRITORIALIDAD)}</Text> : <Text style={{ color: tema.placeholder, fontSize: 11 }}>Extraterritorialidad</Text>}
+                    {props?.state?.automotor?.EXTRATERRITORIALIDAD ? <Text style={{ color: tema.text, fontSize: 11 }}>{(props?.state?.automotor?.EXTRATERRITORIALIDAD)}</Text> : <Text style={{ color: tema.placeholder, fontSize: 11 }}>Extraterritorialidad</Text>}
                 </TouchableOpacity>
             </View>
         </View>
@@ -260,7 +268,7 @@ const PerfilAutomotor = (props: any) => {
             </View>
         </View>
         <View style={{ position: "relative", height: 50, marginBottom: 10 }}>
-            {props?.state?.vigencia_inicial ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_vigenc_inicial_auto", color: tema.danger }}></IconComponent> : <IconComponent nameIcon='border_input' data={{ id: "sv_txt_vigenc_inicial_auto", color: tema.danger }}></IconComponent>}
+            {props?.state?.vigencia_inicial ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_vigenc_inicial_auto", color: tema.succes }}></IconComponent> : <IconComponent nameIcon='border_input' data={{ id: "sv_txt_vigenc_inicial_auto", color: tema.danger }}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
                 <TextInput
                     style={styles.input}

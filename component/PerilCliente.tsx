@@ -43,6 +43,7 @@ const PerilCliente = (props: any) => {
             if (obj.estado === "error") {
                 return obj;
             }
+            
             setStateData({ dataClient: obj.data });
         } catch (error) {
             return { estado: "error", error };
@@ -91,7 +92,6 @@ const PerilCliente = (props: any) => {
         </View>
     }
     const getDateFormated = (date: String) => {
-        console.log(date + "hola fecha ");
         try {
             if (!date || date == null) {
                 return ""

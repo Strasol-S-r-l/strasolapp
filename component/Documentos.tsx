@@ -24,6 +24,7 @@ const Documentos = (props: any) => {
             //console.log(imageBlob)
 
             let documentos = await AsyncStorage.getItem("documentos")
+            console.log(documentos)
             
             if(documentos) documentos = JSON.parse(documentos)
             
