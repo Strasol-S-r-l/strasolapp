@@ -254,7 +254,7 @@ const Cotizacion = ({ navigation }: any) => {
                     />
                 </View>
             </SafeAreaView>
-            <BarLeft titulo="Cotizacion de Prima en Linea"></BarLeft>
+            <BarLeft titulo={"Cotizacion de Prima en Linea"} />
         </View>
     )
 };

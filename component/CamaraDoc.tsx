@@ -55,8 +55,8 @@ const CamaraDoc = (navigation:any) => {
         
         await AsyncStorage.setItem("documentos", JSON.stringify(state["documentos"]));
         
-        navigation.navigation.replace("Emision")
-        
+        //navigation.navigation.replace("Emision")
+        navigation.navigation.goBack();
       });
     };
 

@@ -44,7 +44,7 @@ const FotoVehivulo = () => {
                 </View>
             </View>
         </SafeAreaView>
-        <BarLeft titulo="Fotografias del Vehiculo"></BarLeft>
+        <BarLeft titulo={"Fotografias del Vehiculo"}/>
     </View>
     )
 
