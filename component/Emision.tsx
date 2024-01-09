@@ -48,6 +48,7 @@ const Emision = ({ navigation }: any) => {
             state["automotor"]["vigencia_inicial"] = state.vigencia_inicial;
             state["usuario"] = await AsyncStorage.getItem("usuario");
             state["usuario"] = JSON.parse(state["usuario"])
+            state["documentos"] = await getDocumentos();
             setState({ ...state });
         };
         init();
@@ -127,6 +128,43 @@ const Emision = ({ navigation }: any) => {
         state["emitiendo"] = true;
         setState({ ...state });
     };
+
+    const getDocumentos=async ()=>{
+
+        let documentos = await AsyncStorage.getItem("documentos")    
+        if(documentos){
+            return JSON.parse(documentos)
+        } 
+
+        let send = {
+            key: api.key,
+            type: "getDocumentosAsignadosPoliza",
+            id_cabe: props.poliza.ID_CABE
+        };
+        const uploadResponse = await fetch(api.url + '/app', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', },
+            body: JSON.stringify(send), // FormData will be sent as multipart/form-data
+        });
+        if (!uploadResponse.ok) {
+            throw new Error(`Failed to upload image: ${uploadResponse.statusText}`);
+        }
+
+        let obj = await uploadResponse.json();
+        if (obj.estado == "error") {
+            console.log(obj.error)
+            setState({ ...state })
+            return;
+        }
+        if (!obj.data) {
+            state["estado"] = "error";
+            state["error"] = "No tiene documentos asignados";
+            setState({ ...state })
+            return;
+        }
+        await AsyncStorage.setItem("documentos", JSON.stringify(obj.data))
+        return obj.data;
+    }
     const getEmitir = (porcentaje: any) => {
 
         if (state.error) {
@@ -329,8 +367,19 @@ const Emision = ({ navigation }: any) => {
     }
 
     const getPorcentajeDocumentosRespaldo = () => {
-        let avance = 1;
-        let total = 1;
+        var avance = 1;
+        var total = 1;
+        if(state.documentos){
+            total = state.documentos.length;
+            avance = 0;
+            state.documentos.map((doc)=>{
+                if(doc.url) avance++;
+            })
+            
+        }else{
+            avance=0;
+        }
+        console.log(avance)
 
         return avance * 100 / total;
     }
@@ -383,6 +432,7 @@ const Emision = ({ navigation }: any) => {
 
         }
         return <ScrollView style={{ marginTop: 15 }}>
+
             <PerilCliente navigation={navigation_} state={state} onChangeCliente={onChangeCliente} />
         </ScrollView>
     }
@@ -643,7 +693,6 @@ const Emision = ({ navigation }: any) => {
         return <View style={{ marginTop: 15, flex:1}}>
             <View style={{flex:1}}>
                 <Documentos poliza={state.poliza} /> 
-                <Text style={styles.subtitle} onPress={() => { navigation_.navigate("Test") }}>Test</Text>
             </View>
         </View>
     }

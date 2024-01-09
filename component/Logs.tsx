@@ -178,11 +178,11 @@ const Logs = (props:any) => {
                     <Text style={{color:tema.primary}}>Gltf</Text>
                 </TouchableOpacity>
             </View>
-            <ScrollView style={{marginLeft:5}}>
+            <ScrollView style={{marginLeft:10}}>
                 <AMCharts
                     type="XYChart"
                     config={state.config}
-                    style={{height: 400, width:Dimensions.get('window').width-10}}
+                    style={{height: 400, width:Dimensions.get('window').width-20,}}
                 />
             </ScrollView>
             {

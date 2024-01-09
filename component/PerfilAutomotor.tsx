@@ -46,7 +46,9 @@ const PerfilAutomotor = (props: any) => {
     };
 
     return (<View style={{ flex: 1 }}>
-
+        <View>
+            <Text style={{color:tema.text}}>Subrogatario</Text>
+        </View>
         <Marcas state={props.state} selectMarca={selectMarca} />
         <Modelos state={props.state} selectModelo={selectModelo} />
         <View style={{ position: "relative", height: 50, marginBottom: 10 }}>

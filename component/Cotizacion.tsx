@@ -238,7 +238,7 @@ const Cotizacion = ({ navigation }: any) => {
                         }}
                         onPress={async () => {
                             //await AsyncStorage.removeItem("usuario");
-                            navigation_.replace("Menu");
+                            navigation_.navigate("Menu");
                         }}
                     >
                         <Text style={{ color: "#fff", textAlign: "center", padding: 5, fontSize:20 }}>Menú</Text>

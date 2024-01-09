@@ -18,37 +18,6 @@ const Documentos = (props: any) => {
         navigation.navigate(nav);
     }
 
-    const getDocumentos=async ()=>{
-        let send = {
-            key: api.key,
-            type: "getDocumentosAsignadosPoliza",
-            id_cabe: props.poliza.ID_CABE
-        };
-        const uploadResponse = await fetch(api.url + '/app', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', },
-            body: JSON.stringify(send), // FormData will be sent as multipart/form-data
-        });
-        if (!uploadResponse.ok) {
-            throw new Error(`Failed to upload image: ${uploadResponse.statusText}`);
-        }
-
-        let obj = await uploadResponse.json();
-        if (obj.estado == "error") {
-            console.log(obj.error)
-            setState({ ...state })
-            return;
-        }
-        if (!obj.data) {
-            state["estado"] = "error";
-            state["error"] = "No tiene documentos asignados";
-            setState({ ...state })
-            return;
-        }
-        await AsyncStorage.setItem("documentos", JSON.stringify(obj.data))
-        return obj.data;
-    }
-
     useEffect(() => {
 
         const init = async () => {
@@ -56,11 +25,7 @@ const Documentos = (props: any) => {
 
             let documentos = await AsyncStorage.getItem("documentos")
             
-            if(!documentos){
-                documentos = await getDocumentos();
-            }else{
-                documentos = JSON.parse(documentos)
-            }
+            if(documentos) documentos = JSON.parse(documentos)
             
             state["documentos"] = documentos;
             setState({ ...state })
