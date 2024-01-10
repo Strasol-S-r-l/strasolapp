@@ -175,7 +175,7 @@ const PerfilAutomotor = (props: any) => {
                     style={styles.input}
                     value={(props?.state?.automotor?.COLOR)}
                     placeholderTextColor={tema.placeholder}
-                    placeholder='Pendiente...'
+                    placeholder='Color...'
                 />
             </View>
         </View>

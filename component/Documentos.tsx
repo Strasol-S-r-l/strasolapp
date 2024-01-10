@@ -8,7 +8,7 @@ import IconComponent from './assets/icons/IconComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-const Documentos = (props: any) => {
+const Documentos = () => {
     const [state, setState] = useState({});
     const navigation = useNavigation();
     const route = useRoute();
@@ -24,9 +24,10 @@ const Documentos = (props: any) => {
             //console.log(imageBlob)
 
             let documentos = await AsyncStorage.getItem("documentos")
-            console.log(documentos)
+            
             
             if(documentos) documentos = JSON.parse(documentos)
+            else documentos = [];
             
             state["documentos"] = documentos;
             setState({ ...state })

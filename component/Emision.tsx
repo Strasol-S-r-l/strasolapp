@@ -50,7 +50,7 @@ const Emision = ({ navigation }: any) => {
             }
             state["usuario"] = await AsyncStorage.getItem("usuario");
             state["usuario"] = JSON.parse(state["usuario"])
-            //state["documentos"] = await getDocumentos();
+            state["documentos"] = await getDocumentos();
             setState({ ...state });
         };
         init();
@@ -133,7 +133,7 @@ const Emision = ({ navigation }: any) => {
 
     const getDocumentos=async ()=>{
 
-        let documentos = await AsyncStorage.getItem("documentos")    
+        let documentos = await AsyncStorage.getItem("documentos");
         console.log(documentos)
         if(documentos){
             return JSON.parse(documentos)
@@ -142,7 +142,7 @@ const Emision = ({ navigation }: any) => {
         let send = {
             key: api.key,
             type: "getDocumentosAsignadosPoliza",
-            id_cabe: props.poliza.ID_CABE
+            id_cabe: state["poliza"].ID_CABE
         };
         const uploadResponse = await fetch(api.url + '/app', {
             method: 'POST',
@@ -165,6 +165,7 @@ const Emision = ({ navigation }: any) => {
             setState({ ...state })
             return;
         }
+        
         await AsyncStorage.setItem("documentos", JSON.stringify(obj.data))
         return obj.data;
     }
@@ -388,9 +389,9 @@ const Emision = ({ navigation }: any) => {
             })
             
         }else{
-            avance=0;
+            avance=1;
         }
-        console.log(avance)
+        //console.log(avance)
 
         return avance * 100 / total;
     }
@@ -708,7 +709,7 @@ const Emision = ({ navigation }: any) => {
 
         return <View style={{ marginTop: 15, flex:1}}>
             <View style={{flex:1}}>
-                <Documentos poliza={state.poliza} /> 
+                <Documentos  /> 
             </View>
         </View>
     }

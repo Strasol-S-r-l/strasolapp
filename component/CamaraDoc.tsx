@@ -43,7 +43,7 @@ const CamaraDoc = (navigation:any) => {
         width: 300,
         height: 300,
         freeStyleCropEnabled:true,
-        cropperToolbarTitle:"Recorte el chasis",
+        cropperToolbarTitle:"Recorte el documento",
         cropping:true
       }).then(async image => {
 
@@ -55,8 +55,8 @@ const CamaraDoc = (navigation:any) => {
         
         await AsyncStorage.setItem("documentos", JSON.stringify(state["documentos"]));
         
-        //navigation.navigation.replace("Emision")
-        navigation.navigation.goBack();
+        navigation.navigation.replace("Emision")
+        //navigation.navigation.goBack();
       });
     };
 

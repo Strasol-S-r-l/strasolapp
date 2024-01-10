@@ -34,7 +34,6 @@ const Cotizacion = ({ navigation }: any) => {
         //no borrar porque se fregan los documentos
         
         const getUser = async () => {
-            await AsyncStorage.removeItem("documentos")
             const suser: any = await AsyncStorage.getItem("usuario");
             if (!suser || suser == null) {
                 navigation_.replace("Login");
@@ -98,9 +97,10 @@ const Cotizacion = ({ navigation }: any) => {
     };
 
     const pressPoliza = async (poliza: any) => {
-        navigation_.navigate("Emision");
         poliza["valor_asegurado"] = value;
+        await AsyncStorage.removeItem("documentos");
         await AsyncStorage.setItem("poliza", JSON.stringify(poliza));
+        navigation_.navigate("Emision");
     };
 
 
