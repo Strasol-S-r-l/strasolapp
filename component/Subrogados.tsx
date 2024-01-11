@@ -41,7 +41,8 @@ const Subrogados = (props:any) => {
     } 
 
     const onChangeText=(ele:any)=>{
-        state.poliza.valor_asegurado = ele;
+        state.automotor.monto_subrogado = ele;
+        props.selectSubrogatarioMonto(ele)
         setState({...state})
     };
 
@@ -49,7 +50,7 @@ const Subrogados = (props:any) => {
             <View style={{alignItems:'center'}}>
                 <TextInput
                     style={styles.input}
-                    //onChangeText={onChangeText}
+                    onChangeText={props.selectSubrogatario}
                     value={""}
                     placeholder='Buscar subrogatario'
                     placeholderTextColor={tema.opaque}
@@ -63,7 +64,7 @@ const Subrogados = (props:any) => {
                         key={key}  
                         style={{
                             ...styles.card, 
-                            borderColor:((subrogado.ID == props.state?.automotor?.subrogatario.ID)?tema.primary:tema.opaque)
+                            borderColor:((subrogado.ID == props.state?.automotor?.subrogatario?.ID)?tema.primary:tema.opaque)
                         }}
                         >
 
@@ -84,7 +85,7 @@ const Subrogados = (props:any) => {
             <TextInput
                 style={{...styles.input, textAlign:'right'}}
                 onChangeText={onChangeText}
-                value={state.poliza.valor_asegurado+""}
+                value={state.automotor.monto_subrogado+""}
                 placeholder='Monto subrogado'
                 placeholderTextColor={tema.opaque}
                 />

@@ -27,6 +27,11 @@ const PerfilAutomotor = (props: any) => {
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
         console.log(subrogatario);
     };
+    const selectSubrogatarioMonto = (monto: any) => {
+        props.state["automotor"] = { ...props.state["automotor"], monto_subrogado:monto };
+        AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
+        
+    };
     const selectModelo = (modelo: any) => {
         delete props.state.selectModelo;
         console.log(modelo)
@@ -59,7 +64,7 @@ const PerfilAutomotor = (props: any) => {
     };
 
     return (<View style={{ flex: 1 }}>
-        <Subrogados state={props.state} selectSubrogatario={selectSubrogatario} />
+        <Subrogados state={props.state} selectSubrogatario={selectSubrogatario} selectSubrogatarioMonto={selectSubrogatarioMonto}/>
         <View style={{borderBottomWidth:1, borderBottomColor:tema.opaque, margin:10, alignItems:'center'}}>
             <Text style={{color:tema.text}}>Informacion del automotor</Text>
         </View>
