@@ -30,8 +30,8 @@ const Logs = (props:any) => {
           {
             "type": "LineSeries",
             "dataFields": {
-              "dateX": "fecha",
-              "valueY": "monto"
+              "dateX": "FECHA_REGISTRO_CERTIFICADO",
+              "valueY": "COMISION_ACUMULADA"
             },
             "tooltipText": "Monto: {valueY}"
           }
@@ -95,25 +95,16 @@ const Logs = (props:any) => {
             if(obj.estado === "error"){
                 return obj;
             }
-
-          
-            let emisiones = [];
-          //obj.data.map((obj)=>{
-
-            emisiones.push({monto:10, fecha:'2023-10-01'});
-            emisiones.push({monto:15, fecha:'2023-10-02'});
-            emisiones.push({monto:20, fecha:'2023-10-03'});
-            emisiones.push({monto:30, fecha:'2023-10-04'});
-            emisiones.push({monto:30, fecha:'2023-10-05'});
-            emisiones.push({monto:40, fecha:'2023-10-06'});
-            emisiones.push({monto:40, fecha:'2023-10-07'});
-            emisiones.push({monto:45, fecha:'2023-10-08'});
-            emisiones.push({monto:50, fecha:'2023-10-09'});
-            emisiones.push({monto:55, fecha:'2023-10-10'});
             
           //});
+          let monto = 0;
+          obj.data.sort((a:any,b:any)=>{return a.FECHA_REGISTRO_CERTIFICADO>b.FECHA_REGISTRO_CERTIFICADO?1:-1}).map(cert=>{
+            monto+=cert.COMISION;
+            cert["COMISION_ACUMULADA"] = monto;
+          })
           
-            state.config["data"] = emisiones;
+            state.config["data"] = obj.data;
+            console.log(obj.data)
           
           
           setState({...state, logs:obj.data});
@@ -156,6 +147,10 @@ const Logs = (props:any) => {
             default : return "Sin tipo de evento favor colocar";
         }
     };
+
+    const verCertificado=(id:any)=>{
+      props.navigation.navigate("PerfilProducto", { ID: id });
+    };
     
     const pintarLogs=()=>{
 
@@ -166,25 +161,16 @@ const Logs = (props:any) => {
         
 
 
-        return <View>
-            <View>
-                <Text style={{color:tema.primary}}>{state?.logs.length+" logs el dia de hoy."}</Text>
-            </View>
-            <View>
-                <TouchableOpacity 
-                onPress={()=>{
-                    props.navigation.replace("Animation");
-                }}>
-                    <Text style={{color:tema.primary}}>Gltf</Text>
-                </TouchableOpacity>
-            </View>
-            <ScrollView style={{marginLeft:10}}>
+        return <View >
+            
+            
+            <View style={{marginLeft:10}}>
                 <AMCharts
                     type="XYChart"
                     config={state.config}
                     style={{height: 400, width:Dimensions.get('window').width-20,}}
                 />
-            </ScrollView>
+            </View>
             {
                 state?.logs.map((log:any, key:string)=>{
                     return <View key={key} style={{
@@ -195,22 +181,31 @@ const Logs = (props:any) => {
                         borderRadius:10,
                         backgroundColor:'#ffffffdd'
                         }}>
-                        <Text style={{color:tema.active}}>{log.USUARIO}</Text>
-                        <Text style={{color:tema.active}}>{getTipoEvento(log.TIPO_EVENTO)}</Text>
-                        <Text style={{color:tema.active}}>{log.DESCRIPCION}</Text>
-                        <Text style={{color:tema.active}}>{log.JSON}</Text>
-                        <Text style={{color:tema.active, textAlign:"right"}}>{log.FECHA}</Text>
+                        <Text style={{color:tema.active}}>{log.NIT}</Text>
+                        <Text style={{color:tema.active}}>{log.RAZON_SOCIAL}</Text>
+                        <Text style={{color:tema.active}}>{"#Poliza: "+log.NUMERO_POLIZA}</Text>
+                        <TouchableOpacity onPress={()=>{
+                             verCertificado(log.ID)
+                        }}>
+                          <Text style={{color:tema.succes}}>{"#Certificado: "+log.NUMERO_CERTIFICADO}</Text>
+                        </TouchableOpacity>
+                        
+                        <Text style={{color:tema.active}}>{"Cliente: "+log.NOMBRE_COMPLETO}</Text>
+                        <Text style={{color:tema.active}}>{"Prima: "+log.PRIMA}</Text>
+                        <Text style={{color:tema.active}}>{"Comision: "+log.COMISION}</Text>
+                        
+                        <Text style={{color:tema.active, textAlign:"right"}}>{log.FECHA_REGISTRO_CERTIFICADO}</Text>
                     </View>
                 })
             }
-            
+            <View style={{height:100}}></View>
         </View>
         
     };
 
 
     return (
-        <View style={{height:Dimensions.get('screen').height}}>
+        <View style={{height:Dimensions.get('window').height}}>
              <ImageBackground 
                 source={require('../images/fondo_main.png')}
                 style={{height:'110%', width:'100%'}}>

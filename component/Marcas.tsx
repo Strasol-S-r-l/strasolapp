@@ -35,14 +35,14 @@ const Marcas = (props:any) => {
     
     if(!props.state.marcas){
         getMarcas();
-        return <View>
+        return <View style={{marginTop:15}}>
             <Text style={{textAlign:'center', ...styles.observacion}}>Seleccione la marca de su vehículo.</Text>
             <Load />
         </View>
     } 
 
     
-    return <View>
+    return <View >
             <View style={{alignItems:'center'}}>
                 <TextInput
                     style={styles.input}

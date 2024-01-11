@@ -8,35 +8,10 @@ import Logs from './Logs';
 var navigation_:any;
 const Test = ({navigation}:any) => {
     navigation_ = navigation;
-    const [state, setState] = React.useState();
     
 
     useEffect(() => { 
         navigation_.setOptions({headerShown:false});
-         
-        const fetchData = async () => {
-          try {
-
-            
-            const response = await fetch(api.url+'/app', 
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json',},
-                body: JSON.stringify({key:api.key, type:'getProductosVenta'}),
-            });
-            const obj = await response.json();
-            
-            if(obj.estado === "error"){
-                return obj;
-            }
-            state["polizas"] = obj.data;
-            
-            setState({...state});
-          } catch (error) {
-            return {estado:"error", error};
-          }
-        }
-        //fetchData();
     }, []);
 
     return (

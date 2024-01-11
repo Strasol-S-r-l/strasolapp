@@ -47,6 +47,10 @@ const Emision = ({ navigation }: any) => {
             state["automotor"] = JSON.parse(automotor);
             if(state["automotor"]){
                 state["automotor"]["vigencia_inicial"] = state.vigencia_inicial;
+                state["automotor"]["monto_subrogado"] = state["poliza"].valor_asegurado;
+                
+            }else{
+                state["automotor"] = {vigencia_inicial:state.vigencia_inicial, monto_subrogado: state["poliza"].valor_asegurado};
             }
             state["usuario"] = await AsyncStorage.getItem("usuario");
             state["usuario"] = JSON.parse(state["usuario"])
@@ -224,7 +228,7 @@ const Emision = ({ navigation }: any) => {
     }
     const limpiarFormulario=()=>{
         state["cliente"] = {};
-        state["automotor"] = {};
+        state["automotor"] = {monto_subrogado:state["poliza"].valor_asegurado};
         AsyncStorage.removeItem("cliente");
         AsyncStorage.removeItem("automotor");
         setState({...state});
@@ -727,7 +731,7 @@ const Emision = ({ navigation }: any) => {
                     <View style={{display:"flex"}}>
                         <Text style={{color:"white",textAlign:"center"}}>
                         {
-                            aux_tipo == 1 ? "Informacion Personal" : (aux_tipo == 2 ? "Informacion del Vehiculo" : "Documentacion de respaldo")
+                            aux_tipo == 1 ? "Informacion Personal" : (aux_tipo == 2 ? "Informacion operacion" : "Documentacion de respaldo")
                         }
                         </Text>
                         <View style={{backgroundColor:"gray",width:"100%",height:2}}></View>
