@@ -5,6 +5,7 @@ import Marcas from './Marcas';
 import Modelos from './Modelos';
 import tema from '../enviroments/tema.json'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Subrogados from './Subrogados';
 
 var navigation_: any;
 const PerfilAutomotor = (props: any) => {
@@ -16,8 +17,15 @@ const PerfilAutomotor = (props: any) => {
         delete props.state?.automotor?.modelo;
         console.log(marca)
         props.state["automotor"] = { ...props.state["automotor"], marca };
+        props.state["automotor"]["vigencia_inicial"] = props?.state?.vigencia_inicial;
         props.selectMarcaModelo(marca);
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
+    };
+    
+    const selectSubrogatario = (subrogatario: any) => {
+        props.state["automotor"] = { ...props.state["automotor"], subrogatario };
+        AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
+        console.log(subrogatario);
     };
     const selectModelo = (modelo: any) => {
         delete props.state.selectModelo;
@@ -51,11 +59,9 @@ const PerfilAutomotor = (props: any) => {
     };
 
     return (<View style={{ flex: 1 }}>
-        <View>
-            <Text style={{color:tema.text}}>Subrogatario</Text>
-            <View>
-                
-            </View>
+        <Subrogados state={props.state} selectSubrogatario={selectSubrogatario} />
+        <View style={{borderBottomWidth:1, borderBottomColor:tema.opaque, margin:10, alignItems:'center'}}>
+            <Text style={{color:tema.text}}>Informacion del automotor</Text>
         </View>
         <Marcas state={props.state} selectMarca={selectMarca} />
         <Modelos state={props.state} selectModelo={selectModelo} />

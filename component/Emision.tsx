@@ -727,7 +727,7 @@ const Emision = ({ navigation }: any) => {
                     <View style={{display:"flex"}}>
                         <Text style={{color:"white",textAlign:"center"}}>
                         {
-                            aux_tipo == 1 ? "Informacion Personal" : (aux_tipo == 2 ? "Informacion del Vehiculo" : "Documentacion de respaldo")
+                            aux_tipo == 1 ? "Informacion Personal" : (aux_tipo == 2 ? "Informacion operacion" : "Documentacion de respaldo")
                         }
                         </Text>
                         <View style={{backgroundColor:"gray",width:"100%",height:2}}></View>

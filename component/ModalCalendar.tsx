@@ -180,7 +180,8 @@ const ModalCalendar = (props: any) => {
     const selectDayCalendar = (dia: Int32) => {
         let select_date = new Date(stateDate.getFullYear(), stateDate.getMonth(), dia);
         setStateDataInicial(select_date);
-        props.onChangeDate("FECHA_NACIMIENTO", select_date.toString());
+        let json = {fecha:select_date};
+        props.onChangeDate("FECHA_NACIMIENTO", json.fecha);
         props.closeModal();
     }
     const ModalMes = () => {
