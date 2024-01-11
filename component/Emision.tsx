@@ -239,7 +239,7 @@ const Emision = ({ navigation }: any) => {
 
         let porcentaje = getPorcentajeAvance();
         //let anchoBarrra = (ini + 30) + (anchoBarraPorcentaje * porcentaje) / 100;
-        let anchoBarrra = ((width*0.9)*porcentaje)/100;
+        let anchoBarrra = (width*0.05)+((width*0.5)*porcentaje)/100;
 
         let porcCli = getPorcentajeAvanceCliente();
         let porcAuto = getPorcentajeAvanceAutomotor();
