@@ -24,6 +24,7 @@ import RecCamera from './component/RecCamera';
 import FotoCarnet from './component/FotoCarnet';
 import FotoVehiculo from './component/RecCamera';
 import CamaraDoc from './component/CamaraDoc';
+import CambiarContrasena from './component/CambiarContrasena';
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +54,7 @@ function App(): JSX.Element {
         <Stack.Screen name="CamaraDoc" component={CamaraDoc} />
         <Stack.Screen name="FotoVehiculo" component={FotoVehiculo} />
         <Stack.Screen name="FotoCarnet" component={FotoCarnet} />
+        <Stack.Screen name="CambiarContrasena" component={CambiarContrasena} />
       </Stack.Navigator>
     </NavigationContainer>
   );

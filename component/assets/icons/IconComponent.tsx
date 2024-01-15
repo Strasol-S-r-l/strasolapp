@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Dimensions, ImageBackground, StyleSheet, Image } from 'react-native';
 import Svg, { G, Path, Defs, LinearGradient, Stop, Rect, Circle, Text, Ellipse } from 'react-native-svg';
 import tema from '../../../enviroments/tema.json';
-const IconComponent = ({ nameIcon, alto, ancho, colors ,data}: any) => {
+const IconComponent = ({ nameIcon, alto, ancho, colors, data }: any) => {
     const screenWidth = Dimensions.get('window').width;
     const screenHeight = Dimensions.get('window').height;
 
@@ -34,6 +34,7 @@ const IconComponent = ({ nameIcon, alto, ancho, colors ,data}: any) => {
             case "fondo_load": return fondo_load();
             case "arrowLeft": return arrowLeft();
             case "arrowRight": return arrowRight();
+            case "warningIcon": return warningIcon();
         }
 
     }
@@ -281,19 +282,33 @@ const IconComponent = ({ nameIcon, alto, ancho, colors ,data}: any) => {
         return <Svg width={ancho} height={alto} viewBox="0 0 24 24" fill="none">
             <G id="SVGRepo_bgCarrier" stroke-width="0"></G>
             <G id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></G>
-            <G id="SVGRepo_iconCarrier"> 
-            <Path d="M13 15L16 12M16 12L13 9M16 12H8M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke={colors.color_1} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></Path> 
+            <G id="SVGRepo_iconCarrier">
+                <Path d="M13 15L16 12M16 12L13 9M16 12H8M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke={colors.color_1} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></Path>
             </G>
-            </Svg>
+        </Svg>
     }
     const arrowLeft = () => {
         return <Svg width={ancho} height={alto} viewBox="0 0 24 24" fill="none" >
             <G id="SVGRepo_bgCarrier" stroke-width="0"></G>
             <G id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></G>
-            <G id="SVGRepo_iconCarrier"> 
-            <Path d="M11 9L8 12M8 12L11 15M8 12H16M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke={colors.color_1} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></Path> 
+            <G id="SVGRepo_iconCarrier">
+                <Path d="M11 9L8 12M8 12L11 15M8 12H16M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke={colors.color_1} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></Path>
             </G>
-            </Svg>
+        </Svg>
+    }
+    const warningIcon = () => {
+        return <Svg  width={ancho} height={alto}  viewBox="0 0 512 512" fill="#000000" stroke="#000000">
+            <G id="SVGRepo_bgCarrier" stroke-width="0"></G>
+            <G id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></G>
+            <G id="SVGRepo_iconCarrier">
+                <G id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <G id="add" fill={colors.color_1} transform="translate(32.000000, 42.666667)">
+                        <Path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M225.144334,42.6739678 L42.6666667,362.009885 L407.622001,362.009885 L225.144334,42.6739678 Z M224,272 C239.238095,272 250.666667,283.264 250.666667,298.624 C250.666667,313.984 239.238095,325.248 224,325.248 C208.415584,325.248 197.333333,313.984 197.333333,298.282667 C197.333333,283.264 208.761905,272 224,272 Z M245.333333,106.666667 L245.333333,234.666667 L202.666667,234.666667 L202.666667,106.666667 L245.333333,106.666667 Z" id="Combined-Shape">
+                        </Path>
+                    </G>
+                </G>
+            </G>
+        </Svg>
     }
 
 
@@ -326,7 +341,7 @@ const IconComponent = ({ nameIcon, alto, ancho, colors ,data}: any) => {
                     </Stop>
                 </LinearGradient>
             </Defs>
-            <Rect x="5%" y="5%" width="90%" height="90%" rx={15} ry={15} fill="none" stroke={"url(#"+data.id+")"} strokeWidth={5} />
+            <Rect x="5%" y="5%" width="90%" height="90%" rx={15} ry={15} fill="none" stroke={"url(#" + data.id + ")"} strokeWidth={5} />
         </Svg>
     }
     return <View>

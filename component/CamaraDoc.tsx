@@ -34,6 +34,7 @@ const CamaraDoc = (navigation: any) => {
   };
 
   const takePhoto = async () => {
+
     if (camera.current) {
       try {
         const photo = await camera.current.takePhoto();
@@ -41,7 +42,6 @@ const CamaraDoc = (navigation: any) => {
         setState({...state, estado:false});
       } catch (error) {
         console.error(error);
-        // Manejar el error de la captura de la foto
       }
     }
   };
@@ -72,6 +72,7 @@ const CamaraDoc = (navigation: any) => {
   
 
 
+
   useEffect(() => {
     navigation.navigation.setOptions({ headerShown: false });
     const init= async()=>{
@@ -93,9 +94,10 @@ const CamaraDoc = (navigation: any) => {
   }, []);
 
 
-  if (device == null) {
-    return <View><Text style={{ color: tema.active }}>No tienes cámara</Text></View>;
-  }
+
+  if (device == null) return <View>
+    <Text style={{ color: tema.active }}>No tienes camara</Text>
+  </View>
 
   if(!state.permiso) return <View style={{backgroundColor:'#000', width:Dimensions.get('window').width, height:Dimensions.get('window').height}}><Text style={{ color: tema.text, textAlign:'center' }}>No tienes permiso para la camara</Text></View>
 

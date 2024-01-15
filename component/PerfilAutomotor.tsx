@@ -24,8 +24,8 @@ const PerfilAutomotor = (props: any) => {
     
     const selectSubrogatario = (subrogatario: any) => {
         props.state["automotor"] = { ...props.state["automotor"], subrogatario };
+        props.selectMarcaModelo(subrogatario);
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
-        console.log(subrogatario);
     };
     const selectSubrogatarioMonto = (monto: any) => {
         props.state["automotor"] = { ...props.state["automotor"], monto_subrogado:monto };

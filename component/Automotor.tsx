@@ -21,7 +21,6 @@ const Automotor = ({navigation}:any) => {
     
     useEffect(() => { 
         navigation_.setOptions({headerShown:false});
-         
         getCliente()
     }, []);
 

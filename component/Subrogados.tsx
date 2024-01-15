@@ -46,6 +46,10 @@ const Subrogados = (props:any) => {
         setState({...state})
     };
 
+    const eliminarSubrogado=()=>{
+        props.selectSubrogatario({});
+    }
+
     return <View>
             <View style={{alignItems:'center'}}>
                 <TextInput
@@ -59,16 +63,22 @@ const Subrogados = (props:any) => {
             <ScrollView  horizontal={true} style={{height:190}}>
             {
                 state.subrogatarios.sort((a:any,b:any)=>{ return a.NOMBRE_COMPLETO<b.NOMBRE_COMPLETO?1:-1 }).map((subrogado:any, key)=>{
+                    console.log(subrogado);
                     return <TouchableOpacity 
                         onPress={()=>{props.selectSubrogatario(subrogado)}}
                         key={key}  
                         style={{
                             ...styles.card, 
-                            borderColor:((subrogado.ID == props.state?.automotor?.subrogatario?.ID)?tema.primary:tema.opaque)
+                            borderWidth:5,
+                            borderColor:((subrogado.ID_CLIENTE == props?.state?.automotor?.subrogatario?.ID_CLIENTE)?tema.danger:"white")
                         }}
                         >
 
-                        <View style={{alignItems:'center'}}>
+                        <View style={{alignItems:'center',position:"relative"}}>
+                            {(subrogado.ID_CLIENTE == props?.state?.automotor?.subrogatario?.ID_CLIENTE)?
+                                <TouchableOpacity onPress={()=>eliminarSubrogado()} style={{backgroundColor:tema.danger,position:'absolute',top:2,right:2,zIndex:10,borderRadius:20,width:20,height:20}}>
+                                    <Text style={{textAlign:"center",color:tema.text}}>X</Text>
+                                </TouchableOpacity>:<></>}
                             <Image 
                             key={key}
                             style={{width:50, height:50, borderRadius:15, resizeMode:'stretch'}} 
@@ -80,7 +90,7 @@ const Subrogados = (props:any) => {
                 })
             }
         </ScrollView>
-        <View>
+        <View style={{justifyContent:'center',alignItems:"center"}}>
             <Text style={{color:tema.text}}>Monto subrogación</Text>
             <TextInput
                 style={{...styles.input, textAlign:'right'}}

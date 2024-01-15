@@ -31,7 +31,7 @@ const Cotizacion = ({ navigation }: any) => {
     useEffect(() => {
         navigation_.setOptions({ headerShown: false });
 
-        //no borrar porque se fregan los documentos
+        //no borrar porque se fregan los documentos 
         
         const getUser = async () => {
             const suser: any = await AsyncStorage.getItem("usuario");

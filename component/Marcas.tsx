@@ -60,7 +60,8 @@ const Marcas = (props:any) => {
                         key={key}  
                         style={{
                             ...styles.card, 
-                            borderColor:((marca.ID == props.state?.automotor?.marca?.ID)?tema.primary:tema.opaque)
+                            borderWidth:5,
+                            borderColor:((marca.ID == props.state?.automotor?.marca?.ID)?tema.danger:"white")
                         }}
                         >
 
