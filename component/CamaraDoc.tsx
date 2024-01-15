@@ -1,16 +1,13 @@
-
-
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Image, Text, View, PermissionsAndroid, Platform, Dimensions, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, PermissionsAndroid, Platform, Dimensions, TouchableOpacity, StyleSheet } from 'react-native';
 import tema from '../enviroments/tema.json'
-import { Camera, useCameraDevice, useCameraFormat } from 'react-native-vision-camera';
-import ReadText from './ReadText';
+import { Camera, useCameraDevice } from 'react-native-vision-camera';
 import ImagePicker from 'react-native-image-crop-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Load from './Load';
 
 const CamaraDoc = (navigation: any) => {
   const device = useCameraDevice('back');
+  
   const camera = useRef(null);
   const [state, setState] = useState({});
 
@@ -30,6 +27,7 @@ const CamaraDoc = (navigation: any) => {
   };
 
   const setShowCamera = async () => {
+    console.log(camera?.current?.isMounted)
     await setTimeout(()=>{
       setState({...state, estado:true});
     }, 1000);
@@ -71,6 +69,8 @@ const CamaraDoc = (navigation: any) => {
     });
   };
 
+  
+
 
   useEffect(() => {
     navigation.navigation.setOptions({ headerShown: false });
@@ -93,12 +93,11 @@ const CamaraDoc = (navigation: any) => {
   }, []);
 
 
-
   if (device == null) {
     return <View><Text style={{ color: tema.active }}>No tienes cámara</Text></View>;
   }
 
-  if(!state.permiso) return <View><Text style={{ color: tema.active }}>No tienes permiso</Text></View>
+  if(!state.permiso) return <View style={{backgroundColor:'#000', width:Dimensions.get('window').width, height:Dimensions.get('window').height}}><Text style={{ color: tema.text, textAlign:'center' }}>No tienes permiso para la camara</Text></View>
 
   if (navigation.route.params.url) {
     return <Text style={{ color: tema.active }}>{navigation.route.params.url}</Text>;
@@ -108,21 +107,18 @@ const CamaraDoc = (navigation: any) => {
     <View style={{flex:1, alignItems:'center' }}>
       <Camera
         ref={camera}
-        style={StyleSheet.absoluteFill}
+        style={{width:400, height:400, zIndex:100}}
         device={device}
         isActive={state.estado}
         photo={true}
         onError={(error) => {console.log(error)}}
         onInitialized={() => {setShowCamera()}}
-        
       />
-      
-      <TouchableOpacity 
-        onPress={takePhoto}
-        style={{ width:50, height:50, backgroundColor:"#ffffffaa", borderRadius:20, marginTop:Dimensions.get('window').height-100}}
-      >
-
-      </TouchableOpacity>
+        <TouchableOpacity 
+          onPress={takePhoto}
+          style={{ width:50, height:50, backgroundColor:"#ffffffaa", borderRadius:20, marginTop:Dimensions.get('window').height-100}}
+        >
+        </TouchableOpacity>
       {/*<Button title="Subir Foto" onPress={uploadPhoto} />*/}
     </View>
   )

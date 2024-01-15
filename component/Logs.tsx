@@ -3,10 +3,38 @@ import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, Image
 import Load from './Load';
 import api from '../enviroments/api.json'
 import tema from '../enviroments/tema.json'
-import AMCharts from 'react-native-amcharts';
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart
+} from "react-native-chart-kit";
 
 
 const Logs = (props:any) => {
+  const chartConfig = {
+    backgroundGradientFrom: "#1E2923",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "#08130D",
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false // optional
+  };
+  const data = {
+    labels: ["January", "February", "March", "April", "May", "June"],
+    datasets: [
+      {
+        data: [20, 45, 28, 80, 99, 43],
+        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // optional
+        strokeWidth: 2 // optional
+      }
+    ],
+    legend: ["Rainy Days"] // optional
+  };
 
     const config = {
         "type": "XYChart",
@@ -165,11 +193,15 @@ const Logs = (props:any) => {
             
             
             <View style={{marginLeft:10}}>
-                <AMCharts
-                    type="XYChart"
-                    config={state.config}
-                    style={{height: 400, width:Dimensions.get('window').width-20,}}
-                />
+            <LineChart
+                data={data}
+                width={Dimensions.get("window").width}
+                height={256}
+                verticalLabelRotation={30}
+                chartConfig={chartConfig}
+                bezier
+              />
+               
             </View>
             {
                 state?.logs.map((log:any, key:string)=>{
