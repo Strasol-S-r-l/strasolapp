@@ -18,6 +18,7 @@ import PerfilAutomotor from './PerfilAutomotor';
 import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 import Documentos from './Documentos';
 import RNFS from 'react-native-fs';
+import ModalComponent from './ModalComponent';
 
 var navigation_: any;
 var aux_tipo = 1;
@@ -25,19 +26,28 @@ const Emision = ({ navigation }: any) => {
     navigation_ = navigation;
     const [state, setState] = React.useState({ porc_avance: 0, vigencia_inicial: new Date().toLocaleDateString() });
     const [tipoInfo, setTipoInfo] = React.useState(1);
+    const [getMensaje, setMensaje] = React.useState("");
+
+    const [modalState, setModalState] = React.useState(false);
+    const openModal = () => {
+        setModalState(true);
+    }
+    const closeModal = () => {
+        setModalState(false);
+    }
 
 
-    const cambiarPagina =(tipo:Int32)=>{
+    const cambiarPagina = (tipo: Int32) => {
         aux_tipo = tipo;
         setTipoInfo(4);
-        setTimeout(sleepFunction,1000);
+        setTimeout(sleepFunction, 1000);
     }
-    const sleepFunction =()=>{
+    const sleepFunction = () => {
         setTipoInfo(aux_tipo);
     };
     useEffect(() => {
         navigation_.setOptions({ headerShown: false });
-        
+
         const init = async () => {
             let poliza = await AsyncStorage.getItem("poliza");
             state["poliza"] = JSON.parse(poliza);
@@ -45,12 +55,12 @@ const Emision = ({ navigation }: any) => {
             state["cliente"] = JSON.parse(cliente);
             let automotor = await AsyncStorage.getItem("automotor");
             state["automotor"] = JSON.parse(automotor);
-            if(state["automotor"]){
+            if (state["automotor"]) {
                 state["automotor"]["vigencia_inicial"] = state.vigencia_inicial;
                 state["automotor"]["monto_subrogado"] = state["poliza"].valor_asegurado;
-                
-            }else{
-                state["automotor"] = {vigencia_inicial:state.vigencia_inicial, monto_subrogado: state["poliza"].valor_asegurado};
+
+            } else {
+                state["automotor"] = { vigencia_inicial: state.vigencia_inicial, monto_subrogado: state["poliza"].valor_asegurado };
             }
             state["usuario"] = await AsyncStorage.getItem("usuario");
             state["usuario"] = JSON.parse(state["usuario"])
@@ -65,20 +75,20 @@ const Emision = ({ navigation }: any) => {
 
 
         let documentos = await AsyncStorage.getItem("documentos");
-        if(documentos){
+        if (documentos) {
             documentos = JSON.parse(documentos);
 
             documentos = await Promise.all(
                 documentos.map(async (obj) => {
-                    if(obj.url){
+                    if (obj.url) {
                         obj["image"] = await RNFS.readFile(obj.url, 'base64');
-                    }else {
+                    } else {
                         obj = null;
                     }
                     return obj;
                 })
             );
-        } 
+        }
 
 
         fetch(api.url + '/app',
@@ -92,7 +102,7 @@ const Emision = ({ navigation }: any) => {
                     cliente: state.cliente,
                     automotor: state.automotor,
                     poliza: state.poliza,
-                    documentos:documentos
+                    documentos: documentos
                 }),
             }).then(async (response) => {
                 const obj = await response.json();
@@ -102,21 +112,21 @@ const Emision = ({ navigation }: any) => {
                     setState({ ...state });
                     return obj;
                 }
-                
+
                 state["emitiendo"] = false;
                 console.log(obj.data)
 
                 let id = 0;
-                if(obj?.data?.ID){
+                if (obj?.data?.ID) {
                     id = obj?.data?.ID;
-                }else{
+                } else {
                     id = obj?.data[0].ID;
                 }
 
 
                 state["dataClient"] = obj.data
                 navigation_.replace("PerfilProducto", { ID: id });
-                
+
                 await AsyncStorage.removeItem("poliza");
                 await AsyncStorage.removeItem("cliente");
                 await AsyncStorage.removeItem("automotor");
@@ -135,11 +145,11 @@ const Emision = ({ navigation }: any) => {
         setState({ ...state });
     };
 
-    const getDocumentos=async ()=>{
+    const getDocumentos = async () => {
 
         let documentos = await AsyncStorage.getItem("documentos");
         console.log(documentos)
-        if(documentos){
+        if (documentos) {
             return JSON.parse(documentos)
         }
 
@@ -169,7 +179,7 @@ const Emision = ({ navigation }: any) => {
             setState({ ...state })
             return;
         }
-        
+
         await AsyncStorage.setItem("documentos", JSON.stringify(obj.data))
         return obj.data;
     }
@@ -217,25 +227,72 @@ const Emision = ({ navigation }: any) => {
                     <TouchableOpacity style={styles.button3D} onPress={emitir}>
                         <Text style={styles.buttonText} >Emitir</Text>
                     </TouchableOpacity>
-
                 </View>
             )
         }
 
         return <View>
-            <Text>Pendiente...</Text>
+            {/*<Text>Pendiente...</Text>*/}
         </View>
     }
-    const limpiarFormulario=()=>{
+    const verificarInformacion = () => {
+        let porcCli = getPorcentajeAvanceCliente();
+        let porcAuto = getPorcentajeAvanceAutomotor();
+        let porcDoc = getPorcentajeDocumentosRespaldo();
+
+        let porcentaje = getPorcentajeAvance();
+        let mensaje = "";
+        let control = false;
+        if (porcentaje < 100) { 
+            mensaje += "Complete todos los formularios antes de emitir";
+            if(porcCli < 100){
+                mensaje += "\n - Informacion Personal";
+            }
+            if(porcAuto < 100){
+                mensaje += "\n - Informacion del Vehiculo";
+            }
+            if(porcDoc < 100){
+                mensaje += "\n - Fotos de documento de respaldo";
+            }
+           
+            control = true;
+        }
+        if (state.error) {
+            mensaje = state?.error;
+            control = true;
+        }
+
+        /*if (state["emitiendo"]) {
+            return <View style={{ width: "100%", height: 200, display: "flex", position: "absolute", backgroundColor: "#00000000" }}>
+                <WebView
+                    originWhitelist={['*']}
+                    source={{ uri: "https://ruddy.ibrokers.cloud/buster_drone/" }}
+                    style={{
+                        flex: 1,
+                        backgroundColor: "#00000000"
+                    }}>
+                </WebView>
+            </View>
+        }*/
+        if (control) {
+            setMensaje(mensaje);
+            openModal();
+            return;
+        }
+        if (porcentaje >= 100) {
+            emitir();
+        }
+    };
+    const limpiarFormulario = () => {
         state["cliente"] = {};
-        state["automotor"] = {monto_subrogado:state["poliza"].valor_asegurado};
+        state["automotor"] = { monto_subrogado: state["poliza"].valor_asegurado };
         AsyncStorage.removeItem("cliente");
         AsyncStorage.removeItem("automotor");
-        setState({...state});
+        setState({ ...state });
     }
     const getSvg = () => {
 
-        let width = Dimensions.get('window').width*0.8;
+        let width = Dimensions.get('window').width * 0.8;
         let ini = 15;
         let medium = width / 2;
         let fin = width - 15;
@@ -243,45 +300,45 @@ const Emision = ({ navigation }: any) => {
 
         let porcentaje = getPorcentajeAvance();
         //let anchoBarrra = (ini + 30) + (anchoBarraPorcentaje * porcentaje) / 100;
-        let anchoBarrra = (width*0.05)+((width*0.5)*porcentaje)/100;
+        let anchoBarrra = (width * 0.05) + ((width * 0.9) * porcentaje) / 100;
 
         let porcCli = getPorcentajeAvanceCliente();
         let porcAuto = getPorcentajeAvanceAutomotor();
         let porcDoc = getPorcentajeDocumentosRespaldo();
 
         return <View style={{ marginTop: 15 }}>
-            <TouchableOpacity style={{width:"90%",height:25,backgroundColor:tema.primary,justifyContent:'center',alignItems:"center", borderRadius:10}} onPress={limpiarFormulario}>
+            <TouchableOpacity style={{ width: "90%", height: 25, backgroundColor: tema.primary, justifyContent: 'center', alignItems: "center", borderRadius: 10 }} onPress={limpiarFormulario}>
                 <Text style={styles.buttonText} >Limpiar Formulario</Text>
             </TouchableOpacity>
-            <Svg width={width} height={ Dimensions.get('window').height*0.2}>
-            
+            <Svg width={width} height={Dimensions.get('window').height * 0.2}>
+
                 <Line x1="5%" y1="15%" x2="90%" y2="15%" stroke={tema.primary + "55"} strokeWidth={6} />
                 <Line x1="5%" y1="15%" x2={anchoBarrra} y2="15%" stroke={tema.primary} strokeWidth={6} />
                 <SvgText fill={"white"} fontSize={12}><TSpan x={width - 60} y="10%">{porcentaje.toFixed(0)} %</TSpan></SvgText>
                 <SvgText fill={"white"} fontSize={12}><TSpan x="20%" y="25%">Complete sus datos para la emision</TSpan></SvgText>
 
-                <Line x1={ini} y1="45%" x2={fin} y2="45%" stroke={"white"} strokeWidth={2}/>
-                
+                <Line x1={ini} y1="45%" x2={fin} y2="45%" stroke={"white"} strokeWidth={2} />
+
                 <Circle cx={medium - 120} cy="45%" r="11" stroke={"white"} fill={tema.primary} id="svgCircle1" />
-                {aux_tipo == 1 ? <Circle cx={medium - 120} cy="45%" r="10" fill={"white"} id="svgCircle1"/> : <View></View>}
-                <SvgText  fill={aux_tipo == 1 ?  tema.active :tema.text} fontSize={12}><TSpan x={medium - 120 - 3} y="47.5%">1</TSpan></SvgText>
+                {aux_tipo == 1 ? <Circle cx={medium - 120} cy="45%" r="10" fill={"white"} id="svgCircle1" /> : <View></View>}
+                <SvgText fill={aux_tipo == 1 ? tema.active : tema.text} fontSize={12}><TSpan x={medium - 120 - 3} y="47.5%">1</TSpan></SvgText>
                 <SvgText fill={aux_tipo == 1 ? tema.text : tema.opaque} fontSize={12}><TSpan x={medium - 120 - 30} y="65%">Información</TSpan><TSpan x={medium - 120 - 20} y="75%">Personal</TSpan></SvgText>
 
-                <Circle cx={medium} cy="45%" r="11" stroke={"white"} fill={tema.primary} id="svgCircle1"  />
+                <Circle cx={medium} cy="45%" r="11" stroke={"white"} fill={tema.primary} id="svgCircle1" />
                 {aux_tipo == 2 ? <Circle cx={medium} cy="45%" r="10" fill={"white"} /> : <View></View>}
-                <SvgText fill={aux_tipo == 2 ?tema.active :tema.text} fontSize={12}><TSpan x={medium - 3} y="47.5%">2</TSpan></SvgText>
-                <SvgText fill={aux_tipo == 2 ?  tema.text : tema.opaque} fontSize={12}><TSpan x={medium - 40} y="65%">Información del</TSpan><TSpan x={medium - 20} y="75%">Vehículo</TSpan></SvgText>
+                <SvgText fill={aux_tipo == 2 ? tema.active : tema.text} fontSize={12}><TSpan x={medium - 3} y="47.5%">2</TSpan></SvgText>
+                <SvgText fill={aux_tipo == 2 ? tema.text : tema.opaque} fontSize={12}><TSpan x={medium - 40} y="65%">Información del</TSpan><TSpan x={medium - 20} y="75%">Vehículo</TSpan></SvgText>
 
 
-                <Circle cx={medium + 120} cy="45%" r="11"  stroke={"white"} fill={tema.primary} />
+                <Circle cx={medium + 120} cy="45%" r="11" stroke={"white"} fill={tema.primary} />
                 {aux_tipo == 3 ? <Circle cx={medium + 120} cy="45%" r="10" fill={"white"} /> : <View></View>}
                 <SvgText fill={aux_tipo == 3 ? tema.active : tema.text} fontSize={12}><TSpan x={medium + 120 - 3} y="47.5%">3</TSpan></SvgText>
-                <SvgText fill={aux_tipo == 3 ?  tema.text  : tema.opaque} fontSize={12}><TSpan x={medium + 120 - 35} y="65%">Documentos</TSpan><TSpan x={medium + 120 - 25} y="75%">Respaldo</TSpan></SvgText>
-            
-                <Rect onPress={() => { cambiarPagina(1) }}  x={0} y={0} width={width/3}  height={Dimensions.get('window').height*0.2}></Rect>
-                <Rect onPress={() => { cambiarPagina(2) }} x={width/3} y={0} width={width/3}  height={Dimensions.get('window').height*0.2}></Rect>
-                <Rect onPress={() => { cambiarPagina(3) }} x={(width/3)*2} y={0} width={width/3} height={Dimensions.get('window').height*0.2}></Rect>
-                
+                <SvgText fill={aux_tipo == 3 ? tema.text : tema.opaque} fontSize={12}><TSpan x={medium + 120 - 35} y="65%">Documentos</TSpan><TSpan x={medium + 120 - 25} y="75%">Respaldo</TSpan></SvgText>
+
+                <Rect onPress={() => { cambiarPagina(1) }} x={0} y={0} width={width / 3} height={Dimensions.get('window').height * 0.2}></Rect>
+                <Rect onPress={() => { cambiarPagina(2) }} x={width / 3} y={0} width={width / 3} height={Dimensions.get('window').height * 0.2}></Rect>
+                <Rect onPress={() => { cambiarPagina(3) }} x={(width / 3) * 2} y={0} width={width / 3} height={Dimensions.get('window').height * 0.2}></Rect>
+
             </Svg>
         </View>
     };
@@ -385,15 +442,15 @@ const Emision = ({ navigation }: any) => {
     const getPorcentajeDocumentosRespaldo = () => {
         var avance = 1;
         var total = 1;
-        if(state.documentos){
+        if (state.documentos) {
             total = state.documentos.length;
             avance = 0;
-            state.documentos.map((doc)=>{
-                if(doc.url) avance++;
+            state.documentos.map((doc) => {
+                if (doc.url) avance++;
             })
-            
-        }else{
-            avance=1;
+
+        } else {
+            avance = 1;
         }
         //console.log(avance)
 
@@ -479,7 +536,7 @@ const Emision = ({ navigation }: any) => {
         AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
         setState({ ...state });
     };
-    const selectMarcaModelo= (data: any) => {
+    const selectMarcaModelo = (data: any) => {
         state["automotor"] = { ...state["automotor"], data };
         AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
         setState({ ...state });
@@ -490,7 +547,7 @@ const Emision = ({ navigation }: any) => {
     };
     const getInfoAutomotor = () => {
         return <ScrollView style={{ marginTop: 15 }}>
-            <PerfilAutomotor navigation={navigation_} state={state} changeAutomotor={changeAutomotor} selectMarcaModelo={selectMarcaModelo}/>
+            <PerfilAutomotor navigation={navigation_} state={state} changeAutomotor={changeAutomotor} selectMarcaModelo={selectMarcaModelo} />
         </ScrollView>
     }
     const getInfoVehiculo = () => {
@@ -508,7 +565,7 @@ const Emision = ({ navigation }: any) => {
 
         }
 
-        return <View style={{ marginTop: 15 ,backgroundColor:"red"}}>
+        return <View style={{ marginTop: 15, backgroundColor: "red" }}>
             <View>
                 <Text style={styles.subtitle}>Información del Vehículo</Text>
             </View>
@@ -590,7 +647,7 @@ const Emision = ({ navigation }: any) => {
                     />
                     <TouchableOpacity
                         onPress={() => {
-                            navigation_.navigate("RecCamera",  selectCameraChasis );
+                            navigation_.navigate("RecCamera", selectCameraChasis);
                         }}
                         style={{ width: 20, height: 20, marginLeft: 10 }}>
                         <IconComponent nameIcon="Camara" colors={{ color: "#000" }} ></IconComponent>
@@ -655,7 +712,7 @@ const Emision = ({ navigation }: any) => {
                         navigation_.navigate("Select", { data: aux, func: selectExtraterritorialidad });
                     }}
                 >
-                <Text style={{ color: tema.active, fontSize: 11 }}>{(state?.automotor?.EXTRATERRITORIALIDAD)}</Text>
+                    <Text style={{ color: tema.active, fontSize: 11 }}>{(state?.automotor?.EXTRATERRITORIALIDAD)}</Text>
                 </TouchableOpacity>
             </View>
 
@@ -697,7 +754,6 @@ const Emision = ({ navigation }: any) => {
         </View>
     }
     const getInfoRespaldo = () => {
-
         if (state["emitiendo"]) {
             return <View>
                 <View>
@@ -711,50 +767,83 @@ const Emision = ({ navigation }: any) => {
             </View>
         }
 
-        return <View style={{ marginTop: 15, flex:1}}>
-            <View style={{flex:1}}>
-                <Documentos  /> 
+        return <View style={{ marginTop: 15, flex: 1 }}>
+            <View style={{ flex: 1 }}>
+                <Documentos />
             </View>
         </View>
     }
 
+    const ModalError = (modalVisible: any, closeModal: any) => {
+        return <View>
+            <ModalComponent id_modal={'modal_error'} visible={modalVisible} onClose={closeModal}>
+                <View style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: tema.background, borderRadius: 10 }}>
+                </View>
+                <View>
+                <View style={{justifyContent:"center",alignItems:"center"}}>
+                   
+                    <IconComponent nameIcon='warningIcon' colors={{ color_1: tema.danger }} alto={50} ancho={50}></IconComponent>
+                
+                </View>
+                <View style={{justifyContent:"center",alignItems:"center"}}>
+                    <Text style={{ color: tema.active }}>{getMensaje}</Text>
+                </View>
+                </View>
+            </ModalComponent>
+        </View>
+    }
 
     return (
         <View style={{ position: 'absolute', width: "100%", height: Dimensions.get('window').height, backgroundColor: "rgba(68,125,209,1)" }}>
-            <SafeAreaView style={{position:"relative", height: "100%" }}>
+            <SafeAreaView style={{ position: "relative", height: "100%" }}>
                 <IconComponent nameIcon='fondo_form' ></IconComponent>
-                <View style={{width:"80%",marginLeft:"20%",height:"20%"}}>
+                <View style={{ width: "80%", marginLeft: "20%", height: "20%" }}>
                     {getSvg()}
                 </View>
-                <View style={{width:"80%",marginLeft:"20%",height:"60%"}}>
-                
-                    <View style={{display:"flex"}}>
-                        <Text style={{color:"white",textAlign:"center"}}>
-                        {
-                            aux_tipo == 1 ? "Informacion Personal" : (aux_tipo == 2 ? "Informacion operacion" : "Documentacion de respaldo")
-                        }
+                <View style={{ width: "80%", marginLeft: "20%", height: "60%" }}>
+
+                    <View style={{ display: "flex" }}>
+                        <Text style={{ color: "white", textAlign: "center" }}>
+                            {
+                                aux_tipo == 1 ? "Informacion Personal" : (aux_tipo == 2 ? "Informacion operacion" : "Documentacion de respaldo")
+                            }
                         </Text>
-                        <View style={{backgroundColor:"gray",width:"100%",height:2}}></View>
+                        <View style={{ backgroundColor: "gray", width: "100%", height: 2 }}></View>
                     </View>
-                    <View style={{flex:1}}>
-                        
+                    <View style={{ flex: 1 }}>
+
                         {
-                            tipoInfo == 4 ? <Load></Load>: <>
-                            {
-                                aux_tipo == 1 ? getInfoPersonal() :<></>
-                            }
-                            {
-                                aux_tipo == 2 ? getInfoAutomotor() :<></>
-                            }
-                            {
-                                aux_tipo == 3 ? getInfoRespaldo() : <></>
-                            }
+                            tipoInfo == 4 ? <Load></Load> : <>
+                                {
+                                    aux_tipo == 1 ? getInfoPersonal() : <></>
+                                }
+                                {
+                                    aux_tipo == 2 ? getInfoAutomotor() : <></>
+                                }
+                                {
+                                    aux_tipo == 3 ? getInfoRespaldo() : <></>
+                                }
                             </>
                         }
                     </View>
-                    {getEmitir(getPorcentajeAvance())}
+                    <View style={{ display: "flex", alignItems: "center" }}>
+                        <TouchableOpacity style={styles.button3D} onPress={() => verificarInformacion()}>
+                            <Text style={styles.buttonText} >Emitir</Text>
+                        </TouchableOpacity>
+                    </View>
+                    {state["emitir"] ? <View style={{ width: "100%", height: 200, display: "flex", position: "absolute", backgroundColor: "#00000000" }}>
+                        <WebView
+                            originWhitelist={['*']}
+                            source={{ uri: "https://ruddy.ibrokers.cloud/buster_drone/" }}
+                            style={{
+                                flex: 1,
+                                backgroundColor: "#00000000"
+                            }}>
+                        </WebView>
+                    </View> : <></>}
+                    {/*getEmitir(getPorcentajeAvance())*/}
                 </View>
-                <View style={{ width: "100%", height: "20%"}}>
+                <View style={{ width: "100%", height: "20%" }}>
                     <Image
                         style={{
                             flex: 1,
@@ -766,9 +855,20 @@ const Emision = ({ navigation }: any) => {
                     />
                 </View>
             </SafeAreaView>
-            <BarLeft back={true} titulo={"Datos Personales"}/>
+            {
+                aux_tipo == 1 ? <BarLeft back={true} titulo={"Datos Personales"} /> : <></>
+            }
+            {
+                aux_tipo == 2 ? <BarLeft back={true} titulo={"Datos del Vehiculo"} /> : <></>
+            }
+            {
+                aux_tipo == 3 ? <BarLeft back={true} titulo={"Documentos de Respaldo"} /> : <></>
+            }
+            {ModalError(modalState, closeModal)}
         </View>
+
     )
+    
 };
 
 const styles = StyleSheet.create({

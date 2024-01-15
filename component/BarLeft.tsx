@@ -8,7 +8,7 @@ const BarLeft = (props:any) => {
   const navigation = useNavigation();
 
   const toBack = () => {
-    navigation.replace("Cotizacion");
+    navigation.goBack();
   };
   return (<View style={{ ...StyleSheet.absoluteFillObject, width: "30%", flexDirection: 'row' }}>
     <Image

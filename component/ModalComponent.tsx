@@ -9,7 +9,7 @@ const ModalComponent = ({visible,onClose,id_modal,children}:any) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
                     {children}
-                    <TouchableOpacity key={id_modal+'_md_btn'}  onPress={onClose} style={{margin:5, padding:5, borderRadius:5, height:45, backgroundColor:'brown', justifyContent:'center',shadowColor:'black',shadowOffset:{width:0,height:2}, shadowRadius:5,shadowOpacity:0.3 }}>
+                    <TouchableOpacity key={id_modal+'_md_btn'}  onPress={onClose} style={{margin:5,marginTop:10, padding:5, borderRadius:5, height:45, backgroundColor:'gray', justifyContent:'center',shadowColor:'black',shadowOffset:{width:0,height:2}, shadowRadius:5,shadowOpacity:0.3 }}>
                         <Text style={{textAlign:"center", color:'white', fontWeight:'bold'}}>CERRAR</Text>
                     </TouchableOpacity>
                 </View>

@@ -59,14 +59,17 @@ const Modelos = (props:any) => {
                         key={key}  
                         style={{
                             ...styles.card, 
-                            borderColor:((modelo.ID == props?.state?.automotor?.modelo?.ID)?tema.primary:tema.opaque)
+                            borderWidth:5,
+                            justifyContent:"center",
+                            alignItems:"center",
+                            borderColor:((modelo.ID == props?.state?.automotor?.modelo?.ID)?tema.danger:"white")
                         }}
                         >
 
                         <Text style={{textAlign:'center', color:tema.active}}>{modelo.DESCRIPCION}</Text>
                         <Text style={{textAlign:'center', color:tema.active}}>C.c: {modelo.MOTOR}</Text>
                         <Text style={{textAlign:'center', color:tema.active}}>Plazas: {modelo.PLAZAS}</Text>
-                        <Text style={{textAlign:'center', color:tema.active}}>Codigo: {modelo.CODIGO_COMPANIA}</Text>
+                        {/*<Text style={{textAlign:'center', color:tema.active}}>Codigo: {modelo.CODIGO_COMPANIA}</Text>*/}
                     </TouchableOpacity>
                 })
             }
