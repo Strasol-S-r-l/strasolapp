@@ -243,18 +243,18 @@ const Emision = ({ navigation }: any) => {
         let porcentaje = getPorcentajeAvance();
         let mensaje = "";
         let control = false;
-        if (porcentaje < 100) { 
+        if (porcentaje < 100) {
             mensaje += "Complete todos los formularios antes de emitir";
-            if(porcCli < 100){
+            if (porcCli < 100) {
                 mensaje += "\n - Informacion Personal";
             }
-            if(porcAuto < 100){
+            if (porcAuto < 100) {
                 mensaje += "\n - Informacion del Vehiculo";
             }
-            if(porcDoc < 100){
+            if (porcDoc < 100) {
                 mensaje += "\n - Fotos de documento de respaldo";
             }
-           
+
             control = true;
         }
         if (state.error) {
@@ -777,17 +777,17 @@ const Emision = ({ navigation }: any) => {
     const ModalError = (modalVisible: any, closeModal: any) => {
         return <View>
             <ModalComponent id_modal={'modal_error'} visible={modalVisible} onClose={closeModal}>
-                <View style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: tema.background, borderRadius: 10 }}>
+                <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: tema.background, borderRadius: 10 }}>
                 </View>
                 <View>
-                <View style={{justifyContent:"center",alignItems:"center"}}>
-                   
-                    <IconComponent nameIcon='warningIcon' colors={{ color_1: tema.danger }} alto={50} ancho={50}></IconComponent>
-                
-                </View>
-                <View style={{justifyContent:"center",alignItems:"center"}}>
-                    <Text style={{ color: tema.active }}>{getMensaje}</Text>
-                </View>
+                    <View style={{ justifyContent: "center", alignItems: "center" }}>
+
+                        <IconComponent nameIcon='warningIcon' colors={{ color_1: tema.danger }} alto={50} ancho={50}></IconComponent>
+
+                    </View>
+                    <View style={{ justifyContent: "center", alignItems: "center" }}>
+                        <Text style={{ color: tema.active }}>{getMensaje}</Text>
+                    </View>
                 </View>
             </ModalComponent>
         </View>
@@ -821,16 +821,20 @@ const Emision = ({ navigation }: any) => {
                                     aux_tipo == 2 ? getInfoAutomotor() : <></>
                                 }
                                 {
-                                    aux_tipo == 3 ? getInfoRespaldo() : <></>
+                                    aux_tipo == 3 ? <View style={{flex:1}}>
+                                        {getInfoRespaldo()}
+                                        <View style={{ display: "flex", alignItems: "center" }}>
+                                            <TouchableOpacity style={styles.button3D} onPress={() => verificarInformacion()}>
+                                                <Text style={styles.buttonText} >Emitir</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View> : 
+                                    <View></View>
                                 }
                             </>
                         }
                     </View>
-                    <View style={{ display: "flex", alignItems: "center" }}>
-                        <TouchableOpacity style={styles.button3D} onPress={() => verificarInformacion()}>
-                            <Text style={styles.buttonText} >Emitir</Text>
-                        </TouchableOpacity>
-                    </View>
+
                     {state["emitir"] ? <View style={{ width: "100%", height: 200, display: "flex", position: "absolute", backgroundColor: "#00000000" }}>
                         <WebView
                             originWhitelist={['*']}
@@ -868,7 +872,7 @@ const Emision = ({ navigation }: any) => {
         </View>
 
     )
-    
+
 };
 
 const styles = StyleSheet.create({

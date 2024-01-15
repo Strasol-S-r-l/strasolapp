@@ -102,6 +102,12 @@ const Perfil = ({navigation}:any) => {
                         </TouchableOpacity>  
                     </View>
                 </View>
+                    <TouchableOpacity onPress={()=>action("Agreguement")}>
+                        <Text style={{color:tema.text, fontWeight:"bold"}}>Ver Terminos y Condiciones</Text>
+                    </TouchableOpacity>
+                <View >
+
+                </View>
                 <TouchableOpacity onPress={()=>toBack()} style={{backgroundColor:tema.danger,borderRadius:5,height:40,width:"100%",justifyContent:'center',alignItems:"center",marginTop:15}}>
                         <Text style={{color:tema.text,fontWeight:"bold"}}>Volver</Text>
                 </TouchableOpacity>  

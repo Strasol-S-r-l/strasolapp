@@ -3,6 +3,7 @@ import { Text, View, Image, TextInput, Dimensions, StyleSheet, TouchableOpacity 
 import IconComponent from './assets/icons/IconComponent';
 import Marcas from './Marcas';
 import Modelos from './Modelos';
+import api from '../enviroments/api.json'
 import tema from '../enviroments/tema.json'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Subrogados from './Subrogados';
@@ -11,6 +12,30 @@ var navigation_: any;
 const PerfilAutomotor = (props: any) => {
     navigation_ = props.navigation;
     const [state, setState] = React.useState(props.state);
+    useEffect(() => {
+        const getParametricas = async () => {
+            try {
+                const response = await fetch(api.url + '/app',
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', },
+                        body: JSON.stringify({ key: api.key, type: 'getParametricas', nit: props.state.poliza.NIT }),
+                    });
+                const obj = await response.json();
+                if (obj.estado === "error") {
+                    await setTimeout(() => {
+                        getParametricas();
+                    }, 5000);
+                    return obj;
+                }
+                state["parametricas"] = obj.data;
+                setState({ ...state });
+            } catch (error) {
+                return { estado: "error", error };
+            }
+        }
+        getParametricas();
+    }, []);
     const selectMarca = (marca: any) => {
         delete props.state?.selectMarca;
         delete props.state?.modelos;
@@ -21,16 +46,16 @@ const PerfilAutomotor = (props: any) => {
         props.selectMarcaModelo(marca);
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
     };
-    
+
     const selectSubrogatario = (subrogatario: any) => {
         props.state["automotor"] = { ...props.state["automotor"], subrogatario };
         props.selectMarcaModelo(subrogatario);
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
     };
     const selectSubrogatarioMonto = (monto: any) => {
-        props.state["automotor"] = { ...props.state["automotor"], monto_subrogado:monto };
+        props.state["automotor"] = { ...props.state["automotor"], monto_subrogado: monto };
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
-        
+
     };
     const selectModelo = (modelo: any) => {
         delete props.state.selectModelo;
@@ -64,9 +89,9 @@ const PerfilAutomotor = (props: any) => {
     };
 
     return (<View style={{ flex: 1 }}>
-        <Subrogados state={props.state} selectSubrogatario={selectSubrogatario} selectSubrogatarioMonto={selectSubrogatarioMonto}/>
-        <View style={{borderBottomWidth:1, borderBottomColor:tema.opaque, margin:10, alignItems:'center'}}>
-            <Text style={{color:tema.text}}>Informacion del automotor</Text>
+        <Subrogados state={props.state} selectSubrogatario={selectSubrogatario} selectSubrogatarioMonto={selectSubrogatarioMonto} />
+        <View style={{ borderBottomWidth: 1, borderBottomColor: tema.opaque, margin: 10, alignItems: 'center' }}>
+            <Text style={{ color: tema.text }}>Informacion del automotor</Text>
         </View>
         <Marcas state={props.state} selectMarca={selectMarca} />
         <Modelos state={props.state} selectModelo={selectModelo} />
@@ -135,7 +160,7 @@ const PerfilAutomotor = (props: any) => {
             {props?.state?.automotor?.PLACA ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_placa_auto", color: tema.succes }}></IconComponent> : <IconComponent nameIcon='border_input' data={{ id: "sv_txt_placa_auto", color: tema.danger }}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
                 <TextInput
-                    onChangeText={text => {props.changeAutomotor("PLACA", text) }}
+                    onChangeText={text => { props.changeAutomotor("PLACA", text) }}
                     style={styles.input}
                     value={(props?.state?.automotor?.PLACA)}
                     placeholderTextColor={tema.placeholder}
@@ -147,7 +172,7 @@ const PerfilAutomotor = (props: any) => {
             {props?.state?.automotor?.NUMERO_MOTOR ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_num_motor_auto", color: tema.succes }}></IconComponent> : <IconComponent nameIcon='border_input' data={{ id: "sv_txt_num_motor_auto", color: tema.danger }}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
                 <TextInput
-                    onChangeText={text => {  props.changeAutomotor("NUMERO_MOTOR", text) }}
+                    onChangeText={text => { props.changeAutomotor("NUMERO_MOTOR", text) }}
                     style={styles.input}
                     value={(props?.state?.automotor?.NUMERO_MOTOR)}
                     placeholderTextColor={tema.placeholder}
@@ -161,7 +186,7 @@ const PerfilAutomotor = (props: any) => {
 
                 <View style={{ display: "flex", flexDirection: "row" }}>
                     <TextInput
-                        onChangeText={text => {  props.changeAutomotor("CHASIS", text) }}
+                        onChangeText={text => { props.changeAutomotor("CHASIS", text) }}
                         style={{ ...styles.input, }}
                         value={(props?.state?.automotor?.CHASIS)}
                         placeholderTextColor={tema.placeholder}
@@ -182,7 +207,7 @@ const PerfilAutomotor = (props: any) => {
             {props?.state?.automotor?.COLOR ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_color_auto", color: tema.succes }}></IconComponent> : <IconComponent nameIcon='border_input' data={{ id: "sv_txt_calor_auto", color: tema.danger }}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
                 <TextInput
-                    onChangeText={text => {  props.changeAutomotor("COLOR", text) }}
+                    onChangeText={text => { props.changeAutomotor("COLOR", text) }}
                     style={styles.input}
                     value={(props?.state?.automotor?.COLOR)}
                     placeholderTextColor={tema.placeholder}
@@ -250,14 +275,29 @@ const PerfilAutomotor = (props: any) => {
         <View style={{ position: "relative", height: 50, marginBottom: 10 }}>
             {props?.state?.automotor?.ZONA_CIRCULACION ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_zona_cir_auto", color: tema.succes }}></IconComponent> : <IconComponent nameIcon='border_input' data={{ id: "sv_txt_zona_cir_auto", color: tema.danger }}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
-                <TextInput
+                {/*<TextInput
                     onChangeText={text => {  props.changeAutomotor("ZONA_CIRCULACION", text) }}
                     style={styles.input}
                     value={(props?.state?.automotor?.ZONA_CIRCULACION)}
                     placeholderTextColor={tema.placeholder}
                     placeholder='Zona de Circulacion'
 
-                />
+                />*/}
+                <TouchableOpacity
+                    style={styles.input}
+                    onPress={() => {
+                        let list = [];
+                        Object.keys(props.state["parametricas"]["zona_circulacion"]).map((key) => {
+                            let obj = {
+                                key:props.state["parametricas"]["zona_circulacion"][key],
+                                value:props.state["parametricas"]["zona_circulacion"][key]
+                            } 
+                            list.push(obj);
+                        });
+                        navigation_.navigate("Select", { data: list, func: selectTraccion });
+                    }}>
+                    {props?.state?.automotor?.ZONA_CIRCULACION ? <Text style={{ color: tema.text, fontSize: 11 }}>{(props?.state?.automotor?.ZONA_CIRCULACION)}</Text> : <Text style={{ color: tema.placeholder, fontSize: 11 }}>Zona de Circulacion</Text>}
+                </TouchableOpacity>
             </View>
         </View>
         <View style={{ position: "relative", height: 50, marginBottom: 10 }}>

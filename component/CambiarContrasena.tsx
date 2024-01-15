@@ -51,6 +51,12 @@ const CambiarContrasena = ({ navigation }: any) => {
         let nueva_contrasena = password?.pass;
         let nueva_contrasena_re = password?.pass_re;
         let user = usuario?.USUARIO;
+        if ((nueva_contrasena == "" || !nueva_contrasena) || (nueva_contrasena_re == "" || !nueva_contrasena_re)) {
+            password.mensaje = "Rellene todos los campos";
+            password.terminar = false;
+            openModal();
+            return;
+        }
         if (nueva_contrasena != nueva_contrasena_re) {
             password.mensaje = "Las contraceñas no son iguales";
             password.terminar = false;
@@ -62,11 +68,10 @@ const CambiarContrasena = ({ navigation }: any) => {
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', },
-                body: JSON.stringify({ key: api.key, type: "cambiarContracenaCliente", user: user, pass: nueva_contrasena }),
+                body: JSON.stringify({ key: api.key, type: "cambiarContrasenaCliente", user: user, pass: nueva_contrasena }),
             });
         const data = await response.json();
         if (data.error) {
-            console.log("intentelo mas tarde");
             password.mensaje = "Intentelo mas tarde";
             password.terminar = false;
             openModal();
@@ -90,13 +95,15 @@ const CambiarContrasena = ({ navigation }: any) => {
         setPassword({ ...password });
     };
     const toBack = () => {
-        if(password.terminar) {
-            closeModal(); 
+        if (password.terminar) {
+            closeModal();
             navigation_.goBack();
-        }else{
-            closeModal(); 
+        } else {
+            closeModal();
         }
-       
+    }
+    const cancelar = () => {
+        navigation_.goBack();
     }
     const ModalPassword = () => {
         return <View key={'modal_password_md'} style={styles.container}>
@@ -104,10 +111,10 @@ const CambiarContrasena = ({ navigation }: any) => {
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
                         <View>
-                            <Text style={{color:tema.active,textAlign:"center"}}>{password.mensaje}</Text> 
+                            <Text style={{ color: tema.active, textAlign: "center" }}>{password.mensaje}</Text>
 
-                            <TouchableOpacity onPress={ ()=>toBack()} style={{marginTop:10,justifyContent:"center",alignItems:"center",width:"100%",height:40,backgroundColor:tema.primary,borderRadius:5}}>
-                                <Text style={{color:tema.text,fontWeight:"bold"}}>ACEPTAR</Text>
+                            <TouchableOpacity onPress={() => toBack()} style={{ marginTop: 10, justifyContent: "center", alignItems: "center", width: "100%", height: 40, backgroundColor: tema.primary, borderRadius: 5 }}>
+                                <Text style={{ color: tema.text, fontWeight: "bold" }}>ACEPTAR</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -120,38 +127,41 @@ const CambiarContrasena = ({ navigation }: any) => {
             <ImageBackground
                 source={require('../images/fondo_main.png')}
                 style={{ height: '110%', width: '100%' }}>
-                <View style={{ width: "90%", height: "60%", marginLeft: "5%", marginRight: "5%" }}>
-                    <View>
-                        <Text style={{ marginTop: 10, color: tema.text, fontWeight: 'bold' }}>Nueva Contraseña</Text>
-                        <View style={{ display: 'flex', flexDirection: 'row' }}>
-                            <TextInput secureTextEntry={!passwordVisible} value={usuario.new_pass} onChangeText={text => hanlechange({ text: text, id: "new_pass" })} placeholderTextColor={tema.placeholder} placeholder='Contraseña' style={(usuario.tipo == 2 ? styles.input_password_error : styles.input_password)} autoCapitalize='none' ></TextInput>
-                            <TouchableOpacity onPress={togglePasswordVisibility} style={{ backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', borderTopRightRadius: 10, borderBottomRightRadius: 10, borderColor: 'gray', borderTopWidth: 1, borderRightWidth: 1, borderBottomWidth: 1, width: 50 }}>
-                                {
-                                    passwordVisible ? <IconComponent nameIcon="eye" alto="35px" ancho="35px" ></IconComponent> :
-                                        <IconComponent nameIcon="eyeClose" alto="35px" ancho="35px" ></IconComponent>
-                                }
+                <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+                    <View style={{ width: "90%", height: "60%"}}>
+                        <Text style={{color:tema.text,fontSize:20,fontWeight:'bold'}}>Cambiar Contraseña</Text>
+                        <View>
+                            <Text style={{ marginTop: 10, color: tema.text, fontWeight: 'bold' }}>Nueva Contraseña</Text>
+                            <View style={{ display: 'flex', flexDirection: 'row' }}>
+                                <TextInput secureTextEntry={!passwordVisible} value={usuario.new_pass} onChangeText={text => hanlechange({ text: text, id: "new_pass" })} placeholderTextColor={tema.placeholder} placeholder='Contraseña' style={(usuario.tipo == 2 ? styles.input_password_error : styles.input_password)} autoCapitalize='none' ></TextInput>
+                                <TouchableOpacity onPress={togglePasswordVisibility} style={{ backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', borderTopRightRadius: 10, borderBottomRightRadius: 10, borderColor: 'gray', borderTopWidth: 1, borderRightWidth: 1, borderBottomWidth: 1, width: 50 }}>
+                                    {
+                                        passwordVisible ? <IconComponent nameIcon="eye" alto="35px" ancho="35px" ></IconComponent> :
+                                            <IconComponent nameIcon="eyeClose" alto="35px" ancho="35px" ></IconComponent>
+                                    }
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <View>
+                            <Text style={{ marginTop: 10, color: tema.text, fontWeight: 'bold' }}>Repita Contraseña</Text>
+                            <View style={{ display: 'flex', flexDirection: 'row' }}>
+                                <TextInput secureTextEntry={!passwordVisibleRe} value={usuario.new_pass_re} onChangeText={text => hanlechange({ text: text, id: "new_pass_re" })} placeholderTextColor={tema.placeholder} placeholder='Contraseña' style={(usuario.tipo == 2 ? styles.input_password_error : styles.input_password)} autoCapitalize='none' ></TextInput>
+                                <TouchableOpacity onPress={togglePasswordVisibilityRe} style={{ backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', borderTopRightRadius: 10, borderBottomRightRadius: 10, borderColor: 'gray', borderTopWidth: 1, borderRightWidth: 1, borderBottomWidth: 1, width: 50 }}>
+                                    {
+                                        passwordVisibleRe ? <IconComponent nameIcon="eye" alto="35px" ancho="35px" ></IconComponent> :
+                                            <IconComponent nameIcon="eyeClose" alto="35px" ancho="35px" ></IconComponent>
+                                    }
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <View>
+                            <TouchableOpacity onPress={() => enviarCliente()} style={{ backgroundColor: tema.primary, borderRadius: 5, height: 40, justifyContent: 'center', alignItems: "center", marginTop: 10 }}>
+                                <Text style={{ color: tema.text, fontWeight: "bold" }}>Cambiar Contraseña</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => cancelar()} style={{ backgroundColor: tema.danger, borderRadius: 5, height: 40, justifyContent: 'center', alignItems: "center", marginTop: 10 }}>
+                                <Text style={{ color: tema.text, fontWeight: "bold" }}>Cancelar</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
-                    <View>
-                        <Text style={{ marginTop: 10, color: tema.text, fontWeight: 'bold' }}>Repita Contraseña</Text>
-                        <View style={{ display: 'flex', flexDirection: 'row' }}>
-                            <TextInput secureTextEntry={!passwordVisibleRe} value={usuario.new_pass_re} onChangeText={text => hanlechange({ text: text, id: "new_pass_re" })} placeholderTextColor={tema.placeholder} placeholder='Contraseña' style={(usuario.tipo == 2 ? styles.input_password_error : styles.input_password)} autoCapitalize='none' ></TextInput>
-                            <TouchableOpacity onPress={togglePasswordVisibilityRe} style={{ backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', borderTopRightRadius: 10, borderBottomRightRadius: 10, borderColor: 'gray', borderTopWidth: 1, borderRightWidth: 1, borderBottomWidth: 1, width: 50 }}>
-                                {
-                                    passwordVisibleRe ? <IconComponent nameIcon="eye" alto="35px" ancho="35px" ></IconComponent> :
-                                        <IconComponent nameIcon="eyeClose" alto="35px" ancho="35px" ></IconComponent>
-                                }
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View>
-                        <TouchableOpacity onPress={() => enviarCliente()} style={{ backgroundColor: tema.primary, borderRadius: 5, height: 40, justifyContent: 'center', alignItems: "center", marginTop: 10 }}>
-                            <Text style={{ color: tema.text, fontWeight: "bold" }}>Cambiar Contraseña</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => toBack()} style={{ backgroundColor: tema.danger, borderRadius: 5, height: 40, justifyContent: 'center', alignItems: "center", marginTop: 10 }}>
-                            <Text style={{ color: tema.text, fontWeight: "bold" }}>Cancelar</Text>
-                        </TouchableOpacity>
                     </View>
                 </View>
             </ImageBackground>
@@ -187,25 +197,25 @@ const styles = StyleSheet.create({
         borderBottomColor: "#f00",
         borderRightColor: 'white'
     },
-    container:{
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center',
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    modalContainer:{
-        flex:1,
-        justifyContent:'center',
-        alignContent:'center',
-        backgroundColor:'rgba(0,0,0,0.5)'
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignContent: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)'
     },
-    modalContent:{
-        padding:16,
-        borderRadius:8,
-        position:'relative',
-        width:"90%",
-        backgroundColor:tema.background,
-        marginRight:"5%",
-        marginLeft:"5%"
+    modalContent: {
+        padding: 16,
+        borderRadius: 8,
+        position: 'relative',
+        width: "90%",
+        backgroundColor: tema.background,
+        marginRight: "5%",
+        marginLeft: "5%"
     }
 });
 export default CambiarContrasena;
