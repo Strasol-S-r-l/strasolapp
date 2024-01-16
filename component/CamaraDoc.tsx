@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Text, View, PermissionsAndroid, Platform, Dimensions, TouchableOpacity, StyleSheet } from 'react-native';
 import tema from '../enviroments/tema.json'
-import { Camera, useCameraDevice } from 'react-native-vision-camera';
+
 import ImagePicker from 'react-native-image-crop-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -11,11 +11,20 @@ const CamaraDoc = (navigation: any) => {
   const camera = useRef(null);
   const [state, setState] = useState({});
 
+  const qrcode = useMemo(() => {
+    return {
+      codeTypes: ['qr'],
+      onCodeScanned:  () => null
+    };
+  }, []);
+
   const requestCameraPermissionAndroid = async () => {
     try {
       const granted = await Camera.requestCameraPermission();
+      const granted2 = await Camera.requestMicrophonePermission();
+      
       console.log(granted);
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      if (granted === PermissionsAndroid.RESULTS.GRANTED && granted2 === PermissionsAndroid.RESULTS.GRANTED) {
         return true;
       } else {
         return false;
@@ -27,7 +36,7 @@ const CamaraDoc = (navigation: any) => {
   };
 
   const setShowCamera = async () => {
-    console.log(camera?.current?.isMounted)
+    
     await setTimeout(()=>{
       setState({...state, estado:true});
     }, 1000);
@@ -53,7 +62,8 @@ const CamaraDoc = (navigation: any) => {
       height: 400,
       freeStyleCropEnabled:true,
       cropperToolbarTitle:"Recorte el documento",
-      cropping:true
+      cropping:true,
+      mediaType:'photo'
     }).then(async image => {
 
       state["documentos"].map((doc:any)=>{
@@ -109,12 +119,14 @@ const CamaraDoc = (navigation: any) => {
     <View style={{flex:1, alignItems:'center' }}>
       <Camera
         ref={camera}
-        style={{width:400, height:400, zIndex:100}}
+        style={StyleSheet.absoluteFill}
         device={device}
         isActive={state.estado}
         photo={true}
+         
         onError={(error) => {console.log(error)}}
         onInitialized={() => {setShowCamera()}}
+        
       />
         <TouchableOpacity 
           onPress={takePhoto}
