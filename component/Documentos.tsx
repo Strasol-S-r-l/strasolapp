@@ -1,41 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Dimensions, TouchableOpacity, Image } from 'react-native';
-import api from '../enviroments/api.json'
-import RNFS from 'react-native-fs';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import tema from '../enviroments/tema.json'
 import Load from './Load';
 import IconComponent from './assets/icons/IconComponent';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 const Documentos = (props:any) => {
-    const [state, setState] = useState({});
+    const [state, setState] = useState(props?.documentos);
     const navigation = useNavigation();
-    const route = useRoute();
 
-    const action = (nav: String) => {
-        let name = route.name;
-        navigation.navigate(nav);
-    }
-
-    useEffect(() => {
-
-        const init = async () => {
-            let documentos = await AsyncStorage.getItem("documentos")
-            
-            
-            if(documentos) documentos = JSON.parse(documentos)
-            else documentos = [];
-            
-            
-
-            state["documentos"] = documentos;
-            setState({ ...state })
-            console.log( JSON.stringify(state) + " asdasdasdas dasd")
-        }
-
-        init();
-    }, []); // Asegúrate de que las dependencias estén correctamente listadas aquí
     const getIcon=(doc:any)=>{
         if(doc.url) return <Image source={{ uri: "file://"+doc.url }} style={{ width: 50, height: 50 }} /> 
         return <IconComponent nameIcon="Camara" colors={{ color: tema.active }} ></IconComponent>

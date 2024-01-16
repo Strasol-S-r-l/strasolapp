@@ -40,7 +40,6 @@ const CambiarContrasena = ({ navigation }: any) => {
                 navigation_.replace("Login");
                 return;
             }
-            console.log(suser);
             setUsuario(JSON.parse(suser));
             return;
         };
@@ -58,7 +57,7 @@ const CambiarContrasena = ({ navigation }: any) => {
             return;
         }
         if (nueva_contrasena != nueva_contrasena_re) {
-            password.mensaje = "Las contraceñas no son iguales";
+            password.mensaje = "Las contraseñas no son iguales";
             password.terminar = false;
             openModal();
             return;
@@ -123,13 +122,11 @@ const CambiarContrasena = ({ navigation }: any) => {
         </View>
     }
     return (
-        <View style={{ height: Dimensions.get('screen').height }}>
-            <ImageBackground
-                source={require('../images/fondo_main.png')}
-                style={{ height: '110%', width: '100%' }}>
+        <View style={{ position:"absolute",top:0,bottom:0,left:0,right:0}}>
+            <IconComponent nameIcon='fondo_login' ></IconComponent>
                 <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-                    <View style={{ width: "90%", height: "60%"}}>
-                        <Text style={{color:tema.text,fontSize:20,fontWeight:'bold'}}>Cambiar Contraseña</Text>
+                    <View style={{ padding:"5%",width: "90%",backgroundColor:"rgba(0,0,0,0.5)", borderRadius:20}}>
+                        <Text style={{textAlign:"center",color:tema.text,fontSize:20,fontWeight:'bold'}}>Cambiar Contraseña</Text>
                         <View>
                             <Text style={{ marginTop: 10, color: tema.text, fontWeight: 'bold' }}>Nueva Contraseña</Text>
                             <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -156,7 +153,7 @@ const CambiarContrasena = ({ navigation }: any) => {
                         </View>
                         <View>
                             <TouchableOpacity onPress={() => enviarCliente()} style={{ backgroundColor: tema.primary, borderRadius: 5, height: 40, justifyContent: 'center', alignItems: "center", marginTop: 10 }}>
-                                <Text style={{ color: tema.text, fontWeight: "bold" }}>Cambiar Contraseña</Text>
+                                <Text style={{ color: tema.text, fontWeight: "bold" }}>Aceptar</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => cancelar()} style={{ backgroundColor: tema.danger, borderRadius: 5, height: 40, justifyContent: 'center', alignItems: "center", marginTop: 10 }}>
                                 <Text style={{ color: tema.text, fontWeight: "bold" }}>Cancelar</Text>
@@ -164,9 +161,11 @@ const CambiarContrasena = ({ navigation }: any) => {
                         </View>
                     </View>
                 </View>
-            </ImageBackground>
-            {ModalPassword()}
+                <View style={{position:"absolute"}}>
+                {ModalPassword()}
+                </View>
         </View>
+        
     )
 };
 

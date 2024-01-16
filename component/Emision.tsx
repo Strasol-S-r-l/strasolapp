@@ -65,12 +65,32 @@ const Emision = ({ navigation }: any) => {
             state["usuario"] = await AsyncStorage.getItem("usuario");
             state["usuario"] = JSON.parse(state["usuario"])
             state["documentos"] = await getDocumentos();
+            state["parametricas"] = await getParametricas();
             setState({ ...state });
         };
         init();
 
     }, []);
-
+    const getParametricas = async () => {
+        try {
+            const response = await fetch(api.url + '/app',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', },
+                    body: JSON.stringify({ key: api.key, type: 'getParametricas', nit: state?.poliza?.NIT }),
+                });
+            const obj = await response.json();
+            if (obj.estado === "error") {
+                await setTimeout(() => {
+                    getParametricas();
+                }, 5000);
+                return obj;
+            }
+            return obj.data;
+        } catch (error) {
+            return { estado: "error", error };
+        }
+    }
     const emitir = async () => {
 
 
@@ -257,7 +277,7 @@ const Emision = ({ navigation }: any) => {
 
             control = true;
         }
-        if (state.error) {
+        if (state.error && state["documentos"]?.length > 0) {
             mensaje = state?.error;
             control = true;
         }
@@ -769,7 +789,7 @@ const Emision = ({ navigation }: any) => {
 
         return <View style={{ marginTop: 15, flex: 1 }}>
             <View style={{ flex: 1 }}>
-                <Documentos />
+                <Documentos documentos={state} />
             </View>
         </View>
     }
@@ -821,15 +841,15 @@ const Emision = ({ navigation }: any) => {
                                     aux_tipo == 2 ? getInfoAutomotor() : <></>
                                 }
                                 {
-                                    aux_tipo == 3 ? <View style={{flex:1}}>
+                                    aux_tipo == 3 ? <View style={{ flex: 1 }}>
                                         {getInfoRespaldo()}
                                         <View style={{ display: "flex", alignItems: "center" }}>
                                             <TouchableOpacity style={styles.button3D} onPress={() => verificarInformacion()}>
                                                 <Text style={styles.buttonText} >Emitir</Text>
                                             </TouchableOpacity>
                                         </View>
-                                    </View> : 
-                                    <View></View>
+                                    </View> :
+                                        <View></View>
                                 }
                             </>
                         }
@@ -847,7 +867,16 @@ const Emision = ({ navigation }: any) => {
                     </View> : <></>}
                     {/*getEmitir(getPorcentajeAvance())*/}
                 </View>
-                <View style={{ width: "100%", height: "20%" }}>
+                {
+                    aux_tipo == 1 ? <BarLeft back={true} titulo={"Datos Personales"} /> : <></>
+                }
+                {
+                    aux_tipo == 2 ? <BarLeft back={true} titulo={"Datos del Vehiculo"} /> : <></>
+                }
+                {
+                    aux_tipo == 3 ? <BarLeft back={true} titulo={"Documentos de Respaldo"} /> : <></>
+                }
+                <View style={{ width: "100%", height: "20%", zIndex: 1 }}>
                     <Image
                         style={{
                             flex: 1,
@@ -859,15 +888,7 @@ const Emision = ({ navigation }: any) => {
                     />
                 </View>
             </SafeAreaView>
-            {
-                aux_tipo == 1 ? <BarLeft back={true} titulo={"Datos Personales"} /> : <></>
-            }
-            {
-                aux_tipo == 2 ? <BarLeft back={true} titulo={"Datos del Vehiculo"} /> : <></>
-            }
-            {
-                aux_tipo == 3 ? <BarLeft back={true} titulo={"Documentos de Respaldo"} /> : <></>
-            }
+
             {ModalError(modalState, closeModal)}
         </View>
 

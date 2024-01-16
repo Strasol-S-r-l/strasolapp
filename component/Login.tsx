@@ -24,6 +24,10 @@ const Login = ({ navigation }: any) => {
     setModalState(false);
   }
 
+  const action = (nav: String) => {
+    navigation_.navigate(nav);
+  }
+
   const [passwordVisible, setPasswordVisible] = useState(false);
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -212,7 +216,7 @@ const Login = ({ navigation }: any) => {
               </TouchableOpacity>
             </View>
             <View>
-              <TouchableOpacity style={{ display: "flex",alignItems:"center" }}>
+              <TouchableOpacity style={{ display: "flex",alignItems:"center" }} onPress={()=> action("Agreguement")}>
                 <Text style={{ color: tema.primary, fontSize: 11 }}>Para conectarse, usted declara que conoce y acepta todos los terminos</Text>
                 <Text style={{ color: tema.primary, fontSize: 11 }}> y condiciones de los servicios <Text style={{ fontWeight: 'bold', color: tema.primary }}>CloudBrokers Agreement.</Text></Text>
               </TouchableOpacity>

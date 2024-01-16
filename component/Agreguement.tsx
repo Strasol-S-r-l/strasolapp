@@ -1,9 +1,12 @@
-import React from 'react';
+import React , { useEffect, useState }from 'react';
 import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import tema from '../enviroments/tema.json'
 var navigation_: any;
 const Agreguement = ({ navigation }: any) => {
     navigation_ = navigation;
+    useEffect(() => {
+        navigation_.setOptions({ headerShown: false });
+    }, []);
 
     const toBack = () => {
         navigation_.goBack();
@@ -11,7 +14,7 @@ const Agreguement = ({ navigation }: any) => {
 
     return (
         <View style={{ backgroundColor: tema.background, flex: 1 }}>
-            <ScrollView style={{ width: "100%", height: "90%" }}>
+            <ScrollView style={{ flex:1}}>
                 <View style={{borderWidth:1,borderBlockColor:tema.primary,padding:8}}>
                     <Text style={{ color: tema.active, fontWeight: "bold", textAlign: "center",fontSize:20}}>TÉRMINOS Y CONDICIONES DE USO DE LA APLICACIÓN DE COLOCACIÓN DE SEGUROS</Text>
                     <View style={{ width: "90%", marginLeft: "5%", marginRight: "5%" }}>
@@ -63,7 +66,7 @@ const Agreguement = ({ navigation }: any) => {
                 </View>
 
             </ScrollView>
-            <View style={{ width: "100%", height: "10%" }}>
+            <View >
                 <TouchableOpacity onPress={() => toBack()} style={{ backgroundColor: tema.primary, justifyContent: "center", alignItems: "center", height: 40, width: "100%" }}>
                     <Text style={{ color: tema.text, fontWeight: "bold" }}>Volver</Text>
                 </TouchableOpacity>

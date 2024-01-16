@@ -37,7 +37,6 @@ const Automotor = ({navigation}:any) => {
             } 
 
             const usuario = JSON.parse(suser);
-            console.log(usuario)
             setData(usuario);
           } catch (error) {
             return {estado:"error", error};
@@ -71,7 +70,6 @@ const Automotor = ({navigation}:any) => {
         if(cliente){
             var cli = {...cliente}
             cli[dato] = text;
-            console.log(cli)
             setCliente(cli);
         }
         
@@ -80,7 +78,6 @@ const Automotor = ({navigation}:any) => {
 
     const paintCliente = () =>{
         if(cliente){
-            console.log(cliente)
             if(cliente.TIPO==2) return paintClienteNatural();
             else  return paintClienteJuridico();
         }

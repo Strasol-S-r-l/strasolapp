@@ -188,7 +188,7 @@ const Cotizacion = ({ navigation }: any) => {
                 <View style={{ alignItems: 'center', height: "20%", width: "80", marginLeft: "20%" }}>
                     <View style={{ width: "90%", margin: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <CurrencyInput
-                            style={styles.input}
+                            style={{...styles.input,backgroundColor:"rgb(240,240,240)",borderColor:tema.primary,borderWidth:2}}
                             value={value}
                             onChangeValue={setValue}
                             delimiter=","

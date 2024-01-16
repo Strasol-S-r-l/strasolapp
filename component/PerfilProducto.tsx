@@ -334,11 +334,11 @@ const PerfilProducto = ({route, navigation}:any) => {
     
         // Crea la URL para enviar el mensaje
         let url = `whatsapp://send?text=${encodeURIComponent("message")}&phone=${phoneNumber}`;
-    
-        // Verifica si se pueden abrir URL
-        Linking.canOpenURL(url)
+        console.log(phoneNumber);
+        // Verifica si se pueden abrir 
+        //Linking.openURL(url);
+        Linking.openURL(url)
         .then((supported) => {
-            console.log(supported);
             if (!supported) {
               console.log('No se puede abrir WhatsApp');
             } else {

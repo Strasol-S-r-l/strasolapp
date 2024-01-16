@@ -4,6 +4,7 @@ import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 import TextNotifier from './TextNotifier';
 import BarFooter from './BarFooter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import IconComponent from './assets/icons/IconComponent';
 
 const data = [
     {title:"Inicio", action:"Cotizacion"},
@@ -52,9 +53,7 @@ const Menu = ({navigation}:any) => {
 
     return (
         <View style={{backgroundColor:'#000'}}>
-            <ImageBackground
-                source={require('../images/fondo_main.png')}
-                style={{height:'110%', width:'100%'}}>
+            <IconComponent nameIcon='fondo_login' ></IconComponent>
                 <ScrollView>
                     <View style={{height:40}}></View>
                     
@@ -63,12 +62,12 @@ const Menu = ({navigation}:any) => {
                         onPress={() => salir()}
                         style={{backgroundColor:'#000000', margin:5, padding:10, borderRadius:5 }}
                         >
-                        <Text style={{textAlign:"center", color:"#F00", fontSize:25, fontWeight:'bold'}}>Salir</Text>
+                        <Text style={{textAlign:"center", color:"#F00", fontSize:25, fontWeight:'bold'}}>Logout</Text>
+                        <IconComponent nameIcon="logoutIcon" ancho={24} alto={24} colors={{color_1:"white"}}></IconComponent>
+
                     </TouchableOpacity>
                 </ScrollView>
                 {/*<BarFooter/>*/}
-                
-            </ImageBackground>
         </View>
     )
 };

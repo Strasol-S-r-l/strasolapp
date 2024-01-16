@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useLayoutEffect  } from 'react';
 import { Text, View, Image, TextInput, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import IconComponent from './assets/icons/IconComponent';
 import Marcas from './Marcas';
@@ -12,30 +12,7 @@ var navigation_: any;
 const PerfilAutomotor = (props: any) => {
     navigation_ = props.navigation;
     const [state, setState] = React.useState(props.state);
-    useEffect(() => {
-        const getParametricas = async () => {
-            try {
-                const response = await fetch(api.url + '/app',
-                    {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json', },
-                        body: JSON.stringify({ key: api.key, type: 'getParametricas', nit: props.state.poliza.NIT }),
-                    });
-                const obj = await response.json();
-                if (obj.estado === "error") {
-                    await setTimeout(() => {
-                        getParametricas();
-                    }, 5000);
-                    return obj;
-                }
-                state["parametricas"] = obj.data;
-                setState({ ...state });
-            } catch (error) {
-                return { estado: "error", error };
-            }
-        }
-        getParametricas();
-    }, []);
+
     const selectMarca = (marca: any) => {
         delete props.state?.selectMarca;
         delete props.state?.modelos;
@@ -82,6 +59,12 @@ const PerfilAutomotor = (props: any) => {
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
         setState({ ...props.state });
     };
+    const selectZona = (data: any) => {
+        props.changeAutomotor("ZONA_CIRCULACION", data.value);
+        //props.state["automotor"] = { ...props.state["automotor"], EXTRATERRITORIALIDAD: data.value };
+        AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
+        setState({ ...props.state });
+    };
     const selectEstado = (data: any) => {
         props.changeAutomotor("ESTADO", data.value);
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
@@ -121,11 +104,11 @@ const PerfilAutomotor = (props: any) => {
             </View>
         </View>
         <View style={{ position: "relative", height: 50, marginBottom: 10 }}>
-            {props.state?.automotor?.marca?.DESCRIPCION ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_tipo_auto", color: tema.succes }}></IconComponent> : <IconComponent nameIcon='border_input' data={{ id: "sv_txt_tipo_auto", color: tema.danger }}></IconComponent>}
+            {props.state?.automotor?.modelo?.TIPO_VEHICULO ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_tipo_auto", color: tema.succes }}></IconComponent> : <IconComponent nameIcon='border_input' data={{ id: "sv_txt_tipo_auto", color: tema.danger }}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
                 <TextInput
                     style={styles.input}
-                    value={"Auto"}
+                    value={props.state?.automotor?.modelo?.TIPO_VEHICULO}
                     placeholderTextColor={tema.placeholder}
                     placeholder='Tipo'
                     editable={false}
@@ -294,7 +277,7 @@ const PerfilAutomotor = (props: any) => {
                             } 
                             list.push(obj);
                         });
-                        navigation_.navigate("Select", { data: list, func: selectTraccion });
+                        navigation_.navigate("Select", { data: list, func: selectZona });
                     }}>
                     {props?.state?.automotor?.ZONA_CIRCULACION ? <Text style={{ color: tema.text, fontSize: 11 }}>{(props?.state?.automotor?.ZONA_CIRCULACION)}</Text> : <Text style={{ color: tema.placeholder, fontSize: 11 }}>Zona de Circulacion</Text>}
                 </TouchableOpacity>
