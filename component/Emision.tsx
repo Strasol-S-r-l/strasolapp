@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Dimensions, Text, ScrollView, Image, TextInput, TouchableOpacity, Animated } from 'react-native';
+import { View, StyleSheet, Dimensions, Text, ScrollView, Image, TextInput, TouchableOpacity, Animated, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Circle, G, Line, Rect, Svg, Text as SvgText, TSpan } from 'react-native-svg';
@@ -95,6 +95,7 @@ const Emision = ({ navigation }: any) => {
 
 
         let documentos = await AsyncStorage.getItem("documentos");
+        let cuotas = await AsyncStorage.getItem("cuotas");
         if (documentos) {
             documentos = JSON.parse(documentos);
 
@@ -122,10 +123,13 @@ const Emision = ({ navigation }: any) => {
                     cliente: state.cliente,
                     automotor: state.automotor,
                     poliza: state.poliza,
-                    documentos: documentos
+                    documentos: documentos,
+                    cuotas: cuotas
                 }),
             }).then(async (response) => {
+
                 const obj = await response.json();
+                console.log(obj)
                 if (obj.estado === "error") {
                     state["error"] = obj.error;
                     state["emitiendo"] = false;
@@ -156,7 +160,9 @@ const Emision = ({ navigation }: any) => {
             }).catch(e => {
                 state["error"] = state.error + "";
                 state["emitiendo"] = false;
-                console.log(state)
+                setMensaje("Intentelo mas tarde");
+                openModal();
+                console.log(e + " error de respuesta")
                 setState({ ...state });
                 return;
             });
@@ -256,6 +262,7 @@ const Emision = ({ navigation }: any) => {
         </View>
     }
     const verificarInformacion = () => {
+        state["emitiendo"] = true;
         let porcCli = getPorcentajeAvanceCliente();
         let porcAuto = getPorcentajeAvanceAutomotor();
         let porcDoc = getPorcentajeDocumentosRespaldo();
@@ -295,6 +302,7 @@ const Emision = ({ navigation }: any) => {
             </View>
         }*/
         if (control) {
+            state["emitiendo"] = false;
             setMensaje(mensaje);
             openModal();
             return;
@@ -841,40 +849,49 @@ const Emision = ({ navigation }: any) => {
                                     aux_tipo == 2 ? getInfoAutomotor() : <></>
                                 }
                                 {
-                                    aux_tipo == 3 ? <View style={{ flex: 1 }}>
+                                    aux_tipo == 3 && !state["emitiendo"] ? <View style={{ flex: 1 }}>
                                         {getInfoRespaldo()}
                                         <View style={{ display: "flex", alignItems: "center" }}>
                                             <TouchableOpacity style={styles.button3D} onPress={() => verificarInformacion()}>
                                                 <Text style={styles.buttonText} >Emitir</Text>
                                             </TouchableOpacity>
                                         </View>
-                                    </View> :
-                                        <View></View>
+                                    </View>
+                                        :
+                                        (aux_tipo == 3 ? <Modal
+                                            transparent={true}
+                                            animationType="fade"
+                                            visible={state["emitiendo"]}
+                                        >
+                                            <View style={styles.modalContainer}>
+                                                <Load></Load>
+                                                <Text style={{fontWeight:"bold",fontSize:20}}>Emitiendo....</Text>
+                                                {/*<WebView
+                                                    originWhitelist={['*']}
+                                                    source={{ uri: "https://ruddy.ibrokers.cloud/buster_drone/" }}
+                                                    style={{
+                                                        minWidth:500,
+                                                        minHeight: 100,
+                                                        backgroundColor: "rgba(0,0,0,0)"
+                                                    }}>
+                                                </WebView>*/}
+                                            </View>
+                                        </Modal> : <></>
+                                        )
                                 }
                             </>
                         }
                     </View>
-
-                    {state["emitir"] ? <View style={{ width: "100%", height: 200, display: "flex", position: "absolute", backgroundColor: "#00000000" }}>
-                        <WebView
-                            originWhitelist={['*']}
-                            source={{ uri: "https://ruddy.ibrokers.cloud/buster_drone/" }}
-                            style={{
-                                flex: 1,
-                                backgroundColor: "#00000000"
-                            }}>
-                        </WebView>
-                    </View> : <></>}
                     {/*getEmitir(getPorcentajeAvance())*/}
                 </View>
                 {
-                    aux_tipo == 1 ? <BarLeft back={true} titulo={"Datos Personales"} /> : <></>
+                    aux_tipo == 1 ? <BarLeft nav={navigation_} back={true} titulo={"Datos Personales"} /> : <></>
                 }
                 {
-                    aux_tipo == 2 ? <BarLeft back={true} titulo={"Datos del Vehiculo"} /> : <></>
+                    aux_tipo == 2 ? <BarLeft nav={navigation_} back={true} titulo={"Datos del Vehiculo"} /> : <></>
                 }
                 {
-                    aux_tipo == 3 ? <BarLeft back={true} titulo={"Documentos de Respaldo"} /> : <></>
+                    aux_tipo == 3 ? <BarLeft nav={navigation_} back={true} titulo={"Documentos de Respaldo"} /> : <></>
                 }
                 <View style={{ width: "100%", height: "20%", zIndex: 1 }}>
                     <Image
@@ -909,6 +926,14 @@ const styles = StyleSheet.create({
         marginTop: 25,
         color: tema.opaque,
         fontSize: 11
+    },
+    modalContainer: {
+        flex: 1,
+        width: "100%",
+        height: "100%",
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     subtitle: {
         color: tema.primary,

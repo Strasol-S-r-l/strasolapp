@@ -3,11 +3,15 @@ import { View, StyleSheet, Text, ScrollView, Image, TouchableOpacity, TextInput 
 import api from '../enviroments/api.json'
 import Load from './Load';
 import tema from '../enviroments/tema.json'
+import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 
 
 const Subrogados = (props:any) => {
     const [state, setState] = React.useState(props.state);
-    
+    const [montoInicial, setMonto] = React.useState(0);   
+    const [text, changeText] = React.useState('');
+
+
     const getSubrogatarios = async () => {
         try {
             
@@ -47,33 +51,39 @@ const Subrogados = (props:any) => {
     };
 
     const eliminarSubrogado=()=>{
-        props.selectSubrogatario({});
+        setMonto(0);
+        props.selectSubrogatario(null);
     }
+
+    const setMontoSubrogado=(monto:Int32,subrogado:any)=>{
+        props.selectSubrogatario(subrogado)
+        setMonto(monto);
+    };
 
     return <View>
             <View style={{alignItems:'center'}}>
                 <TextInput
                     style={styles.input}
-                    onChangeText={props.selectSubrogatario}
-                    value={""}
+                    onChangeText={changeText}
+                    value={text}
                     placeholder='Buscar subrogatario'
                     placeholderTextColor={tema.opaque}
                     />
             </View>
             <ScrollView  horizontal={true} style={{height:190}}>
             {
-                state.subrogatarios.sort((a:any,b:any)=>{ return a.NOMBRE_COMPLETO<b.NOMBRE_COMPLETO?1:-1 }).map((subrogado:any, key)=>{
-                    console.log(subrogado);
+                state.subrogatarios.sort((a:any,b:any)=>{ return a.NOMBRE_COMPLETO<b.NOMBRE_COMPLETO?1:-1 }).filter((sudro:any)=>{return sudro.NOMBRE_COMPLETO.toUpperCase().indexOf(text.toUpperCase())>-1}).map((subrogado:any, key)=>{
+                    console.log(text +" - "+ subrogado.NOMBRE_COMPLETO)
+
                     return <TouchableOpacity 
-                        onPress={()=>{props.selectSubrogatario(subrogado)}}
+                        onPress={()=>{setMontoSubrogado(state.automotor.monto_subrogado,subrogado)}}
                         key={key}  
                         style={{
                             ...styles.card, 
                             borderWidth:5,
-                            borderColor:((subrogado.ID_CLIENTE == props?.state?.automotor?.subrogatario?.ID_CLIENTE)?tema.danger:"white")
+                            borderColor:((subrogado.ID_CLIENTE == props?.state?.automotor?.subrogatario?.ID_CLIENTE)?tema.danger :"white")
                         }}
                         >
-
                         <View style={{alignItems:'center',position:"relative"}}>
                             {(subrogado.ID_CLIENTE == props?.state?.automotor?.subrogatario?.ID_CLIENTE)?
                                 <TouchableOpacity onPress={()=>eliminarSubrogado()} style={{backgroundColor:tema.danger,position:'absolute',top:2,right:2,zIndex:10,borderRadius:20,width:20,height:20}}>
@@ -95,7 +105,8 @@ const Subrogados = (props:any) => {
             <TextInput
                 style={{...styles.input, textAlign:'right'}}
                 onChangeText={onChangeText}
-                value={state.automotor.monto_subrogado+""}
+                //value={state.automotor.monto_subrogado+""}
+                value={props.state?.automotor?.subrogatario ? props.state.automotor.monto_subrogado+"": "0"}
                 placeholder='Monto subrogado'
                 placeholderTextColor={tema.opaque}
                 />

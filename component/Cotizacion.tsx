@@ -6,16 +6,15 @@ import Load from './Load';
 import api from '../enviroments/api.json'
 import tema from '../enviroments/tema.json'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Svg, { G, Path } from 'react-native-svg';
 import BarLeft from './BarLeft';
 import IconComponent from './assets/icons/IconComponent';
-import Splash from './Splash';
 
 
 var navigation_: any;
 const Cotizacion = ({ navigation }: any) => {
     navigation_ = navigation;
     const [value, setValue] = React.useState(10000.00);
+    const [cuotas, setCuotas] = React.useState(1);
     const [state, setState] = React.useState({ tipoPago: 1 });
 
     const [isEnabled, setIsEnabled] = useState(false);
@@ -32,7 +31,7 @@ const Cotizacion = ({ navigation }: any) => {
         navigation_.setOptions({ headerShown: false });
 
         //no borrar porque se fregan los documentos 
-        
+
         const getUser = async () => {
             const suser: any = await AsyncStorage.getItem("usuario");
             if (!suser || suser == null) {
@@ -70,10 +69,12 @@ const Cotizacion = ({ navigation }: any) => {
 
     const changeContado = () => {
         state.tipoPago = 1;
+        setCuotas(1);
         setState({ ...state });
     }
     const changeCredito = () => {
         state.tipoPago = 2;
+        setCuotas(1);
         setState({ ...state });
     }
 
@@ -100,6 +101,7 @@ const Cotizacion = ({ navigation }: any) => {
         poliza["valor_asegurado"] = value;
         await AsyncStorage.removeItem("documentos");
         await AsyncStorage.setItem("poliza", JSON.stringify(poliza));
+        await AsyncStorage.setItem("cuotas", cuotas+"");
         navigation_.navigate("Emision");
     };
 
@@ -129,7 +131,11 @@ const Cotizacion = ({ navigation }: any) => {
             {
                 state.polizas.map((cia, key) => {
                     let prima = state.tipoPago == 1 ? cia.PRIMA_CONTADO : cia.PRIMA_CREDITO;
-                    if (prima <= 0) return;
+                    if (prima < 1) {
+                        return};
+                        if (cia.TIPO_PAGO ==1) {
+                            console.log(cia);
+                        };    
                     return <View key={key} style={{
                         borderColor: tema.primary,
                         borderRadius: 15,
@@ -188,7 +194,7 @@ const Cotizacion = ({ navigation }: any) => {
                 <View style={{ alignItems: 'center', height: "20%", width: "80", marginLeft: "20%" }}>
                     <View style={{ width: "90%", margin: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <CurrencyInput
-                            style={{...styles.input,backgroundColor:"rgb(240,240,240)",borderColor:tema.primary,borderWidth:2}}
+                            style={{ ...styles.input, backgroundColor: "rgb(240,240,240)", borderColor: tema.primary, borderWidth: 2 }}
                             value={value}
                             onChangeValue={setValue}
                             delimiter=","
@@ -201,21 +207,36 @@ const Cotizacion = ({ navigation }: any) => {
                             <Text style={{ color: tema.primary, fontSize: 11 }}>$us</Text>
                         </View>
                     </View>
-                    <View>
-                        <Text style={{ color: tema.opaque, fontSize: 11, textAlign: 'center' }}>Seleccione su forma de pago</Text>
-                        <View style={{ display: "flex", flexDirection: "row" }}>
-                            <Switch
-                                trackColor={{ false: '#767577', true: '#81b0ff' }}
-                                thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-                                ios_backgroundColor="#3e3e3e"
-                                onValueChange={toggleSwitch}
-                                value={isEnabled}
-                            />
-                            <View>
-                                <Text style={{ color: isEnabled ? tema.opaque : tema.text }}>Contado</Text>
-                                <Text style={{ color: !isEnabled ? tema.opaque : tema.text }}>Credito</Text>
+                    <View style={{width:"100%",justifyContent:"center",display:"flex",flexDirection:"row",position:'relative',alignItems:"center"}}>
+                        <View>
+                            <Text style={{ color: tema.opaque, fontSize: 11, textAlign: 'center' }}>Seleccione su forma de pago</Text>
+                            <View style={{ display: "flex", flexDirection: "row" }}>
+                                <Switch
+                                    trackColor={{ false: '#767577', true: '#81b0ff' }}
+                                    thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+                                    ios_backgroundColor="#3e3e3e"
+                                    onValueChange={toggleSwitch}
+                                    value={isEnabled}
+                                />
+                                <View>
+                                    <Text style={{ color: isEnabled ? tema.opaque : tema.text }}>Contado</Text>
+                                    <Text style={{ color: !isEnabled ? tema.opaque : tema.text }}>Credito</Text>
+                                </View>
                             </View>
                         </View>
+
+                        {isEnabled ? <View style={{position:'absolute',right:20,bottom:0}}>
+                            <Text>Cuotas</Text>
+                            <CurrencyInput
+                                style={{height:40,width:50,backgroundColor:"white",borderRadius:10,borderWidth:2,borderColor:tema.primary,color:tema.active,textAlign:'center'}}
+                                value={cuotas}
+                                onChangeValue={setCuotas}
+                                delimiter=","
+                                separator="."
+                                precision={0}
+                                placeholder='Cuota'
+                            />
+                        </View> : <></>}
                     </View>
                 </View>
                 <View style={{ alignItems: 'center', height: "60%", width: "80", marginLeft: "20%" }}>
@@ -229,19 +250,19 @@ const Cotizacion = ({ navigation }: any) => {
                 <View style={{ width: "100%", height: "20%", backgroundColor: tema.background }}>
                     <TouchableOpacity
                         style={{
-                            backgroundColor: tema.active+"aa",
+                            backgroundColor: tema.active + "aa",
                             display: "flex",
                             width: "100%",
                             height: 50,
                             marginRight: 5,
-                            justifyContent:'center'
+                            justifyContent: 'center'
                         }}
                         onPress={async () => {
                             //await AsyncStorage.removeItem("usuario");
                             navigation_.navigate("Menu");
                         }}
                     >
-                        <Text style={{ color: "#fff", textAlign: "center", padding: 5, fontSize:20 }}>Menú</Text>
+                        <Text style={{ color: "#fff", textAlign: "center", padding: 5, fontSize: 20 }}>Menú</Text>
                     </TouchableOpacity>
                     <Image
                         style={{

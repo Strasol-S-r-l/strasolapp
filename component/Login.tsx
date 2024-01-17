@@ -140,7 +140,7 @@ const Login = ({ navigation }: any) => {
             <View style={{ width: '80%' }}>
               <View>
                 <Text style={{ marginTop: 10, color: tema.text, fontWeight: 'bold' }}>Usuario</Text>
-                <TextInput placeholder='Nombre de Usuario' onChangeText={text => hanlechage({ text: text, id: "user" })} style={(usuario.tipo == 1 ? styles.error : styles.input)} autoCapitalize='none'></TextInput>
+                <TextInput placeholderTextColor={tema.placeholder}  placeholder='Nombre de Usuario' onChangeText={text => hanlechage({ text: text, id: "user" })} style={(usuario.tipo == 1 ? styles.error : styles.input)} autoCapitalize='none'></TextInput>
               </View>
               <View>
                 <Text style={{ marginTop: 10, color: tema.text, fontWeight: 'bold' }}>Contraseña</Text>
