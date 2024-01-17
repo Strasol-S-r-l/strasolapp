@@ -4,6 +4,7 @@ import tema from '../enviroments/tema.json'
 
 import ImagePicker from 'react-native-image-crop-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useCameraDevice, Camera } from 'react-native-vision-camera';
 
 const CamaraDoc = (navigation: any) => {
   const device = useCameraDevice('back');
