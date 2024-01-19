@@ -74,7 +74,6 @@ const Login = ({ navigation }: any) => {
         body: JSON.stringify({ key: api.key, type: "login", user: usuario.user, pass: usuario.pass }),
       });
     const data = await response.json();
-    console.log(JSON.stringify(data))
    
     if (data.estado == 'error') {
       setUsuario({ ...usuario, error: data.error })

@@ -151,12 +151,34 @@ const PerfilProducto = ({ route, navigation }: any) => {
         });
     }
 
+    const getDoc=(title:string, doc:any)=>{
+        if(!doc) return null;
+
+        return <TouchableOpacity
+            onPress={() => {
+                sharePdf(title, doc)
+            }}
+        >
+            <View style={{ display: 'flex', alignItems: 'center' }}>
+                <Image
+                    style={{ width: 60, height: 60 }}
+                    source={require('../images/pdf.webp')}
+                />
+                <Text style={{ color: tema.text }}>{title}</Text>
+            </View>
+        </TouchableOpacity>
+
+    };
+
     const getDocs = () => {
         let emision = state?.certificado?.EMISION;
 
         if (!emision) return <></>
 
+
         emision = JSON.parse(emision);
+
+        console.log(emision)
 
         if (emision.sDocumentsEmi) {
             return <View style={{ marginTop: 10 }}>
@@ -186,23 +208,13 @@ const PerfilProducto = ({ route, navigation }: any) => {
         }
         if (emision.certificado) {
             return <View style={{ marginTop: 10 }}>
-                <View style={{ marginLeft: 10, marginRight: 10, marginTop: 10, display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            sharePdf("Certificado", emision.certificado)
-                        }}
-                    >
-                        <View style={{ display: 'flex', alignItems: 'center' }}>
-                            <Image
-                                style={{ width: 60, height: 60 }}
-                                source={require('../images/pdf.webp')}
-                            />
-                            <Text style={{ color: tema.text }}>Certificado</Text>
-                        </View>
-                    </TouchableOpacity>
+                <View style={{ marginLeft: 10, marginRight: 10, marginTop: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                    {getDoc("Certificado", emision.certificado)}
+                    {getDoc("Anexo de Subrogación", emision.anexo_subrogacion)}
                 </View>
             </View>
         }
+      
 
         return <></>
     }

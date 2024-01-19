@@ -73,7 +73,6 @@ const Subrogados = (props:any) => {
             <ScrollView  horizontal={true} style={{height:190}}>
             {
                 state.subrogatarios.sort((a:any,b:any)=>{ return a.NOMBRE_COMPLETO<b.NOMBRE_COMPLETO?1:-1 }).filter((sudro:any)=>{return sudro.NOMBRE_COMPLETO.toUpperCase().indexOf(text.toUpperCase())>-1}).map((subrogado:any, key)=>{
-                    console.log(text +" - "+ subrogado.NOMBRE_COMPLETO)
 
                     return <TouchableOpacity 
                         onPress={()=>{setMontoSubrogado(state.automotor.monto_subrogado,subrogado)}}

@@ -33,6 +33,8 @@ const Emision = ({ navigation }: any) => {
         setModalState(true);
     }
     const closeModal = () => {
+        state["error"] = false;
+        setState({...state});
         setModalState(false);
     }
 
@@ -92,7 +94,7 @@ const Emision = ({ navigation }: any) => {
         }
     }
     const emitir = async () => {
-
+        
 
         let documentos = await AsyncStorage.getItem("documentos");
         let cuotas = await AsyncStorage.getItem("cuotas");
@@ -129,7 +131,6 @@ const Emision = ({ navigation }: any) => {
             }).then(async (response) => {
 
                 const obj = await response.json();
-                console.log(obj)
                 if (obj.estado === "error") {
                     state["error"] = obj.error;
                     state["emitiendo"] = false;
@@ -138,7 +139,6 @@ const Emision = ({ navigation }: any) => {
                 }
 
                 state["emitiendo"] = false;
-                console.log(obj.data)
 
                 let id = 0;
                 if (obj?.data?.ID) {
@@ -174,7 +174,6 @@ const Emision = ({ navigation }: any) => {
     const getDocumentos = async () => {
 
         let documentos = await AsyncStorage.getItem("documentos");
-        console.log(documentos)
         if (documentos) {
             return JSON.parse(documentos)
         }
@@ -226,6 +225,7 @@ const Emision = ({ navigation }: any) => {
                     }}
                     onPress={() => {
                         state["emitiendo"] = false;
+                        state["error"] = false;
                         delete state["error"];
                         setState({ ...state })
                     }}>
@@ -480,7 +480,6 @@ const Emision = ({ navigation }: any) => {
         } else {
             avance = 1;
         }
-        //console.log(avance)
 
         return avance * 100 / total;
     }

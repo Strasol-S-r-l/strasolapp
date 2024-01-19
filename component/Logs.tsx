@@ -132,7 +132,6 @@ const Logs = (props:any) => {
           })
           
             state.config["data"] = obj.data;
-            console.log(obj.data)
           
           
           setState({...state, logs:obj.data});

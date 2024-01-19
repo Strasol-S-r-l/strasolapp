@@ -26,7 +26,6 @@ const RecCamera = (navigation:any) => {
               flash: 'off',
               enableShutterSound: false,
             });
-            console.log(photo.path)
             state["photo"] = photo;
 
             setState({...state})
@@ -83,10 +82,8 @@ const RecCamera = (navigation:any) => {
 
     const setChasis= async(chasis:any)=>{
       //state.chasis=chasis;
-      console.log(chasis)
       
       let auto = await AsyncStorage.getItem("automotor");
-      console.log(auto)
       if(!auto){
         auto = "{}";
       }
@@ -140,7 +137,6 @@ const RecCamera = (navigation:any) => {
 
 
     if(state.recorte){
-      console.log(state.recorte)
         return <View>
             <Image source={{ uri: "file://"+state.recorte.path }} style={{ width: 400, height: 400 }} />
             <ReadText  photo={state.recorte} setChasis={setChasis} tipo='chasis'/>

@@ -24,7 +24,6 @@ const CamaraDoc = (navigation: any) => {
       const granted = await Camera.requestCameraPermission();
       const granted2 = await Camera.requestMicrophonePermission();
       
-      console.log(granted);
       if (granted === PermissionsAndroid.RESULTS.GRANTED && granted2 === PermissionsAndroid.RESULTS.GRANTED) {
         return true;
       } else {
