@@ -543,26 +543,31 @@ const Emision = ({ navigation }: any) => {
         AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
         setState({ ...state });
     };
+
     const selectTraccion = (data: any) => {
         state["automotor"] = { ...state["automotor"], TRACCION: data.value };
         AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
         setState({ ...state });
     };
+
     const selectExtraterritorialidad = (data: any) => {
         state["automotor"] = { ...state["automotor"], EXTRATERRITORIALIDAD: data.value };
         AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
         setState({ ...state });
     };
+
     const selectEstado = (data: any) => {
         state["automotor"] = { ...state["automotor"], ESTADO: data.value };
         AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
         setState({ ...state });
     };
+
     const changeAutomotor = (key: string, value: string) => {
         state["automotor"][key] = value;
         AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
         setState({ ...state });
     };
+
     const selectMarcaModelo = (data: any) => {
         state["automotor"] = { ...state["automotor"], data };
         AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
@@ -572,11 +577,13 @@ const Emision = ({ navigation }: any) => {
     const selectCameraChasis = (chasis: string) => {
         changeAutomotor("CHASIS", chasis)
     };
+
     const getInfoAutomotor = () => {
         return <ScrollView style={{ marginTop: 15 }}>
             <PerfilAutomotor navigation={navigation_} state={state} changeAutomotor={changeAutomotor} selectMarcaModelo={selectMarcaModelo} />
         </ScrollView>
     }
+    
     const getInfoVehiculo = () => {
         if (state["emitiendo"]) {
             return <View>
