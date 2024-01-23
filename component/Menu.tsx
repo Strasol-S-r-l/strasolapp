@@ -60,10 +60,10 @@ const Menu = ({navigation}:any) => {
                     {paintButtons()}
                     <TouchableOpacity
                         onPress={() => salir()}
-                        style={{backgroundColor:'#000000', margin:5, padding:10, borderRadius:5 }}
+                        style={{backgroundColor:'#000000', margin:5, padding:10, borderRadius:5 ,flexDirection:"row",justifyContent:"center",alignItems:"center"}}
                         >
                         <Text style={{textAlign:"center", color:"#F00", fontSize:25, fontWeight:'bold'}}>Logout</Text>
-                        <IconComponent nameIcon="logoutIcon" ancho={24} alto={24} colors={{color_1:"white"}}></IconComponent>
+                        <IconComponent nameIcon="logoutIcon" ancho={24} alto={24} colors={{color_1:"#F00"}}></IconComponent>
 
                     </TouchableOpacity>
                 </ScrollView>
