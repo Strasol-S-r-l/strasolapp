@@ -37,7 +37,6 @@ const ReadText = (props:any) => {
             
             let text = await uploadResponse.json();
             text = text["responses"][0]["textAnnotations"][0]["description"]
-            console.log(text)
             state["texto"] = text;
             setState({...state})
         }

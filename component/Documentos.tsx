@@ -28,7 +28,6 @@ const Documentos = (props:any) => {
                     return <TouchableOpacity
                         key={key}
                         onPress={async () => {
-                            console.log(doc.ID + " -> " + doc.DESCRIPCION)
                             doc["url"] = "sadad";
                             if (!state["selected"]) state["selected"] = {};
                             

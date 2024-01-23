@@ -76,7 +76,6 @@ const CambiarContrasena = ({ navigation }: any) => {
             openModal();
             return;
         }
-        console.log(JSON.stringify(data))
         password.mensaje = "Se cambio la contraseña correctamente";
         password.terminar = true;
         openModal();

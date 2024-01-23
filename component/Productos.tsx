@@ -108,7 +108,6 @@ const Cotizacion = ({navigation}:any) => {
             <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
                 <Text style={{color:tema.active, fontWeight:'bold', marginLeft:10}}>Certificado</Text>
                 <TouchableOpacity onPress={(ele)=>{
-                    console.log(item.ID)
                     navigation_.navigate("PerfilProducto", {ID:item.ID});
                 }}>
                     <Text style={{color:tema.primary, marginRight:10, textDecorationLine:'underline'}}>{item.NUMERO_CERTIFICADO}</Text>

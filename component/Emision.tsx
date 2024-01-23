@@ -33,6 +33,8 @@ const Emision = ({ navigation }: any) => {
         setModalState(true);
     }
     const closeModal = () => {
+        state["error"] = false;
+        setState({...state});
         setModalState(false);
     }
 
@@ -92,7 +94,7 @@ const Emision = ({ navigation }: any) => {
         }
     }
     const emitir = async () => {
-
+        
 
         let documentos = await AsyncStorage.getItem("documentos");
         let cuotas = await AsyncStorage.getItem("cuotas");
@@ -129,7 +131,6 @@ const Emision = ({ navigation }: any) => {
             }).then(async (response) => {
 
                 const obj = await response.json();
-                console.log(obj)
                 if (obj.estado === "error") {
                     state["error"] = obj.error;
                     state["emitiendo"] = false;
@@ -138,7 +139,6 @@ const Emision = ({ navigation }: any) => {
                 }
 
                 state["emitiendo"] = false;
-                console.log(obj.data)
 
                 let id = 0;
                 if (obj?.data?.ID) {
@@ -174,7 +174,6 @@ const Emision = ({ navigation }: any) => {
     const getDocumentos = async () => {
 
         let documentos = await AsyncStorage.getItem("documentos");
-        console.log(documentos)
         if (documentos) {
             return JSON.parse(documentos)
         }
@@ -226,6 +225,7 @@ const Emision = ({ navigation }: any) => {
                     }}
                     onPress={() => {
                         state["emitiendo"] = false;
+                        state["error"] = false;
                         delete state["error"];
                         setState({ ...state })
                     }}>
@@ -480,7 +480,6 @@ const Emision = ({ navigation }: any) => {
         } else {
             avance = 1;
         }
-        //console.log(avance)
 
         return avance * 100 / total;
     }
@@ -544,26 +543,31 @@ const Emision = ({ navigation }: any) => {
         AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
         setState({ ...state });
     };
+
     const selectTraccion = (data: any) => {
         state["automotor"] = { ...state["automotor"], TRACCION: data.value };
         AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
         setState({ ...state });
     };
+
     const selectExtraterritorialidad = (data: any) => {
         state["automotor"] = { ...state["automotor"], EXTRATERRITORIALIDAD: data.value };
         AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
         setState({ ...state });
     };
+
     const selectEstado = (data: any) => {
         state["automotor"] = { ...state["automotor"], ESTADO: data.value };
         AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
         setState({ ...state });
     };
+
     const changeAutomotor = (key: string, value: string) => {
         state["automotor"][key] = value;
         AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
         setState({ ...state });
     };
+
     const selectMarcaModelo = (data: any) => {
         state["automotor"] = { ...state["automotor"], data };
         AsyncStorage.setItem("automotor", JSON.stringify(state["automotor"]));
@@ -573,11 +577,13 @@ const Emision = ({ navigation }: any) => {
     const selectCameraChasis = (chasis: string) => {
         changeAutomotor("CHASIS", chasis)
     };
+
     const getInfoAutomotor = () => {
         return <ScrollView style={{ marginTop: 15 }}>
             <PerfilAutomotor navigation={navigation_} state={state} changeAutomotor={changeAutomotor} selectMarcaModelo={selectMarcaModelo} />
         </ScrollView>
     }
+    
     const getInfoVehiculo = () => {
         if (state["emitiendo"]) {
             return <View>

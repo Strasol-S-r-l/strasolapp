@@ -17,7 +17,6 @@ const PerfilAutomotor = (props: any) => {
         delete props.state?.selectMarca;
         delete props.state?.modelos;
         delete props.state?.automotor?.modelo;
-        console.log(marca)
         props.state["automotor"] = { ...props.state["automotor"], marca };
         props.state["automotor"]["vigencia_inicial"] = props?.state?.vigencia_inicial;
         props.selectMarcaModelo(marca);
@@ -36,7 +35,6 @@ const PerfilAutomotor = (props: any) => {
     };
     const selectModelo = (modelo: any) => {
         delete props.state.selectModelo;
-        console.log(modelo)
         props.state["automotor"] = { ...props.state["automotor"], modelo };
         props.selectMarcaModelo(modelo);
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));

@@ -23,8 +23,6 @@ const Perfil = ({navigation}:any) => {
 
             const usuario = JSON.parse(suser);
 
-            console.log(usuario)
-
             const response = await fetch(api.url+'/app', 
             {
                 method: 'POST',

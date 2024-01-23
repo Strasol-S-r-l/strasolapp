@@ -74,7 +74,6 @@ const Login = ({ navigation }: any) => {
         body: JSON.stringify({ key: api.key, type: "login", user: usuario.user, pass: usuario.pass }),
       });
     const data = await response.json();
-    console.log(JSON.stringify(data))
    
     if (data.estado == 'error') {
       setUsuario({ ...usuario, error: data.error })
@@ -210,9 +209,11 @@ const Login = ({ navigation }: any) => {
               <View style={{ width: "18%", height: 2, backgroundColor: "gray", }}></View>
             </View>
             <View style={{ display: "flex", flexDirection: "row" }}>
-              <Text style={{ color: tema.primary }}>No tiene una cuenta? </Text>
-              <TouchableOpacity >
-                <Text style={{ textAlign: "center", fontSize: 15, color: tema.primary, textDecorationLine: 'underline', fontWeight: "bold" }}> Registrarse</Text>
+              <Text style={{ color: tema.primary }}>Olvidaste tu contraseña? </Text>
+              <TouchableOpacity onPress={()=>{
+                navigation_.navigate("RecuperarPass");
+              }}>
+                <Text style={{ textAlign: "center", fontSize: 15, color: tema.primary, textDecorationLine: 'underline', fontWeight: "bold" }}> Recuperar</Text>
               </TouchableOpacity>
             </View>
             <View>
