@@ -31,7 +31,6 @@ const RecuperarPass = ({ navigation }: any) => {
         return;
       }
     
-
     state["usuario"] = data.data;
     state["loadUsr"] = false;
     setState({...state});
