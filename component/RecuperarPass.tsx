@@ -14,7 +14,7 @@ const RecuperarPass = ({ navigation }: any) => {
     navigation.setOptions({ headerShown: false });
   });
 
-  const recuperarPass= async(usr:string, email:string)=>{
+  const recuperarPass = async (usr: string, email: string) => {
     const response = await fetch(api.url + '/app',
       {
         method: 'POST',
@@ -24,136 +24,148 @@ const RecuperarPass = ({ navigation }: any) => {
     const data = await response.json();
 
     console.log(data)
-    if(data.estado=="error"){
-        state["error"] = data.error;
-        state["loadUsr"] = false;
-        setState({...state});
-        return;
-      }
-    
+    if (data.estado == "error") {
+      state["error"] = data.error;
+      state["loadUsr"] = false;
+      setState({ ...state });
+      return;
+    }
+
 
     state["usuario"] = data.data;
     state["loadUsr"] = false;
-    setState({...state});
+    setState({ ...state });
   }
-  
-  const exito =()=>{
-    return  <View style={{ height: Dimensions.get('screen').height }}>
-        <IconComponent nameIcon='fondo_login' ></IconComponent>
-        <View>
-            <Text style={{textAlign:'center', fontSize:25, marginTop:10}}>Se envió la contraseña al correo ingresado</Text>
-        </View>
-        <TouchableOpacity  style={{...styles.input_button, backgroundColor:tema.primary}} onPress={()=>{
-            navigation_.goBack()
-        }}>
-          <Text style={{ textAlign: "center", color: tema.text, fontWeight: 'bold' }}>Salir</Text>
-        </TouchableOpacity>
+
+  const exito = () => {
+    return <View style={{ height: Dimensions.get('screen').height }}>
+      <IconComponent nameIcon='fondo_login' ></IconComponent>
+      <View>
+        <Text style={{ textAlign: 'center', fontSize: 25, marginTop: 10 }}>Se envió la contraseña al correo ingresado</Text>
+      </View>
+      <TouchableOpacity style={{ ...styles.input_button, backgroundColor: tema.primary }} onPress={() => {
+        navigation_.goBack()
+      }}>
+        <Text style={{ textAlign: "center", color: tema.text, fontWeight: 'bold' }}>Salir</Text>
+      </TouchableOpacity>
     </View>
   }
 
-  const buscarUsuario=()=>{
+  const buscarUsuario = () => {
 
-    if(state["usuario"]=="exito"){
-      setTimeout(()=>{
+    if (state["usuario"] == "exito") {
+      setTimeout(() => {
         navigation_.goBack()
       }, 3000)
 
       return <View>
-      <View>
-          <Text style={{marginLeft:20, fontSize:20, marginTop:10}}>Se envió la contraseña a su correo</Text>
+        <View>
+          <Text style={{ marginLeft: 20, fontSize: 20, marginTop: 10 }}>Se envió la contraseña a su correo</Text>
+        </View>
       </View>
-    </View>
     }
-
-    if(state["usuario"]){
+    if (state["usuario"]) {
       return <View>
-      <View>
-          <Text style={{marginLeft:20, fontSize:20, marginTop:10}}>{state.usuario.usr}</Text>
-      </View>
-      <View>
-        <Text style={{marginLeft:20, fontSize:20, marginTop:10}}>{state.usuario.email}</Text>
-      </View>
-      <View>
-        <Text style={{marginLeft:20, fontSize:20, marginTop:10}}>Igrese su email</Text>
-        <TextInput placeholderTextColor={tema.placeholder} value={state.email}  placeholder='Email' onChangeText={text => {
+        <View style={{flexDirection:"row", marginTop: 10 }}>
+          <Text>Usuario : </Text>
+          <Text style={{ fontSize: 17}}>{state.usuario.usr}</Text>
+        </View>
+        <View style={{flexDirection:"row", marginTop: 10 }}>
+          <Text>Email : </Text>
+          <Text style={{ fontSize: 17}}>{state.usuario.email}</Text>
+        </View>
+        <View>
+          <Text style={{ fontSize: 15, marginTop: 13 }}>Igrese su email</Text>
+          <TextInput placeholderTextColor={tema.placeholder} value={state.email} placeholder='Email' onChangeText={text => {
             state["email"] = text;
-            setState({...state})
+            setState({ ...state })
           }} style={styles.input} autoCapitalize='none'></TextInput>
-        <TouchableOpacity  style={styles.input_button} onPress={()=>{
-          recuperarPass(state.usr, state.email);
-        }}>
-          <Text style={{ textAlign: "center", color: tema.text, fontWeight: 'bold' }}>Recuperar</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.input_button} onPress={() => {
+            recuperarPass(state.usr, state.email);
+          }}>
+            <Text style={{ textAlign: "center", color: tema.text, fontWeight: 'bold' }}>Recuperar</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
     }
 
     return <View>
       <View>
-          <Text style={{marginLeft:20, fontSize:20, marginTop:10}}>Igrese su usuario</Text>
-          <TextInput placeholderTextColor={tema.placeholder} value={state.usr}  placeholder='Nombre de Usuario' onChangeText={text => {
-            state["usr"] = text;
-            setState({...state})
-          }} style={styles.input} autoCapitalize='none'></TextInput>
+        <Text style={{ marginBottom:5, fontSize: 15, marginTop: 10 }}>Igrese su usuario</Text>
+        <TextInput placeholderTextColor={tema.placeholder} value={state.usr} placeholder='Nombre de Usuario' onChangeText={text => {
+          state["usr"] = text;
+          setState({ ...state })
+        }} style={styles.input} autoCapitalize='none'></TextInput>
       </View>
       <View>
-        <TouchableOpacity  style={styles.input_button} onPress={()=>{
-          if(!state["usr"] || state["usr"].length==0) return;
-          
+        <TouchableOpacity style={styles.input_button} onPress={() => {
+          if (!state["usr"] || state["usr"].length == 0) return;
+
           state["loadUsr"] = true;
           recuperarPass(state.usr, "");
-          setState({...state})
+          setState({ ...state })
         }}>
           <Text style={{ textAlign: "center", color: tema.text, fontWeight: 'bold' }}>Buscar usuario</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={{ ...styles.input_button, backgroundColor: tema.danger, marginTop:8 }} onPress={() => {
+            navigation_.goBack()
+          }}>
+            <Text style={{ textAlign: "center", color: tema.text, fontWeight: 'bold' }}>Volver</Text>
+          </TouchableOpacity>
       </View>
     </View>
   }
 
-  if(state.error){
+  if (state.error) {
     return <View style={{ height: Dimensions.get('screen').height }}>
-        <IconComponent nameIcon='fondo_login' ></IconComponent>
-        <View>
-            <Text style={{textAlign:'center', fontSize:25, marginTop:10}}>Recuperar Contraseña</Text>
-        </View>
-        <View>
-            <Text style={{textAlign:'center', fontSize:20, marginTop:10, color:tema.danger}}>{state.error}</Text>
-        </View>
-        <TouchableOpacity  style={{...styles.input_button, backgroundColor:tema.danger}} onPress={()=>{
+      <IconComponent nameIcon='fondo_login' ></IconComponent>
+      <View style={{ justifyContent: "center", alignItems: "center", width: "100%", height: "90%" }}>
+        <View style={{ backgroundColor: "rgba(0,0,0,0.5)", borderRadius: 20, width: "90%", padding: 20 }}>
+          <View>
+            <Text style={{ textAlign: 'center', fontSize: 25, marginTop: 10 , color:tema.text}}>Recuperar Contraseña</Text>
+          </View>
+          <View>
+            <Text style={{ textAlign: 'center', fontSize: 20, marginTop: 10, color: tema.danger }}>{state.error}</Text>
+          </View>
+          <TouchableOpacity style={{ ...styles.input_button, backgroundColor: tema.danger }} onPress={() => {
             navigation_.goBack()
-        }}>
-          <Text style={{ textAlign: "center", color: tema.text, fontWeight: 'bold' }}>Salir</Text>
-        </TouchableOpacity>
+          }}>
+            <Text style={{ textAlign: "center", color: tema.text, fontWeight: 'bold' }}>Salir</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   }
-  
+
 
   return (
     <View style={{ height: Dimensions.get('screen').height }}>
-        <IconComponent nameIcon='fondo_login' ></IconComponent>
-        <View>
-            <Text style={{textAlign:'center', fontSize:25, marginTop:10}}>Recuperar Contraseña</Text>
+      <IconComponent nameIcon='fondo_login' ></IconComponent>
+      <View style={{ justifyContent: "center", alignItems: "center", width: "100%", height: "90%" }}>
+        <View style={{ backgroundColor: "rgba(0,0,0,0.5)", borderRadius: 20, width: "90%", padding: 20 }}>
+          <View>
+            <Text style={{ textAlign: 'center', fontSize: 25, marginTop: 10 ,color:tema.text, fontWeight:"bold"}}>Recuperar Contraseña</Text>
+          </View>
+          {!state["loadUsr"] ? buscarUsuario() : <Load />}
         </View>
-        {!state["loadUsr"]?buscarUsuario():<Load />}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   input: {
-    width: Dimensions.get('window').width-40,
+    width: "100%",
     borderWidth: 1,
     borderRadius: 10,
     height: 50,
-    marginLeft:20,
     backgroundColor: tema.background,
     color: tema.active,
     borderColor: tema.primary,
   },
   input_button: {
-    width: Dimensions.get('window').width-80,
-    marginLeft:40,
-    marginTop:20,
+    width: "100%",
+    marginTop: 20,
     borderWidth: 1,
     borderRadius: 10,
     height: 50,

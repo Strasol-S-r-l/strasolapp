@@ -392,19 +392,16 @@ const Logs = (props: any) => {
 
   return (
     <View style={{ height: Dimensions.get('window').height }}>
-      <ImageBackground
-        source={require('../images/fondo_main.png')}
-        style={{ height: '110%', width: '100%' }}>
+        <IconComponent nameIcon='fondo_form' ></IconComponent>
         {
           (!state.logs) ?
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: "center", backgroundColor: "rgb(0,0,0,0.6)" }}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: "center", backgroundColor: "rgba(0,0,0,0.6)" }}>
               <Load />
             </View>
             :
             <View style={{ flex: 1 }}>
               {getVisible == 3 ?
                 <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.5)", width: "100%", justifyContent: "center", alignItems: "center" }}><Load></Load></View>
-
                 :
                 <ScrollView>
                   {pintarLogs()}
@@ -413,7 +410,6 @@ const Logs = (props: any) => {
             </View>
 
         }
-      </ImageBackground>
     </View>
   )
 };
