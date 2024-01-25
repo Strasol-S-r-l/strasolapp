@@ -5,6 +5,7 @@ import api from '../enviroments/api.json'
 import { useNavigation } from '@react-navigation/native';
 import tema from '../enviroments/tema.json'
 import IconComponent from './assets/icons/IconComponent';
+import Load from './Load';
 
 
 var navigation_: any;
@@ -51,7 +52,6 @@ const Perfil = ({ navigation }: any) => {
         navigation_.goBack();
     }
     const pintarEjecutivoAtiende = () => {
-        if (!data) return <View></View>
         return <View style={styles.card}>
             <Text style={{ textAlign: 'center', fontWeight: 'bold', color: '#fff', marginTop: 20 }}>Perfil</Text>
             <View style={{ display: "flex", justifyContent: 'center', alignItems: 'center', marginTop: 15, width: "90%", marginLeft: "5%", marginRight: "5%" }}>
@@ -117,10 +117,14 @@ const Perfil = ({ navigation }: any) => {
 
     return (
         <View style={{ height: Dimensions.get('screen').height }}>
-            <IconComponent nameIcon='fondo_login' ></IconComponent>
-            <ScrollView>
-                {pintarEjecutivoAtiende()}
-            </ScrollView>
+            <IconComponent nameIcon='fondo_form' ></IconComponent>
+            {
+                data ? 
+                <ScrollView>
+                    {pintarEjecutivoAtiende()}
+                </ScrollView>
+                :<View style={{width:"100%",height:"100%", justifyContent:"center",alignItems:"center",backgroundColor:"rgba(0,0,0,0.5)"}}><Load></Load></View>
+            }
         </View>
     )
 };

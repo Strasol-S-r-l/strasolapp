@@ -5,12 +5,13 @@ import TextNotifier from './TextNotifier';
 import BarFooter from './BarFooter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IconComponent from './assets/icons/IconComponent';
+import BarLeft from './BarLeft';
 
 const data = [
     {title:"Inicio", action:"Cotizacion"},
     {title:"Mi perfil", action:"Perfil"},
     {title:"Video tutoriales", action:"Videos"},
-    {title:"Comisiones", action:"Test"}
+    {title:"Reporte de Emisiones", action:"Test"}
 ];
 
 const action=(algo:string)=>{
@@ -52,22 +53,25 @@ const Menu = ({navigation}:any) => {
     };
 
     return (
-        <View style={{backgroundColor:'#000'}}>
-            <IconComponent nameIcon='fondo_login' ></IconComponent>
-                <ScrollView>
+        <View style={{backgroundColor:'#000',width:"100%",height:"100%"}}>
+            
+            <IconComponent nameIcon='fondo_form' ></IconComponent>
+                <ScrollView >
                     <View style={{height:40}}></View>
                     
                     {paintButtons()}
                     <TouchableOpacity
                         onPress={() => salir()}
-                        style={{backgroundColor:'#000000', margin:5, padding:10, borderRadius:5 }}
+                        style={{backgroundColor:'#000000', margin:5, padding:10, borderRadius:5 ,flexDirection:"row",justifyContent:"center",alignItems:"center"}}
                         >
                         <Text style={{textAlign:"center", color:"#F00", fontSize:25, fontWeight:'bold'}}>Logout</Text>
-                        <IconComponent nameIcon="logoutIcon" ancho={24} alto={24} colors={{color_1:"white"}}></IconComponent>
+                        <IconComponent nameIcon="logoutIcon" ancho={24} alto={24} colors={{color_1:"#F00"}}></IconComponent>
 
                     </TouchableOpacity>
                 </ScrollView>
                 {/*<BarFooter/>*/}
+                {/*<BarLeft titulo={"Menu"} />*/}
+
         </View>
     )
 };

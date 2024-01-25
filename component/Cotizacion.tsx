@@ -247,6 +247,7 @@ const Cotizacion = ({ navigation }: any) => {
                         </View>
                     </ScrollView>
                 </View>
+                <BarLeft titulo={"Cotizacion de Prima en Linea"} />
                 <View style={{ width: "100%", height: "20%", backgroundColor: tema.background }}>
                     <TouchableOpacity
                         style={{
@@ -275,7 +276,7 @@ const Cotizacion = ({ navigation }: any) => {
                     />
                 </View>
             </SafeAreaView>
-            <BarLeft titulo={"Cotizacion de Prima en Linea"} />
+           
         </View>
     )
 };

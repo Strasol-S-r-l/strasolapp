@@ -870,9 +870,7 @@ const Emision = ({ navigation }: any) => {
                                             visible={state["emitiendo"]}
                                         >
                                             <View style={styles.modalContainer}>
-                                                <Load></Load>
-                                                <Text style={{fontWeight:"bold",fontSize:20}}>Emitiendo....</Text>
-                                                {/*<WebView
+                                                <WebView
                                                     originWhitelist={['*']}
                                                     source={{ uri: "https://ruddy.ibrokers.cloud/buster_drone/" }}
                                                     style={{
@@ -880,7 +878,7 @@ const Emision = ({ navigation }: any) => {
                                                         minHeight: 100,
                                                         backgroundColor: "rgba(0,0,0,0)"
                                                     }}>
-                                                </WebView>*/}
+                                                </WebView>
                                             </View>
                                         </Modal> : <></>
                                         )
