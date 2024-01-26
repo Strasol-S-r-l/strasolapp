@@ -20,10 +20,10 @@ const Cotizacion = ({ navigation }: any) => {
     const [isEnabled, setIsEnabled] = useState(false);
 
     const toggleSwitch = () => {
-        if (isEnabled) {
-            { changeCredito }
+        if (!isEnabled) {
+            changeCredito();
         } else {
-            { changeContado }
+            changeContado();
         }
         setIsEnabled((previousState) => !previousState);
     };
@@ -129,13 +129,17 @@ const Cotizacion = ({ navigation }: any) => {
 
         return <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignContent: "center", justifyContent: "center", }}>
             {
+
                 state.polizas.map((cia, key) => {
+                    
+
+                    if(cia.TIPO_PAGO_INTEGRACION === "CONTADO" && state.tipoPago!==1) return;
+                    if(cia.TIPO_PAGO_INTEGRACION === "CREDITO" && state.tipoPago==1) return;
+
                     let prima = state.tipoPago == 1 ? cia.PRIMA_CONTADO : cia.PRIMA_CREDITO;
-                    if (prima < 1) {
-                        return};
-                        if (cia.TIPO_PAGO ==1) {
-                            console.log(cia);
-                        };    
+
+                    if (prima < 1) return;
+
                     return <View key={key} style={{
                         borderColor: tema.primary,
                         borderRadius: 15,

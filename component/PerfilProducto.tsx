@@ -178,7 +178,6 @@ const PerfilProducto = ({ route, navigation }: any) => {
 
         emision = JSON.parse(emision);
 
-        console.log(emision)
 
         if (emision.sDocumentsEmi) {
             return <View style={{ marginTop: 10 }}>

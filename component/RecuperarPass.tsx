@@ -23,7 +23,6 @@ const RecuperarPass = ({ navigation }: any) => {
       });
     const data = await response.json();
 
-    console.log(data)
     if(data.estado=="error"){
         state["error"] = data.error;
         state["loadUsr"] = false;

@@ -65,6 +65,7 @@ const Emision = ({ navigation }: any) => {
                 state["automotor"] = { vigencia_inicial: state.vigencia_inicial, monto_subrogado: state["poliza"].valor_asegurado };
             }
             state["usuario"] = await AsyncStorage.getItem("usuario");
+            console.log(state["usuario"])
             state["usuario"] = JSON.parse(state["usuario"])
             state["documentos"] = await getDocumentos();
             state["parametricas"] = await getParametricas();
@@ -132,7 +133,7 @@ const Emision = ({ navigation }: any) => {
 
                 const obj = await response.json();
                 if (obj.estado === "error") {
-                    state["error"] = obj.error;
+                    state["error"] = JSON.stringify(obj.error);
                     state["emitiendo"] = false;
                     setState({ ...state });
                     return obj;

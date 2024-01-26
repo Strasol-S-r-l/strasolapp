@@ -70,7 +70,6 @@ const CambiarContrasena = ({ navigation }: any) => {
                 body: JSON.stringify({ key: api.key, type: "cambiarContracenaCliente", user: user, pass: nueva_contrasena }),
             });
         const data = await response.json();
-        console.log(data);
         if (data.error) {
             password.mensaje = "Intentelo mas tarde";
             password.terminar = false;

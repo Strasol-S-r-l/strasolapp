@@ -58,7 +58,6 @@ const RecCamera = (navigation:any) => {
     
     const recortarPhoto = async () => {
         
-        console.log(state.photo.path)
         ImagePicker.openCropper({
             path: "file://"+state.photo.path,
             width: 300,
