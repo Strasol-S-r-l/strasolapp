@@ -43,6 +43,7 @@ function App(): JSX.Element {
         <Stack.Screen name="Notificaciones" component={Notificaciones} />
         <Stack.Screen name="PerfilProducto" component={PerfilProducto} />
         <Stack.Screen name="Perfil" component={Perfil} />
+        <Stack.Screen name="Ppl" component={Ppl} />
         <Stack.Screen name="Videos" component={Videos} />
         <Stack.Screen name="Cotizacion" component={Cotizacion} />
         <Stack.Screen name="Automotor" component={Automotor} />

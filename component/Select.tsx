@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Image, TextInput, FlatList } from 'react-native';
 import tema from '../enviroments/tema.json'
 import ItemSelect from './ItemSelect';
 
 const Select = (navigation:any) => {
     const [buscar, setBuscar] = React.useState("");
-    
+    const ref_buscador = useRef();
     useEffect(() => { 
         navigation.navigation.setOptions({headerShown:false});
+        if(ref_buscador){
+            ref_buscador.current?.focus()
+        }
         
     }, []);
 
@@ -34,6 +37,7 @@ const Select = (navigation:any) => {
         <View style={{width:"100%", height:"100%", backgroundColor:tema.background, paddingBottom:50}}>
             <View style={{alignItems:'center', marginTop:15}}>
                 <TextInput
+                    ref={ref_buscador}
                     style={styles.input}
                     onChangeText={setBuscar}
                     value={buscar}

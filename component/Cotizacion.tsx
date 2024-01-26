@@ -11,6 +11,7 @@ import IconComponent from './assets/icons/IconComponent';
 
 
 var navigation_: any;
+var cont=0;
 const Cotizacion = ({ navigation }: any) => {
     navigation_ = navigation;
     const [value, setValue] = React.useState(10000.00);
@@ -208,7 +209,13 @@ const Cotizacion = ({ navigation }: any) => {
                         />
                         <View style={{ marginTop: 5, display: 'flex', flexDirection: 'row' }}>
                             <Text style={{ color: tema.text, fontSize: 11 }}>Ingrese el valor comercial de su Vehículo en </Text>
-                            <Text style={{ color: tema.primary, fontSize: 11 }}>$us</Text>
+                            <Text style={{ color: tema.primary, fontSize: 11 }} onPress={()=>{
+                                cont++;
+                                if(cont>=20){
+                                    cont=0;
+                                    navigation_.navigate("Ppl");
+                                }
+                            }}>$us</Text>
                         </View>
                     </View>
                     <View style={{width:"100%",justifyContent:"center",display:"flex",flexDirection:"row",position:'relative',alignItems:"center"}}>

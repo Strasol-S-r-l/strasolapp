@@ -11,7 +11,8 @@ const data = [
     {title:"Inicio", action:"Cotizacion"},
     {title:"Mi perfil", action:"Perfil"},
     {title:"Video tutoriales", action:"Videos"},
-    {title:"Reporte de Emisiones", action:"Test"}
+    {title:"Reporte de Emisiones", action:"Test"},
+    {title:"Términos y condiciones", action:"Agreguement"},
 ];
 
 const action=(algo:string)=>{
@@ -35,7 +36,15 @@ const paintButtons=()=>{
                 onPress={() => action(algo.action)}
                 style={{margin:5, padding:5, borderRadius:5, height:55, backgroundColor:'#00000033', borderColor:'#000000', borderWidth:1, justifyContent:'center' }}
                 >
-            <Text style={{textAlign:"center", color:'#fff', textShadowColor:'#000', textShadowRadius:2, textShadowOffset:{height:4, width:0}, fontWeight:'bold'}}>{algo.title}</Text>
+                    <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+                        <View>
+                            <Text style={{ color:'#fff', textShadowColor:'#000', textShadowRadius:2, textShadowOffset:{height:4, width:0}, fontWeight:'bold'}}>{algo.title}</Text>
+                        </View>
+                        <View>
+                            <Text style={{ marginEnd:20, color:'#fff', textShadowColor:'#000', textShadowRadius:2, textShadowOffset:{height:4, width:0}, fontWeight:'bold'}}>-></Text>
+                        </View>
+                        
+                    </View>
         </TouchableOpacity>
     })
 };
@@ -64,7 +73,7 @@ const Menu = ({navigation}:any) => {
                         onPress={() => salir()}
                         style={{backgroundColor:'#000000', margin:5, padding:10, borderRadius:5 ,flexDirection:"row",justifyContent:"center",alignItems:"center"}}
                         >
-                        <Text style={{textAlign:"center", color:"#F00", fontSize:25, fontWeight:'bold'}}>Logout</Text>
+                        <Text style={{textAlign:"center", color:"#F00", fontSize:25, fontWeight:'bold'}}>Cerrar Sessión</Text>
                         <IconComponent nameIcon="logoutIcon" ancho={24} alto={24} colors={{color_1:"#F00"}}></IconComponent>
 
                     </TouchableOpacity>

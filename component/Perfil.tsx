@@ -103,11 +103,7 @@ const Perfil = ({ navigation }: any) => {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={{ height: 50, width: "100%", justifyContent: "center", alignItems: "center" }}>
-                    <TouchableOpacity onPress={() => action("Agreguement")} style={{ width: "100%", height: 40, borderWidth: 1, borderColor: "white", borderRadius: 10, justifyContent: "center", alignItems: "cemter" }}>
-                        <Text style={{ color: tema.text, fontWeight: "bold", textAlign: "center" }}>Ver Terminos y Condiciones</Text>
-                    </TouchableOpacity>
-                </View>
+               
                 <TouchableOpacity onPress={() => toBack()} style={{ backgroundColor: tema.danger, borderRadius: 5, height: 40, width: "100%", justifyContent: 'center', alignItems: "center", marginTop: 15 }}>
                     <Text style={{ color: tema.text, fontWeight: "bold" }}>Volver</Text>
                 </TouchableOpacity>

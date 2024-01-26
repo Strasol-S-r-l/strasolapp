@@ -123,6 +123,7 @@ const Emision = ({ navigation }: any) => {
                     key: api.key,
                     type: 'emitir',
                     id_tomador: state.usuario.ID_CLIENTES,
+                    usuario: state.usuario.USUARIO,
                     cliente: state.cliente,
                     automotor: state.automotor,
                     poliza: state.poliza,

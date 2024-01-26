@@ -58,22 +58,22 @@ const RecuperarPass = ({ navigation }: any) => {
 
       return <View>
         <View>
-          <Text style={{ marginLeft: 20, fontSize: 20, marginTop: 10 }}>Se envió la contraseña a su correo</Text>
+          <Text style={{ marginLeft: 20, fontSize: 20, marginTop: 10, color: tema.text }}>Se envió la contraseña a su correo</Text>
         </View>
       </View>
     }
     if (state["usuario"]) {
       return <View>
         <View style={{flexDirection:"row", marginTop: 10 }}>
-          <Text>Usuario : </Text>
-          <Text style={{ fontSize: 17}}>{state.usuario.usr}</Text>
+          <Text style={{color:tema.text}}>Usuario : </Text>
+          <Text style={{ fontSize: 17, color:tema.text}}>{state.usuario.usr}</Text>
         </View>
         <View style={{flexDirection:"row", marginTop: 10 }}>
-          <Text>Email : </Text>
-          <Text style={{ fontSize: 17}}>{state.usuario.email}</Text>
+          <Text style={{color:tema.text}}>Email : </Text>
+          <Text style={{ fontSize: 17, color:tema.text}}>{state.usuario.email}</Text>
         </View>
         <View>
-          <Text style={{ fontSize: 15, marginTop: 13 }}>Igrese su email</Text>
+          <Text style={{ fontSize: 15, marginTop: 13, color:tema.text }}>Igrese su email</Text>
           <TextInput placeholderTextColor={tema.placeholder} value={state.email} placeholder='Email' onChangeText={text => {
             state["email"] = text;
             setState({ ...state })
@@ -89,7 +89,7 @@ const RecuperarPass = ({ navigation }: any) => {
 
     return <View>
       <View>
-        <Text style={{ marginBottom:5, fontSize: 15, marginTop: 10 }}>Igrese su usuario</Text>
+        <Text style={{ marginBottom:5, fontSize: 15, marginTop: 10, color:tema.text }}>Igrese su usuario</Text>
         <TextInput placeholderTextColor={tema.placeholder} value={state.usr} placeholder='Nombre de Usuario' onChangeText={text => {
           state["usr"] = text;
           setState({ ...state })
@@ -123,7 +123,7 @@ const RecuperarPass = ({ navigation }: any) => {
             <Text style={{ textAlign: 'center', fontSize: 25, marginTop: 10 , color:tema.text}}>Recuperar Contraseña</Text>
           </View>
           <View>
-            <Text style={{ textAlign: 'center', fontSize: 20, marginTop: 10, color: tema.danger }}>{state.error}</Text>
+            <Text style={{ textAlign: 'center', fontSize: 20, marginTop: 10, color: tema.danger,  }}>{state.error}</Text>
           </View>
           <TouchableOpacity style={{ ...styles.input_button, backgroundColor: tema.danger }} onPress={() => {
             navigation_.goBack()
