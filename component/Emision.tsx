@@ -684,7 +684,7 @@ const Emision = ({ navigation }: any) => {
                     />
                     <TouchableOpacity
                         onPress={() => {
-                            navigation_.navigate("RecCamera", selectCameraChasis);
+                            navigation_.navigate("RecCamera", changeAutomotor);
                         }}
                         style={{ width: 20, height: 20, marginLeft: 10 }}>
                         <IconComponent nameIcon="Camara" colors={{ color: "#000" }} ></IconComponent>

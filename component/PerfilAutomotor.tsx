@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useLayoutEffect  } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { Text, View, Image, TextInput, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import IconComponent from './assets/icons/IconComponent';
 import Marcas from './Marcas';
@@ -65,6 +65,18 @@ const PerfilAutomotor = (props: any) => {
     };
     const selectEstado = (data: any) => {
         props.changeAutomotor("ESTADO", data.value);
+        AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
+        setState({ ...props.state });
+    };
+
+    const selectChasis = (data: any) => {
+        props.changeAutomotor("CHASIS", data.value);
+        AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
+        setState({ ...props.state });
+    };
+
+    const selectNumeroMotor = (data: any) => {
+        props.changeAutomotor("NUMERO_MOTOR", data.value);
         AsyncStorage.setItem("automotor", JSON.stringify(props.state["automotor"]));
         setState({ ...props.state });
     };
@@ -152,13 +164,24 @@ const PerfilAutomotor = (props: any) => {
         <View style={{ position: "relative", height: 50, marginBottom: 10 }}>
             {props?.state?.automotor?.NUMERO_MOTOR ? <IconComponent nameIcon='border_input' data={{ id: "sv_txt_num_motor_auto", color: tema.succes }}></IconComponent> : <IconComponent nameIcon='border_input' data={{ id: "sv_txt_num_motor_auto", color: tema.danger }}></IconComponent>}
             <View style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%' }}>
-                <TextInput
-                    onChangeText={text => { props.changeAutomotor("NUMERO_MOTOR", text) }}
-                    style={styles.input}
-                    value={(props?.state?.automotor?.NUMERO_MOTOR)}
-                    placeholderTextColor={tema.placeholder}
-                    placeholder='Motor Nro.'
-                />
+                <View style={{ display: "flex", flexDirection: "row" }}>
+                    <TextInput
+                        onChangeText={text => { props.changeAutomotor("NUMERO_MOTOR", text) }}
+                        style={{ ...styles.input }}
+                        value={(props?.state?.automotor?.NUMERO_MOTOR)}
+                        placeholderTextColor={tema.placeholder}
+                        placeholder='Motor Nro.'
+                        editable={false}
+                    />
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation_.navigate("RecCamera", { changeAutomotor: selectNumeroMotor });
+                        }}
+                        style={{ width: 40, height: 40, padding: 5 }}>
+                        <IconComponent nameIcon="Camara" colors={{ color: "#000" }} ></IconComponent>
+                    </TouchableOpacity>
+                </View>
+
             </View>
         </View>
         <View style={{ position: "relative", height: 50, marginBottom: 10 }}>
@@ -172,10 +195,11 @@ const PerfilAutomotor = (props: any) => {
                         value={(props?.state?.automotor?.CHASIS)}
                         placeholderTextColor={tema.placeholder}
                         placeholder='Chasis'
+                        editable={false}
                     />
                     <TouchableOpacity
                         onPress={() => {
-                            navigation_.navigate("RecCamera", props.selectCameraChasis);
+                            navigation_.navigate("RecCamera", { changeAutomotor: selectChasis });
                         }}
                         style={{ width: 40, height: 40, padding: 5 }}>
                         <IconComponent nameIcon="Camara" colors={{ color: "#000" }} ></IconComponent>
@@ -270,9 +294,9 @@ const PerfilAutomotor = (props: any) => {
                         let list = [];
                         Object.keys(props.state["parametricas"]["zona_circulacion"]).map((key) => {
                             let obj = {
-                                key:props.state["parametricas"]["zona_circulacion"][key],
-                                value:props.state["parametricas"]["zona_circulacion"][key]
-                            } 
+                                key: props.state["parametricas"]["zona_circulacion"][key],
+                                value: props.state["parametricas"]["zona_circulacion"][key]
+                            }
                             list.push(obj);
                         });
                         navigation_.navigate("Select", { data: list, func: selectZona });
