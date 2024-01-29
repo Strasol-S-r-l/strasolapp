@@ -157,6 +157,7 @@ const Emision = ({ navigation }: any) => {
                 await AsyncStorage.removeItem("cliente");
                 await AsyncStorage.removeItem("automotor");
                 await AsyncStorage.removeItem("documentos");
+                aux_tipo = 1;
 
                 return;
             }).catch(e => {
