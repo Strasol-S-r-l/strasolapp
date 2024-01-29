@@ -56,18 +56,8 @@ const Perfil = ({ navigation }: any) => {
     }, []);
 
     const openVideo = (link:any) => {
-        return  YouTubeStandaloneAndroid.playVideo({
-            apiKey: 'AIzaSyCD5v1yDAHFP-eq3vk-bXri9vX3x7AI49A', // Your YouTube Developer API Key
-            videoId: link, // YouTube video ID
-            autoplay: true, // Autoplay the video
-            startTime: 120, // Starting point of video (in seconds)
-          })
-            .then(() => console.log('Standalone Player Exited'))
-            .catch(errorMessage => console.error(errorMessage));
-        
-        /*Linking.openURL("https://www.youtube.com/watch?v="+link).catch((err) =>
-            console.error('Error al abrir el enlace:', err)
-        );*/
+        console.log(link)
+        navigation_.replace("YouTube_", {link});
     };
 
     const pintarVideos = () => {
@@ -84,9 +74,9 @@ const Perfil = ({ navigation }: any) => {
           ));
     };
     const videos = async (id:any) => {
-        let keyYoutube = "AIzaSyCD5v1yDAHFP-eq3vk-bXri9vX3x7AI49A";
+        
         return await new Promise(resolve => {
-            fetch("https://youtube.googleapis.com/youtube/v3/videos?key=" + keyYoutube + "&id=" + id + "&part=snippet,contentDetails,statistics,status")
+            fetch("https://youtube.googleapis.com/youtube/v3/videos?key=" + api.key_youtube + "&id=" + id + "&part=snippet,contentDetails,statistics,status")
                 .then(res => res.json()).then(obj => {
                     resolve(obj);
                 });
