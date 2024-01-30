@@ -19,6 +19,7 @@ import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 import Documentos from './Documentos';
 import RNFS from 'react-native-fs';
 import ModalComponent from './ModalComponent';
+import Vimeo_ from './Vimeo';
 
 var navigation_: any;
 var aux_tipo = 1;
@@ -873,7 +874,7 @@ const Emision = ({ navigation }: any) => {
                                             visible={state["emitiendo"]}
                                         >
                                             <View style={styles.modalContainer}>
-                                                <WebView
+                                                {/*<WebView
                                                     originWhitelist={['*']}
                                                     source={{ uri: "https://ruddy.ibrokers.cloud/buster_drone/" }}
                                                     style={{
@@ -881,7 +882,8 @@ const Emision = ({ navigation }: any) => {
                                                         minHeight: 100,
                                                         backgroundColor: "rgba(0,0,0,0)"
                                                     }}>
-                                                </WebView>
+                                                </WebView>*/}
+                                                <Vimeo_></Vimeo_>
                                             </View>
                                         </Modal> : <></>
                                         )
@@ -901,7 +903,7 @@ const Emision = ({ navigation }: any) => {
                     aux_tipo == 3 ? <BarLeft nav={navigation_} back={true} titulo={"Documentos de Respaldo"} /> : <></>
                 }
                 <View style={{ width: "100%", height: "20%", zIndex: 1 }}>
-                    <Image
+                   {/* <Image
                         style={{
                             flex: 1,
                             width: "100%",
@@ -909,7 +911,8 @@ const Emision = ({ navigation }: any) => {
                             resizeMode: 'stretch'
                         }}
                         source={require('./../images/foot.png')}
-                    />
+                    />*/}
+                    <Vimeo_></Vimeo_>
                 </View>
             </SafeAreaView>
 

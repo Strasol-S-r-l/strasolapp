@@ -12,7 +12,7 @@ const Vimeo_ = ({ navigation }: any) => {
     const videoRef = useRef(null);
 
     useEffect(() => {
-        navigation_.setOptions({ headerShown: false });
+//navigation_.setOptions({ headerShown: false });
     }, []);
 
     return (
@@ -22,9 +22,9 @@ const Vimeo_ = ({ navigation }: any) => {
             onPlay={() => console.log('Video is playing')}
             onPlayProgress={(data:any) => console.log('Video progress data:', data)}
             onFinish={() => console.log('Video is finished')}
-            loop={false}
-            autoPlay={false}
-            controls={true}
+            loop={true}
+            autoPlay={true}
+            controls={false}
             speed={false}
             time={'0m0s'}
         />
