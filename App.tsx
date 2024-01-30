@@ -27,7 +27,7 @@ import CamaraDoc from './component/CamaraDoc';
 import CambiarContrasena from './component/CambiarContrasena';
 import Agreguement from './component/Agreguement';
 import RecuperarPass from './component/RecuperarPass';
-import YouTube_ from './component/YouTube_';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -61,7 +61,7 @@ function App(): JSX.Element {
         <Stack.Screen name="CambiarContrasena" component={CambiarContrasena} />
         <Stack.Screen name="Agreguement" component={Agreguement} />
         <Stack.Screen name="RecuperarPass" component={RecuperarPass} />
-        <Stack.Screen name="YouTube_" component={YouTube_} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
