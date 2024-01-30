@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { TouchableOpacity, Image, ScrollView, SafeAreaView, Text, View, StyleSheet, Dimensions, ImageBackground, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../enviroments/api.json'
 import IconComponent from './assets/icons/IconComponent';
 import Load from './Load';
 import tema from '../enviroments/tema.json'
-import { YouTubeStandaloneAndroid } from 'react-native-youtube';
 
 var navigation_: any;
 let control = false;
-const Perfil = ({ navigation }: any) => {
+const Videos = ({ navigation }: any) => {
+    const videoRef = useRef(null);
     navigation_ = navigation;
     const [listVideo, setListVideo] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         navigation_.setOptions({ headerShown: false });
-        let keyYoutube = "AIzaSyCD5v1yDAHFP-eq3vk-bXri9vX3x7AI49A";
         let keyListVideos = "PLyyYs_E5nqBudxpORWcnE5W6ZTmVsYRrg"
         const fetchData = async () => {
             control = false;
@@ -31,7 +30,7 @@ const Perfil = ({ navigation }: any) => {
                 const usuario = JSON.parse(suser);
                 // fetch("https://www.googleapis.com/youtube/v3/playlists?key="+keyYoutube+"&channelId=UCYaEaleKtTmUGsGtwoX-kWA")
                 // fetch("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&key="+keyYoutube+"&playlistId="+id_playlist)
-                const response = await fetch('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&key=' + keyYoutube + "&playlistId=" + keyListVideos,
+                const response = await fetch('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&key=' + api.key_youtube + "&playlistId=" + keyListVideos,
                     {
                         method: 'GET',
                         headers: { 'Content-Type': 'application/text', },
@@ -56,8 +55,7 @@ const Perfil = ({ navigation }: any) => {
     }, []);
 
     const openVideo = (link:any) => {
-        console.log(link)
-        navigation_.replace("YouTube_", {link});
+       navigation_.navigate("Vimeo")
     };
 
     const pintarVideos = () => {
@@ -74,9 +72,9 @@ const Perfil = ({ navigation }: any) => {
           ));
     };
     const videos = async (id:any) => {
-        
+        let keyYoutube = "AIzaSyCD5v1yDAHFP-eq3vk-bXri9vX3x7AI49A";
         return await new Promise(resolve => {
-            fetch("https://youtube.googleapis.com/youtube/v3/videos?key=" + api.key_youtube + "&id=" + id + "&part=snippet,contentDetails,statistics,status")
+            fetch("https://youtube.googleapis.com/youtube/v3/videos?key=" + keyYoutube + "&id=" + id + "&part=snippet,contentDetails,statistics,status")
                 .then(res => res.json()).then(obj => {
                     resolve(obj);
                 });
@@ -176,4 +174,4 @@ const styles = StyleSheet.create({
         color: tema.text,
       },
 });
-export default Perfil;
+export default Videos;
