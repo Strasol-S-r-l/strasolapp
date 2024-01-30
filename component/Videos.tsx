@@ -30,19 +30,15 @@ const Videos = ({ navigation }: any) => {
                 const usuario = JSON.parse(suser);
                 // fetch("https://www.googleapis.com/youtube/v3/playlists?key="+keyYoutube+"&channelId=UCYaEaleKtTmUGsGtwoX-kWA")
                 // fetch("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&key="+keyYoutube+"&playlistId="+id_playlist)
-                const response = await fetch('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&key=' + api.key_youtube + "&playlistId=" + keyListVideos,
+                const response = await fetch('https://api.vimeo.com/channels/'+api.vimeo.channel+'/videos',
                     {
                         method: 'GET',
-                        headers: { 'Content-Type': 'application/text', },
+                        headers: { 'Authorization': 'bearer '+api.vimeo.key, },
                     });
                 const data = await response.json();
-                if (data) {
-                    let listVideo = [];
-                    for (let j = 0; j < data.items.length; j++) {
-                        let item = await videos(data.items[j].snippet.resourceId.videoId);
-                        listVideo.push(item);
-                    }
-                    setListVideo(listVideo);
+                
+                if (data.data) {
+                    setListVideo(data.data);
                 }
                 setLoading(false);
             } catch (error) {
@@ -54,32 +50,28 @@ const Videos = ({ navigation }: any) => {
         fetchData();
     }, []);
 
-    const openVideo = (link:any) => {
-       navigation_.navigate("Vimeo")
+    const openVideo = (videoId:any) => {
+       navigation_.navigate("Vimeo_", {videoId})
     };
 
     const pintarVideos = () => {
         return listVideo.map((video, index) => (
-            <TouchableOpacity key={`key_video_${index}`} onPress={() => openVideo(video.items[0].id)}>
+            
+            <TouchableOpacity key={`key_video_${index}`} onPress={() =>{
+                openVideo(video.uri.split("/")[2])
+            }}>
               <View style={styles.videoContainer}>
-                <Image style={styles.thumbnail} source={{ uri: video.items[0]?.snippet?.thumbnails?.high?.url }} />
+              <Image style={styles.thumbnail} source={{ uri: video.pictures.base_link }} />
                 <View style={styles.videoDetails}>
-                  <Text style={styles.videoTitle}>{video.items[0]?.snippet?.localized?.title}</Text>
-                  <Text style={styles.videoDescription}>{video.items[0]?.snippet?.localized?.description}</Text>
+                  <Text style={styles.videoTitle}>{video.name}</Text>
+                  <Text style={styles.videoDescription}>{video.description}</Text>
+                  <Text style={styles.videoDescription}>{new Date(video.created_time).toLocaleString()}</Text>
                 </View>
               </View>
             </TouchableOpacity>
           ));
     };
-    const videos = async (id:any) => {
-        let keyYoutube = "AIzaSyCD5v1yDAHFP-eq3vk-bXri9vX3x7AI49A";
-        return await new Promise(resolve => {
-            fetch("https://youtube.googleapis.com/youtube/v3/videos?key=" + keyYoutube + "&id=" + id + "&part=snippet,contentDetails,statistics,status")
-                .then(res => res.json()).then(obj => {
-                    resolve(obj);
-                });
-        });
-    };
+    
 
     return (
         <View style={{ height: Dimensions.get('screen').height }}>
@@ -88,7 +80,10 @@ const Videos = ({ navigation }: any) => {
                 loading ?
                     <View style={{ width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.5)", justifyContent: "center", alignItems: "center" }}><Load></Load></View>
                     :
-                    <View style={{ width: "90%", height: "100%", marginLeft: "5%", marginRight: "5%", backgroundColor: "rgba(0,0,0,0.5)" }}>
+                    <View style={{ width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.5)" }}>
+                        <View>
+                            <Text style={styles.titulo}>Bienvenido</Text>
+                        </View>
                         <ScrollView style={{ flex: 1 }}>
                             {pintarVideos()}
                         </ScrollView>
