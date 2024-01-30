@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Linking, Dimensions } from 'react-native';
 import Share from 'react-native-share';
 import tema from '../enviroments/tema.json'
 import api from '../enviroments/api.json'
@@ -50,18 +50,18 @@ const PerfilProducto = ({ route, navigation }: any) => {
                         <View style={{ marginLeft: 10, marginRight: 10 }}>
                             {
                                 state?.certificado?.TOMADOR.map((tomador, i) => {
-                                    return <View key={"container_tomador_item"+i} style={{ marginLeft: 10, marginRight: 10 }}>
+                                    return <View key={"container_tomador_item" + i} style={{ marginLeft: 10, marginRight: 10 }}>
                                         <View style={{ justifyContent: 'space-between', display: "flex", flexDirection: "row" }}>
                                             <Text>Nombre:</Text>
-                                            <Text style={{ color: tema.text,width:"50%" ,textAlign:"right" }}>{tomador?.NOMBRE_COMPLETO}</Text>
+                                            <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{tomador?.NOMBRE_COMPLETO}</Text>
                                         </View>
                                         <View style={{ justifyContent: 'space-between', display: "flex", flexDirection: "row" }}>
                                             <Text>CI/NIT:</Text>
-                                            <Text style={{ color: tema.text ,width:"50%" ,textAlign:"right"}}>{tomador?.NIT_CI_COMPLETO ? tomador?.NIT_CI_COMPLETO : "-*-"}</Text>
+                                            <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{tomador?.NIT_CI_COMPLETO ? tomador?.NIT_CI_COMPLETO : "-*-"}</Text>
                                         </View>
                                         <View style={{ justifyContent: 'space-between', display: "flex", flexDirection: "row" }}>
                                             <Text>Telefono:</Text>
-                                            <Text style={{ color: tema.text ,width:"50%" ,textAlign:"right"}}>{tomador?.TELEFONO ? tomador?.TELEFONO : "-*-"}</Text>
+                                            <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{tomador?.TELEFONO ? tomador?.TELEFONO : "-*-"}</Text>
                                         </View>
                                     </View>
                                 })
@@ -75,11 +75,11 @@ const PerfilProducto = ({ route, navigation }: any) => {
                     <View style={{ marginLeft: 10, marginRight: 10 }}>
                         <View style={{ justifyContent: 'space-between', display: "flex", flexDirection: "row" }}>
                             <Text>Nombre:</Text>
-                            <Text style={{ color: tema.text,width:"50%" ,textAlign:"right" }}>{state?.certificado?.NOMBRE_SUBROGADO}</Text>
+                            <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state?.certificado?.NOMBRE_SUBROGADO}</Text>
                         </View>
                         <View style={{ justifyContent: 'space-between', display: "flex", flexDirection: "row" }}>
                             <Text>Valor Subbrogado:</Text>
-                            <Text style={{ color: tema.text ,width:"50%" ,textAlign:"right"}}>{state?.certificado?.MONTO_SUBROGADO ? state?.certificado?.MONTO_SUBROGADO : "0"}</Text>
+                            <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state?.certificado?.MONTO_SUBROGADO ? state?.certificado?.MONTO_SUBROGADO : "0"}</Text>
                         </View>
                     </View>
                 </View> : <></>
@@ -88,12 +88,12 @@ const PerfilProducto = ({ route, navigation }: any) => {
                 <View><Text style={{ fontWeight: "bold", color: tema.text }}>Asegurado:</Text></View>
                 <View style={{ marginLeft: 10, marginRight: 10 }}>
                     <View style={{ justifyContent: 'space-between', display: "flex", flexDirection: "row" }}>
-                        <Text style={{width:"60%"}}>Documento de Identidad:</Text>
-                        <Text style={{ color: tema.text ,width:"40%" ,textAlign:"right"}}>{state.certificado.CLIENTE.NIT_CI}{state.certificado.CLIENTE.LUGAR_EMISION_CI}</Text>
+                        <Text style={{ width: "60%" }}>Documento de Identidad:</Text>
+                        <Text style={{ color: tema.text, width: "40%", textAlign: "right" }}>{state.certificado.CLIENTE.NIT_CI}{state.certificado.CLIENTE.LUGAR_EMISION_CI}</Text>
                     </View>
                     <View style={{ justifyContent: 'space-between', display: "flex", flexDirection: "row" }}>
                         <Text>Nombre:</Text>
-                        <Text style={{ color: tema.text ,width:"50%" ,textAlign:"right"}}>{state.certificado.CLIENTE.NOMBRE_COMPLETO}</Text>
+                        <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state.certificado.CLIENTE.NOMBRE_COMPLETO}</Text>
                     </View>
                     <View style={{ justifyContent: 'space-between', display: "flex", flexDirection: "row" }}>
                         <Text>Telefono:</Text>
@@ -151,8 +151,8 @@ const PerfilProducto = ({ route, navigation }: any) => {
         });
     }
 
-    const getDoc=(title:string, doc:any)=>{
-        if(!doc) return null;
+    const getDoc = (title: string, doc: any) => {
+        if (!doc) return null;
 
         return <TouchableOpacity
             onPress={() => {
@@ -213,7 +213,7 @@ const PerfilProducto = ({ route, navigation }: any) => {
                 </View>
             </View>
         }
-      
+
 
         return <></>
     }
@@ -224,64 +224,64 @@ const PerfilProducto = ({ route, navigation }: any) => {
                 <Text style={{ color: tema.text, fontWeight: 'bold' }}>MATERIA ASEGURADA</Text>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                <Text style={{ color: tema.text ,width:"50%"}}>Marca</Text>
-                <Text style={{ color: tema.text ,width:"50%"}}>{state.certificado.AUTOMOTOR.MARCA.trim()}</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>Marca</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>{state.certificado.AUTOMOTOR.MARCA.trim()}</Text>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                <Text style={{ color: tema.text,width:"50%" }}>Modelo</Text>
-                <Text style={{ color: tema.text,width:"50%" ,textAlign:"right"}}>{state.certificado.AUTOMOTOR.MODELO.trim()}</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>Modelo</Text>
+                <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state.certificado.AUTOMOTOR.MODELO.trim()}</Text>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                <Text style={{ color: tema.text ,width:"50%"}}>Placa</Text>
-                <Text style={{ color: tema.text ,width:"50%",textAlign:"right"}}>{state.certificado.DATO_ADICIONAL}</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>Placa</Text>
+                <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state.certificado.DATO_ADICIONAL}</Text>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                <Text style={{ color: tema.text ,width:"50%"}}>Año</Text>
-                <Text style={{ color: tema.text ,width:"50%",textAlign:"right"}}>{state.certificado.AUTOMOTOR.ANO}</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>Año</Text>
+                <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state.certificado.AUTOMOTOR.ANO}</Text>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                <Text style={{ color: tema.text ,width:"50%"}}>Tipo</Text>
-                <Text style={{ color: tema.text ,width:"50%",textAlign:"right"}}>{state.certificado.AUTOMOTOR.TIPO.trim()}</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>Tipo</Text>
+                <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state.certificado.AUTOMOTOR.TIPO.trim()}</Text>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                <Text style={{ color: tema.text ,width:"50%"}}>Color</Text>
-                <Text style={{ color: tema.text ,width:"50%",textAlign:"right"}}>{state.certificado.AUTOMOTOR.COLOR}</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>Color</Text>
+                <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state.certificado.AUTOMOTOR.COLOR}</Text>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                <Text style={{ color: tema.text ,width:"50%"}}>Plazas</Text>
-                <Text style={{ color: tema.text ,width:"50%",textAlign:"right"}}>{state.certificado.AUTOMOTOR.PLAZAS}</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>Plazas</Text>
+                <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state.certificado.AUTOMOTOR.PLAZAS}</Text>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                <Text style={{ color: tema.text ,width:"50%"}}>Motor Cc.</Text>
-                <Text style={{ color: tema.text ,width:"50%",textAlign:"right"}}>{state.certificado.AUTOMOTOR.MOTOR}</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>Motor Cc.</Text>
+                <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state.certificado.AUTOMOTOR.MOTOR}</Text>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                <Text style={{ color: tema.text ,width:"50%"}}>Chasis Nro.</Text>
-                <Text style={{ color: tema.text ,width:"50%",textAlign:"right"}}>{state.certificado.AUTOMOTOR.CHASIS}</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>Chasis Nro.</Text>
+                <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state.certificado.AUTOMOTOR.CHASIS}</Text>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                <Text style={{ color: tema.text ,width:"50%"}}>Motor Nro.</Text>
-                <Text style={{ color: tema.text ,width:"50%",textAlign:"right"}}>{state.certificado.AUTOMOTOR.NUMERO_MOTOR}</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>Motor Nro.</Text>
+                <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state.certificado.AUTOMOTOR.NUMERO_MOTOR}</Text>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                <Text style={{ color: tema.text ,width:"50%"}}>Trancción</Text>
-                <Text style={{ color: tema.text ,width:"50%",textAlign:"right"}}>{state.certificado.AUTOMOTOR.TRACCION}</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>Trancción</Text>
+                <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state.certificado.AUTOMOTOR.TRACCION}</Text>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                <Text style={{ color: tema.text ,width:"50%"}}>Extraterritoriedad</Text>
-                <Text style={{ color: tema.text ,width:"50%",textAlign:"right"}}>{state.certificado.AUTOMOTOR.EXTRATERRITORIALIDAD}</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>Extraterritoriedad</Text>
+                <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state.certificado.AUTOMOTOR.EXTRATERRITORIALIDAD}</Text>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                <Text style={{ color: tema.text ,width:"50%"}}>Zona de circulación</Text>
-                <Text style={{ color: tema.text ,width:"50%",textAlign:"right"}}>{state.certificado.AUTOMOTOR.ZONA_CIRCULACION}</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>Zona de circulación</Text>
+                <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state.certificado.AUTOMOTOR.ZONA_CIRCULACION}</Text>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                <Text style={{ color: tema.text ,width:"50%"}}>Ubicar</Text>
-                <Text style={{ color: tema.text ,width:"50%",textAlign:"right"}}>{state.certificado.AUTOMOTOR.UBICAR}</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>Ubicar</Text>
+                <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state.certificado.AUTOMOTOR.UBICAR}</Text>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-                <Text style={{ color: tema.text ,width:"50%"}}>Uso</Text>
-                <Text style={{ color: tema.text ,width:"50%",textAlign:"right"}}>{state.certificado.AUTOMOTOR.USO}</Text>
+                <Text style={{ color: tema.text, width: "50%" }}>Uso</Text>
+                <Text style={{ color: tema.text, width: "50%", textAlign: "right" }}>{state.certificado.AUTOMOTOR.USO}</Text>
             </View>
         </View>
     }
@@ -425,7 +425,9 @@ const PerfilProducto = ({ route, navigation }: any) => {
             })
             .catch((err) => console.error('Ocurrió un error', err));
     };
-
+    const toBack = () => {
+        navigation.goBack();
+    };
     const pintar = () => {
         if (!state?.certificado) return <Load />;
 
@@ -465,7 +467,35 @@ const PerfilProducto = ({ route, navigation }: any) => {
                 {pintar()}
             </View>
 
-            <BarLeft titulo={"Cobertura Emitida"} />
+            <View style={{ ...StyleSheet.absoluteFillObject, width: "30%", flexDirection: 'row' }}>
+                <Image
+                    style={{
+                        flex: 1,
+                        width: null,
+                        height: null,
+                        resizeMode: 'stretch'
+                    }}
+                    source={require('./../images/bar_left.png')}
+                />
+                <View style={{
+                    position: 'absolute',
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: Dimensions.get("window").height,
+                    width: "50%",
+                    flexDirection: 'column',
+                    zIndex: 2
+                }}>
+                    <TouchableOpacity style={{ alignSelf: 'flex-end', top: 5, zIndex: 1, position: 'absolute' }} onPress={() => toBack()}>
+                        <IconComponent nameIcon='arrowLeft' colors={{ color_1: "white" }} alto={50} ancho={50} ></IconComponent>
+                    </TouchableOpacity>
+                    <Text style={{ width: Dimensions.get('window').height - 10, top: 55, transform: [{ rotate: '90deg' }], fontSize: 24, fontWeight: "bold", color: tema.text }}>Cobertura Emitida</Text>
+                </View>
+            </View>
             <View style={{ width: "100%", height: "20%" }}>
                 <Image
                     style={{

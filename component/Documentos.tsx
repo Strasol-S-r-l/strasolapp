@@ -65,9 +65,10 @@ const Documentos = (props:any) => {
         </ScrollView>
     }
     if(state["estado"] == "error"){
+        console.log(state["error"]);
         return <ScrollView>
             <View>
-                <Text style={{color:tema.danger, textAlign:'center'}}>{state["error"]}</Text>
+                <Text style={{color:tema.danger, textAlign:'center'}}>Intentelo mas tarde</Text>
             </View>
         </ScrollView>
     }

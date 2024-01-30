@@ -14,7 +14,7 @@ const YouTube_ = ({ navigation }: any) => {
     }, []);
 
   
-    return <YouTube
+    /*return <YouTube
         videoId={""} // The YouTube video ID
         apiKey={api.key_youtube}
         play // control playback of video with true/false
@@ -23,7 +23,7 @@ const YouTube_ = ({ navigation }: any) => {
         onReady={e => setState({ isReady: true })}
         onError={e => setState({ error: e.error })}
         style={{ alignSelf: 'stretch', height: 300 }}
-    />
+    />*/
     
 };
 export default YouTube_;

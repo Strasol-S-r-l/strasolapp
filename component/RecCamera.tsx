@@ -80,7 +80,7 @@ const RecCamera = (navigation:any) => {
   const setChasis = async (chasis: any) => {
     //state.chasis=chasis;
     console.log(navigation.route.params);
-      navigation.route.params.changeAutomotor({value:chasis});
+    navigation.route.params.changeAutomotor({value:chasis});
     
     //navigation.navigation.replace("Emision");
     navigation.navigation.goBack();
