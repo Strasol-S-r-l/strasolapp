@@ -171,7 +171,7 @@ const PerfilAutomotor = (props: any) => {
                         value={(props?.state?.automotor?.NUMERO_MOTOR)}
                         placeholderTextColor={tema.placeholder}
                         placeholder='Motor Nro.'
-                        editable={false}
+                        
                     />
                     <TouchableOpacity
                         onPress={() => {
@@ -195,7 +195,7 @@ const PerfilAutomotor = (props: any) => {
                         value={(props?.state?.automotor?.CHASIS)}
                         placeholderTextColor={tema.placeholder}
                         placeholder='Chasis'
-                        editable={false}
+                        
                     />
                     <TouchableOpacity
                         onPress={() => {

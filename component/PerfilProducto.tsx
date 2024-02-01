@@ -313,8 +313,8 @@ const PerfilProducto = ({ route, navigation }: any) => {
                     <Text style={{ color: tema.text }}>$us. {state.certificado.PRIMA.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text>
                 </View>
                 <View style={{ justifyContent: 'space-between', display: "flex", flexDirection: "row" }}>
-                    <Text style={{ color: tema.text }}>Comisión</Text>
-                    <Text style={{ color: tema.text }}>$us. {state.certificado.COMISION.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text>
+                    <Text style={{ color: tema.text }}>Prima Neta</Text>
+                    <Text style={{ color: tema.text }}>$us. {state.certificado.PRIMA_NETA.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text>
                 </View>
             </View>
             {/*

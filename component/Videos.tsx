@@ -16,7 +16,6 @@ const Videos = ({ navigation }: any) => {
 
     useEffect(() => {
         navigation_.setOptions({ headerShown: false });
-        let keyListVideos = "PLyyYs_E5nqBudxpORWcnE5W6ZTmVsYRrg"
         const fetchData = async () => {
             control = false;
             try {
@@ -36,6 +35,7 @@ const Videos = ({ navigation }: any) => {
                         headers: { 'Authorization': 'bearer '+api.vimeo.key, },
                     });
                 const data = await response.json();
+                console.log(data)
                 
                 if (data.data) {
                     setListVideo(data.data);
@@ -64,7 +64,7 @@ const Videos = ({ navigation }: any) => {
               <Image style={styles.thumbnail} source={{ uri: video.pictures.base_link }} />
                 <View style={styles.videoDetails}>
                   <Text style={styles.videoTitle}>{video.name}</Text>
-                  <Text style={styles.videoDescription}>{video.description}</Text>
+                  <Text style={styles.videoDescription}>{video.description.length>20?video.description.substring(0,19):video.description}</Text>
                   <Text style={styles.videoDescription}>{new Date(video.created_time).toLocaleString()}</Text>
                 </View>
               </View>
@@ -82,10 +82,11 @@ const Videos = ({ navigation }: any) => {
                     :
                     <View style={{ width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.5)" }}>
                         <View>
-                            <Text style={styles.titulo}>Bienvenido</Text>
+                            <Text style={styles.titulo}>Videos</Text>
                         </View>
                         <ScrollView style={{ flex: 1 }}>
                             {pintarVideos()}
+                            <View style={{height:100}}></View>
                         </ScrollView>
                     </View>
             }
@@ -100,7 +101,8 @@ const styles = StyleSheet.create({
     titulo: {
         textAlign: 'center',
         marginTop: 10,
-        fontSize: 14,
+        fontSize: 20,
+        color:tema.text,
         fontWeight: 'bold'
     },
     texto: {
@@ -162,7 +164,6 @@ const styles = StyleSheet.create({
         color: tema.text,
         fontWeight: "bold",
         fontSize: 17,
-        height: 30,
         justifyContent: "center",
       },
       videoDescription: {

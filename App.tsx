@@ -28,6 +28,7 @@ import CambiarContrasena from './component/CambiarContrasena';
 import Agreguement from './component/Agreguement';
 import RecuperarPass from './component/RecuperarPass';
 import Vimeo_ from './component/Vimeo_';
+import Emitiendo from './component/Emitiendo';
 
 
 const Stack = createNativeStackNavigator();
@@ -63,6 +64,7 @@ function App(): JSX.Element {
         <Stack.Screen name="Agreguement" component={Agreguement} />
         <Stack.Screen name="RecuperarPass" component={RecuperarPass} />
         <Stack.Screen name="Vimeo_" component={Vimeo_} />
+        <Stack.Screen name="Emitiendo" component={Emitiendo} />
         
       </Stack.Navigator>
     </NavigationContainer>

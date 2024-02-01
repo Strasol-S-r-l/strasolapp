@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, ImageBackground, TextInput } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, ImageBackground, TextInput, PermissionsAndroid } from 'react-native';
 import Load from './Load';
+import Share from 'react-native-share';
 import api from '../enviroments/api.json'
 import tema from '../enviroments/tema.json'
+var RNFS = require('react-native-fs');
+import XLSX from 'xlsx'
+
 import {
   LineChart,
   BarChart,
@@ -15,6 +19,7 @@ import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 import ModalComponent from './ModalComponent';
 import GraficoRadar from './GraficoRadar';
 import IconComponent from './assets/icons/IconComponent';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Logs = (props: any) => {
@@ -35,6 +40,7 @@ const Logs = (props: any) => {
   const [getMonto, setMonto] = useState([0]);
   const [getTitulo, setTitulo] = useState("");
   const [getAno, setAno] = useState(0);
+  const [getMes, setMes] = useState(0);
   const [getDias, setDias] = useState([]);
   const [getDatosMes, setDatosMes] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [getVisible, setVisible] = useState(1);
@@ -153,11 +159,16 @@ const Logs = (props: any) => {
       if ((mes + 1) < 9) {
         mes_aux = "0" + mes_aux;
       }
+
+      let usuario = await AsyncStorage.getItem("usuario");
+      usuario = JSON.parse(usuario);
+      let id_cliente = usuario.ID_CLIENTES;
+
       const response = await fetch(api.url + '/app',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', },
-          body: JSON.stringify({ key: api.key, type: 'getLogs', gestion: (mes_aux) + "/" + ano }),
+          body: JSON.stringify({ key: api.key, type: 'getLogs', gestion: (mes_aux) + "/" + ano, id_cliente }),
         });
       const obj = await response.json();
       if (obj.estado === "error") {
@@ -175,11 +186,13 @@ const Logs = (props: any) => {
         setState({ ...state, logs: obj.data });
         setConfig(mes, ano);
         setAno(ano);
+        setMes(mes);
       } else {
         state.config["data"] = [];
         await setState({ ...state, logs: [] });
         setConfig(mes, ano);
         setAno(ano);
+        setMes(mes);
       }
 
     } catch (error) {
@@ -189,11 +202,16 @@ const Logs = (props: any) => {
 
   const getLogsAnual = async (ano: Int32) => {
     try {
+      console.log("getLogsAnual");
+      let usuario = await AsyncStorage.getItem("usuario");
+
+      usuario = JSON.parse(usuario);
+      let id_cliente = usuario.ID_CLIENTES;
       const response = await fetch(api.url + '/app',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', },
-          body: JSON.stringify({ key: api.key, type: 'getLogsAnual', gestion: ano }),
+          body: JSON.stringify({ key: api.key, type: 'getLogsAnual', gestion: ano, id_cliente }),
         });
       const obj = await response.json();
       if (obj.estado === "error") {
@@ -211,7 +229,7 @@ const Logs = (props: any) => {
           let log = obj.data[g];
           fecha = new Date(log.FECHA_REGISTRO_CERTIFICADO);
           if (fecha.getFullYear() == ano) {
-            getDatosMes[fecha.getMonth()] += log.PRIMA;
+            getDatosMes[fecha.getMonth()] += log.PRIMA_NETA;
           }
         }
         await setDatosMes(getDatosMes) 
@@ -285,7 +303,7 @@ const Logs = (props: any) => {
       let log = state?.config?.data[i];
       fecha = new Date(log.FECHA_REGISTRO_CERTIFICADO);
       if (fecha.getMonth() == mes && fecha.getFullYear() == ano) {
-        datosMonto[fecha.getDate() - 1] += log.PRIMA;
+        datosMonto[fecha.getDate() - 1] += log.PRIMA_NETA;
       }
     }
     let monto_acumulado = 0;
@@ -302,6 +320,66 @@ const Logs = (props: any) => {
     getLogsAnual(getAno);
   };
 
+  const dosD=(monto:number)=>{
+    return monto.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    })
+  };
+
+  const exportar= async()=>{
+     // Created Sample data
+     const granted = await PermissionsAndroid.requestMultiple([
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+    ]);
+     const readGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE); 
+     const writeGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+     if(!readGranted || !writeGranted) {
+       console.log('Read and write permissions have not been granted');
+       return;
+     }
+
+     let data = [];
+     state.logs.map(resp=>{
+      data.push({
+        "NIT CIA":resp.NIT,
+        "COMPAÑÍA":resp.RAZON_SOCIAL,
+        "POLIZA":resp.NUMERO_POLIZA,
+        "CERTIFICADO":resp.NUMERO_CERTIFICADO,
+        "FECHA REGISTRO":resp.FECHA_REGISTRO_CERTIFICADO,
+        "NIT/CI CLIENTE":resp.NIT_CI,
+        "CLIENTE":resp.NOMBRE_COMPLETO,
+        "VIGENCIA INICIAL":resp.VIGENCIA_INICIAL,
+        "VIGENCIA FINAL":resp.VIGENCIA_FINAL,
+        "PRIMA":resp.PRIMA,
+        "PRIMA NETA":resp.PRIMA_NETA
+      });
+     });
+
+    let wb = XLSX.utils.book_new();
+    let ws = XLSX.utils.json_to_sheet(data)
+
+    XLSX.utils.book_append_sheet(wb,ws,"Emisiones")
+    const wbout = XLSX.write(wb, {type:'binary', bookType:"xlsx"});
+
+    // Write generated excel to Storage
+    console.log("sdf")
+    let path = RNFS.TemporaryDirectoryPath+"/emisiones.xlsx";
+    console.log(path)
+    RNFS.writeFile(path, wbout, 'ascii').then((r:any)=>{
+      console.log('Success');
+      Share.open({
+        title: "Reporte de emisiones mensual",
+        message: "Este es el reporte de emisiones",
+        url: "file:///"+path,
+        subject: "Report",
+    })
+      
+    }).catch((e:any)=>{
+      console.log('Error', e);
+    });
+  };
 
 
   const pintarLogs = () => {
@@ -353,12 +431,36 @@ const Logs = (props: any) => {
                 chartConfig={chartConfig}
                 bezier
               />
+              
             </View>
             : <></>
         }
 
 
       </ScrollView>
+      {
+        (getVisible == 2) ? (
+          <View>
+            <View style={{display:'flex', alignItems:'center', marginTop:20}}>
+              <View style={{backgroundColor:'#fff', display:'flex', justifyContent:'center', borderColor:'#000', borderWidth:2, borderRadius:10, width:180, height:50}}>
+                <Text style={{color:tema.active, fontSize:20, textAlign:'right', marginRight:1, fontWeight:'bold'}}>
+                  $us. {dosD(getMonto[getMonto.length-1])}</Text>
+              </View>
+            </View>
+            <View style={{display:'flex', alignItems:'center', marginTop:10,}}>
+              <TouchableOpacity onPress={()=>{
+                console.log("exportar")
+                exportar()
+              }}>
+                <Text>Excel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) :
+        (
+          <View></View>
+        )
+      }
       {
         state?.logs.map((log: any, key: string) => {
           return <View key={key} style={{
@@ -379,8 +481,8 @@ const Logs = (props: any) => {
             </TouchableOpacity>
 
             <Text style={{ color: tema.active }}>{"Cliente: " + log.NOMBRE_COMPLETO}</Text>
-            <Text style={{ color: tema.active }}>{"Prima: " + log.PRIMA}</Text>
-            <Text style={{ color: tema.active }}>{"Comision: " + log.COMISION}</Text>
+            <Text style={{ color: tema.active }}>{"Prima: " + dosD(log.PRIMA)}</Text>
+            <Text style={{ color: tema.active }}>{"Prima Neta: " + dosD(log.PRIMA_NETA)}</Text>
             <Text style={{ color: tema.active, textAlign: "right" }}>{log.FECHA_REGISTRO_CERTIFICADO}</Text>
           </View>
         })

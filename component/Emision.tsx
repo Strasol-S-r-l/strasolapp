@@ -22,7 +22,7 @@ import ModalComponent from './ModalComponent';
 
 var navigation_: any;
 var aux_tipo = 1;
-const Emision = ({ navigation }: any) => {
+const Emision = ({ route, navigation }: any) => {
     navigation_ = navigation;
     const [state, setState] = React.useState({ porc_avance: 0, vigencia_inicial: new Date().toLocaleDateString() });
     const [tipoInfo, setTipoInfo] = React.useState(1);
@@ -65,7 +65,6 @@ const Emision = ({ navigation }: any) => {
                 state["automotor"] = { vigencia_inicial: state.vigencia_inicial, monto_subrogado: state["poliza"].valor_asegurado };
             }
             state["usuario"] = await AsyncStorage.getItem("usuario");
-            console.log(state["usuario"])
             state["usuario"] = JSON.parse(state["usuario"])
             state["documentos"] = await getDocumentos();
             state["parametricas"] = await getParametricas();
@@ -95,83 +94,8 @@ const Emision = ({ navigation }: any) => {
         }
     }
     const emitir = async () => {
-        
-
-        let documentos = await AsyncStorage.getItem("documentos");
-        let cuotas = await AsyncStorage.getItem("cuotas");
-        if (documentos) {
-            documentos = JSON.parse(documentos);
-
-            documentos = await Promise.all(
-                documentos.map(async (obj) => {
-                    if (obj.url) {
-                        obj["image"] = await RNFS.readFile(obj.url, 'base64');
-                    } else {
-                        obj = null;
-                    }
-                    return obj;
-                })
-            );
-        }
-
-
-        fetch(api.url + '/app',
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', },
-                body: JSON.stringify({
-                    key: api.key,
-                    type: 'emitir',
-                    id_tomador: state.usuario.ID_CLIENTES,
-                    usuario: state.usuario.USUARIO,
-                    cliente: state.cliente,
-                    automotor: state.automotor,
-                    poliza: state.poliza,
-                    documentos: documentos,
-                    cuotas: cuotas
-                }),
-            }).then(async (response) => {
-
-                const obj = await response.json();
-                if (obj.estado === "error") {
-                    state["error"] = JSON.stringify(obj.error);
-                    state["emitiendo"] = false;
-                    setState({ ...state });
-                    return obj;
-                }
-
-                state["emitiendo"] = false;
-
-                let id = 0;
-                if (obj?.data?.ID) {
-                    id = obj?.data?.ID;
-                } else {
-                    id = obj?.data[0].ID;
-                }
-
-
-                state["dataClient"] = obj.data
-                navigation_.replace("PerfilProducto", { ID: id });
-
-                await AsyncStorage.removeItem("poliza");
-                await AsyncStorage.removeItem("cliente");
-                await AsyncStorage.removeItem("automotor");
-                await AsyncStorage.removeItem("documentos");
-                aux_tipo = 1;
-
-                return;
-            }).catch(e => {
-                state["error"] = state.error + "";
-                state["emitiendo"] = false;
-                setMensaje("Intentelo mas tarde");
-                openModal();
-                console.log(e + " error de respuesta")
-                setState({ ...state });
-                return;
-            });
-
-        state["emitiendo"] = true;
-        setState({ ...state });
+        aux_tipo = 1;
+        navigation_.replace("Emitiendo");
     };
 
     const getDocumentos = async () => {
@@ -197,7 +121,7 @@ const Emision = ({ navigation }: any) => {
 
         let obj = await uploadResponse.json();
         if (obj.estado == "error") {
-            console.log(obj.error)
+            console.error(obj.error)
             setState({ ...state })
             return;
         }
@@ -377,55 +301,55 @@ const Emision = ({ navigation }: any) => {
     const getPorcentajeAvanceCliente = () => {
         let avance = 0;
         let total = 17;
-        if (state?.cliente?.NIT_CI) {
+        if (state?.cliente?.NIT_CI) {//1
             avance++;
         }
-        if (state?.cliente?.TIPO_DOCUMENTO) {
+        if (state?.cliente?.TIPO_DOCUMENTO) {//2
             avance++;
         }
-        if (state?.cliente?.LUGAR_EMISION_CI) {
+        if (state?.cliente?.LUGAR_EMISION_CI) {//3
             avance++;
         }
-        if (state?.cliente?.NOMBRE_COMPLETO) {
+        if (state?.cliente?.PRIMER_NOMBRE) {//4
             avance++;
         }
-        if (state?.cliente?.PRIMER_APELLIDO) {
+        if (state?.cliente?.PRIMER_APELLIDO) {//5
             avance++;
         }
-        if (state?.cliente?.SEGUNDO_APELLIDO) {
+        if (state?.cliente?.SEGUNDO_APELLIDO) {//6
             avance++;
         }
-        if (state?.cliente?.CELULAR) {
+        if (state?.cliente?.CELULAR) {//7
             avance++;
         }
-        if (state?.cliente?.FECHA_NACIMIENTO) {
+        if (state?.cliente?.FECHA_NACIMIENTO) {//8
             avance++;
         }
-        if (state?.cliente?.SEXO) {
+        if (state?.cliente?.SEXO) {//9
             avance++;
         }
-        if (state?.cliente?.ESTADO_CIVIL) {
+        if (state?.cliente?.ESTADO_CIVIL) {//10
             avance++;
         }
-        if (state?.cliente?.EMAIL) {
+        if (state?.cliente?.EMAIL) {//11
             avance++;
         }
-        if (state?.cliente?.PAIS_RESIDENCIA) {
+        if (state?.cliente?.PAIS_RESIDENCIA) {//12
             avance++;
         }
-        if (state?.cliente?.NACIONALIDAD) {
+        if (state?.cliente?.NACIONALIDAD) {//13
             avance++;
         }
-        if (state?.cliente?.CIUDAD) {
+        if (state?.cliente?.CIUDAD) {//14
             avance++;
         }
-        if (state?.cliente?.DIRECCION) {
+        if (state?.cliente?.DIRECCION) {//15
             avance++;
         }
-        if (state?.cliente?.PROFESION) {
+        if (state?.cliente?.PROFESION) {//16
             avance++;
         }
-        if (state?.cliente?.ACTIVIDAD_ECONOMICA) {
+        if (state?.cliente?.ACTIVIDAD_ECONOMICA) {//17
             avance++;
         }
         return avance * 100 / total;
@@ -489,8 +413,11 @@ const Emision = ({ navigation }: any) => {
 
     const getPorcentajeAvance = () => {
         let avance = getPorcentajeAvanceCliente();
+        console.log("Cliente "+avance)
         avance += getPorcentajeAvanceAutomotor();
+        console.log("Auto "+avance)
         avance += getPorcentajeDocumentosRespaldo();
+        console.log("doc "+avance)
 
         return avance / 3;
     };
@@ -838,7 +765,7 @@ const Emision = ({ navigation }: any) => {
                     {getSvg()}
                 </View>
                 <View style={{ width: "80%", marginLeft: "20%", height: "60%" }}>
-
+                    {route?.params?.error?<View style={{margin:10}}><Text style={{textAlign:'center', color:tema.danger}}>{route?.params?.error}</Text></View>:<View></View>}
                     <View style={{ display: "flex" }}>
                         <Text style={{ color: "white", textAlign: "center" }}>
                             {
@@ -867,12 +794,24 @@ const Emision = ({ navigation }: any) => {
                                         </View>
                                     </View>
                                         :
-                                        (aux_tipo == 3 ? <Modal
-                                            transparent={true}
-                                            animationType="fade"
-                                            visible={state["emitiendo"]}
-                                        >
+                                        (aux_tipo == 3 ? 
                                             <View style={styles.modalContainer}>
+                                            
+                                                <ModalComponent id_modal={'modal_error'} visible={true} onClose={closeModal}>
+                                                    <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: tema.background, borderRadius: 10 }}>
+                                                    </View>
+                                                    <View>
+                                                        <View style={{ justifyContent: "center", alignItems: "center" }}>
+
+                                                            <IconComponent nameIcon='warningIcon' colors={{ color_1: tema.danger }} alto={50} ancho={50}></IconComponent>
+
+                                                        </View>
+                                                        <View style={{ justifyContent: "center", alignItems: "center" }}>
+                                                            <Text style={{ color: tema.active }}>{getMensaje}</Text>
+                                                        </View>
+                                                    </View>
+                                                </ModalComponent>
+                                            
                                                 {/*<WebView
                                                     originWhitelist={['*']}
                                                     source={{ uri: "https://ruddy.ibrokers.cloud/buster_drone/" }}
@@ -884,7 +823,17 @@ const Emision = ({ navigation }: any) => {
                                                 </WebView>*/}
                                                 
                                             </View>
-                                        </Modal> : <></>
+                                         : <View>
+                                            <WebView
+                                                    originWhitelist={['*']}
+                                                    source={{ uri: "https://ruddy.ibrokers.cloud/buster_drone/" }}
+                                                    style={{
+                                                        minWidth:500,
+                                                        minHeight: 100,
+                                                        backgroundColor: "rgba(0,0,0,0)"
+                                                    }}>
+                                                </WebView>
+                                         </View>
                                         )
                                 }
                             </>

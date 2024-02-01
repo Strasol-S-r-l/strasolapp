@@ -10,7 +10,7 @@ import BarLeft from './BarLeft';
 const data = [
     {title:"Inicio", action:"Cotizacion"},
     {title:"Mi perfil", action:"Perfil"},
-    {title:"Video tutoriales", action:"Videos"},
+    {title:"Videos", action:"Videos"},
     {title:"Reporte de Emisiones", action:"Test"},
     {title:"Términos y condiciones", action:"Agreguement"},
 ];
@@ -35,7 +35,7 @@ const paintButtons=()=>{
                 key={i} 
                 onPress={() => action(algo.action)}
                 style={{margin:5, padding:5, borderRadius:5, height:55, backgroundColor:'#00000033', borderColor:'#000000', borderWidth:1, justifyContent:'center' }}
-                >
+            >
                     <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
                         <View>
                             <Text style={{ color:'#fff', textShadowColor:'#000', textShadowRadius:2, textShadowOffset:{height:4, width:0}, fontWeight:'bold'}}>{algo.title}</Text>
@@ -43,7 +43,6 @@ const paintButtons=()=>{
                         <View>
                             <Text style={{ marginEnd:20, color:'#fff', textShadowColor:'#000', textShadowRadius:2, textShadowOffset:{height:4, width:0}, fontWeight:'bold'}}>-></Text>
                         </View>
-                        
                     </View>
         </TouchableOpacity>
     })
