@@ -44,6 +44,8 @@ const Logs = (props: any) => {
   const [getDias, setDias] = useState([]);
   const [getDatosMes, setDatosMes] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [getVisible, setVisible] = useState(1);
+  const [buscador, setBuscador] = useState("");
+  const [buscar, setBuscar] = useState("");
 
   const chartConfig = {
     backgroundGradientFrom: "#1E2923",
@@ -353,7 +355,20 @@ const Logs = (props: any) => {
         "VIGENCIA INICIAL":resp.VIGENCIA_INICIAL,
         "VIGENCIA FINAL":resp.VIGENCIA_FINAL,
         "PRIMA":resp.PRIMA,
-        "PRIMA NETA":resp.PRIMA_NETA
+        "PRIMA NETA":resp.PRIMA_NETA,
+        "MARCA":resp.AUTOMOTOR.MARCA,
+        "MODELO":resp.AUTOMOTOR.MODELO,
+        "PLACA":resp.DATO_ADICIONAL,
+        "AÑO":resp.AUTOMOTOR.ANO,
+        "TIPO":resp.AUTOMOTOR.TIPO,
+        "COLOR":resp.AUTOMOTOR.COLOR,
+        "PLAZAS":resp.AUTOMOTOR.PLAZAS,
+        "MOTOR":resp.AUTOMOTOR.MOTOR,
+        "CHASIS":resp.AUTOMOTOR.CHASIS,
+        "NUMERO MOTOR":resp.AUTOMOTOR.NUMERO_MOTOR,
+        "TRACCION":resp.AUTOMOTOR.TRACCION,
+        "ZONA CIRCULACION":resp.AUTOMOTOR.ZONA_CIRCULACION,
+        "EXTRATERRITORIALIDAD":resp.AUTOMOTOR.EXTRATERRITORIALIDAD
       });
      });
 
@@ -455,6 +470,21 @@ const Logs = (props: any) => {
                 <Text>Excel</Text>
               </TouchableOpacity>
             </View>
+            <View style={{display:'flex', alignItems:'center', marginTop:10,}}>
+              <TextInput
+                onChangeText={(text)=>{
+                  setBuscar("")
+                  setBuscador(text);
+                }}
+                onBlur={() => { 
+                  setBuscar(buscador)
+                }}
+                style={styles.input}
+                value={(props?.state?.automotor?.COLOR)}
+                placeholderTextColor={tema.placeholder}
+                placeholder='Buscar...'
+              />
+            </View>
           </View>
         ) :
         (
@@ -463,6 +493,11 @@ const Logs = (props: any) => {
       }
       {
         state?.logs.map((log: any, key: string) => {
+
+          if(JSON.stringify(log).toUpperCase().indexOf(buscar.toUpperCase())<0){
+            return;
+          }
+
           return <View key={key} style={{
             borderWidth: 1,
             borderColor: tema.primary,
@@ -483,6 +518,12 @@ const Logs = (props: any) => {
             <Text style={{ color: tema.active }}>{"Cliente: " + log.NOMBRE_COMPLETO}</Text>
             <Text style={{ color: tema.active }}>{"Prima: " + dosD(log.PRIMA)}</Text>
             <Text style={{ color: tema.active }}>{"Prima Neta: " + dosD(log.PRIMA_NETA)}</Text>
+            <Text style={{ color: tema.active }}>{"Placa: " + log.DATO_ADICIONAL}</Text>
+            <Text style={{ color: tema.active }}>{"Marca: " + log.AUTOMOTOR.MARCA}</Text>
+            <Text style={{ color: tema.active }}>{"Modelo: " + log.AUTOMOTOR.MODELO}</Text>
+            <Text style={{ color: tema.active }}>{"Año: " + log.AUTOMOTOR.ANO}</Text>
+            <Text style={{ color: tema.active }}>{"Tracción: " + log.AUTOMOTOR.TRACCION}</Text>
+            <Text style={{ color: tema.active }}>{"Color: " + log.AUTOMOTOR.COLOR}</Text>
             <Text style={{ color: tema.active, textAlign: "right" }}>{log.FECHA_REGISTRO_CERTIFICADO}</Text>
           </View>
         })
@@ -522,6 +563,19 @@ const styles = StyleSheet.create({
   },
   invisible: {
     display: 'none',
+  },
+  input: {
+    flex: 1,
+    justifyContent: "center",
+    paddingLeft: 10,
+    color: tema.active,
+    width:300,
+    height:40,
+    backgroundColor: "transparent",
+    borderRadius: 5,
+    borderColor: tema.primary,
+    borderWidth:1,
+    fontSize: 11
   },
 });
 

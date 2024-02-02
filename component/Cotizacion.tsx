@@ -8,6 +8,7 @@ import tema from '../enviroments/tema.json'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BarLeft from './BarLeft';
 import IconComponent from './assets/icons/IconComponent';
+import Publicidad from './Publicidad';
 
 
 var navigation_: any;
@@ -259,15 +260,17 @@ const Cotizacion = ({ navigation }: any) => {
                     </ScrollView>
                 </View>
                 <BarLeft titulo={"Cotizacion de Prima en Linea"} />
-                <View style={{ width: "100%", height: "20%", backgroundColor: tema.background }}>
-                    <TouchableOpacity
+                <View style={{ width: "100%", height: "20%", }}>
+                    {<TouchableOpacity
                         style={{
                             backgroundColor: tema.active + "aa",
                             display: "flex",
                             width: "100%",
                             height: 50,
                             marginRight: 5,
-                            justifyContent: 'center'
+                            justifyContent: 'center',
+                            position:'absolute',
+                            zIndex:10
                         }}
                         onPress={async () => {
                             //await AsyncStorage.removeItem("usuario");
@@ -275,16 +278,8 @@ const Cotizacion = ({ navigation }: any) => {
                         }}
                     >
                         <Text style={{ color: "#fff", textAlign: "center", padding: 5, fontSize: 20 }}>Menú</Text>
-                    </TouchableOpacity>
-                    <Image
-                        style={{
-                            flex: 1,
-                            width: "100%",
-                            height: "100%",
-                            resizeMode: 'stretch'
-                        }}
-                        source={require('./../images/foot.png')}
-                    />
+                    </TouchableOpacity>}
+                    <Publicidad />
                 </View>
             </SafeAreaView>
            

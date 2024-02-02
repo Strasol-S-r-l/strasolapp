@@ -19,6 +19,7 @@ import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 import Documentos from './Documentos';
 import RNFS from 'react-native-fs';
 import ModalComponent from './ModalComponent';
+import Publicidad from './Publicidad';
 
 var navigation_: any;
 var aux_tipo = 1;
@@ -851,16 +852,7 @@ const Emision = ({ route, navigation }: any) => {
                     aux_tipo == 3 ? <BarLeft nav={navigation_} back={true} titulo={"Documentos de Respaldo"} /> : <></>
                 }
                 <View style={{ width: "100%", height: "20%", zIndex: 1 }}>
-                   <Image
-                        style={{
-                            flex: 1,
-                            width: "100%",
-                            height: "100%",
-                            resizeMode: 'stretch'
-                        }}
-                        source={require('./../images/foot.png')}
-                    />
-                    
+                   <Publicidad />
                 </View>
             </SafeAreaView>
 
