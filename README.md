@@ -1,4 +1,4 @@
-# Inroducción
+# Introducción
 
 Bienvenido a la app de Strasol, esta app se encarga de emitir seguros en el sistema Ibrokers.
 
