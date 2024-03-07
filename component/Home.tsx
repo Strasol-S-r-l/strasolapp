@@ -22,34 +22,36 @@ const Home = ({navigation}:any) => {
     useEffect(() => {
         //if(Platform.OS==="android") Immersive.setImmersive(true);
         navigation.setOptions({headerShown: false});
+        fetchData();
+    });
+
+    const fetchData = async () => {
         
-        const fetchData = async () => {
-            try {
-                const response = await fetch(api.url+'/app', 
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json',},
-                    body: JSON.stringify(send),                                       
-                });
-                const data = await response.json();
-                if(data) {
-                    
-                    if(data.estado="exito"){
-                        navigation_.replace("Splash");
-                        return;
-                    }
-                    await new Promise<void>(resolve => setTimeout(resolve, 10000));
-                    fetchData();
+        try {
+            const response = await fetch(api.url+'/app', 
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json',},
+                body: JSON.stringify(send),                                       
+            });
+            const data = await response.json();
+            
+            if(data) {
+                
+                if(data.estado="exito"){
+                    navigation_.replace("Splash");
                     return;
-                    
                 }
-            } catch (error) {
                 await new Promise<void>(resolve => setTimeout(resolve, 10000));
                 fetchData();
+                return;
+                
             }
-          }
-          fetchData();
-    });
+        } catch (error) {
+            await new Promise<void>(resolve => setTimeout(resolve, 10000));
+            fetchData();
+        }
+    }
 
 
     return (
