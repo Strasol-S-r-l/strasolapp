@@ -38,7 +38,7 @@ const BarLeft = (props: any) => {
                     </SafeAreaView>: 
                     <></>
                     }
-      <SafeAreaView style={{ flex: 1,justifyContent:'center',display:'flex',alignItems: "center"}}>
+      <SafeAreaView style={{ flex: 1,justifyContent:'center',display:'flex',top: props?.back ? 50:0,alignItems: "center"}}>
         <Text style={{width: Dimensions.get('window').height*0.9, transform: [{ rotate: '90deg' }], fontSize: 24, fontWeight: "bold", color: tema.text }}>{props.titulo}</Text>
       </SafeAreaView>
     </SafeAreaView>
