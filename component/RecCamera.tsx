@@ -153,7 +153,6 @@ const RecCamera = (navigation:any) => {
         style={{ width: 50, height: 50, backgroundColor: "#ffffffaa", borderRadius: 20, marginTop: Dimensions.get('window').height - 100 }}
       >
       </TouchableOpacity>
-      {/*<Button title="Subir Foto" onPress={uploadPhoto} />*/}
     </View>
   )
 };

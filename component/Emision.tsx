@@ -762,10 +762,10 @@ const Emision = ({ route, navigation }: any) => {
         <View style={{ position: 'absolute', width: "100%", height: Dimensions.get('window').height, backgroundColor: "rgba(68,125,209,1)" }}>
             <SafeAreaView style={{ position: "relative", height: "100%" }}>
                 <IconComponent nameIcon='fondo_form' ></IconComponent>
-                <View style={{ width: "80%", marginLeft: "20%", height: "20%" }}>
+                <View style={{ width: "80%", marginLeft: "20%", height: "25%" }}>
                     {getSvg()}
                 </View>
-                <View style={{ width: "80%", marginLeft: "20%", height: "60%" }}>
+                <View style={{ width: "80%", marginLeft: "20%", height: "55%" }}>
                     {route?.params?.error?<View style={{margin:10}}><Text style={{textAlign:'center', color:tema.danger}}>{route?.params?.error}</Text></View>:<View></View>}
                     <View style={{ display: "flex" }}>
                         <Text style={{ color: "white", textAlign: "center" }}>

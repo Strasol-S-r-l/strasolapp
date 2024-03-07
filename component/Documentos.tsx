@@ -4,6 +4,7 @@ import tema from '../enviroments/tema.json'
 import Load from './Load';
 import IconComponent from './assets/icons/IconComponent';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Documentos = (props:any) => {
     const [state, setState] = useState(props?.documentos);
@@ -75,13 +76,13 @@ const Documentos = (props:any) => {
 
 
     return (
-        <View style={{ alignItems: 'center', height: "100%", width: "100%"}}>
+        <SafeAreaView style={{ alignItems: 'center', height: "100%", width: "100%"}}>
             <ScrollView style={{ width: "100%" }}>
                 {
                     state["documentos"] ? paintDocs() : <Load />
                 }
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

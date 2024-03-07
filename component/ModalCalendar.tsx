@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useState,useCallback, useEffect } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { StyleSheet, View, Modal, Button, Text } from 'react-native';
 import IconComponent from './assets/icons/IconComponent';
@@ -6,31 +6,18 @@ import tema from '../enviroments/tema.json'
 import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 
 const ModalCalendar = (props: any) => {
-    const [stateDate, setStateData] = React.useState(new Date());
-    const [stateDateInicial, setStateDataInicial] = React.useState(props.fecha_inicial);
+    const [stateDate, setStateData] = useState(new Date());
+    const [stateDateInicial, setStateDataInicial] = useState(props.fecha_inicial);
     
     useEffect(() => {
         setStateDataInicial(props.fecha_inicial);
         verificarFecha();
     }, [props.fecha_inicial]);
 
-    const [modalVisibleMes, setModalVisibleMes] = React.useState(false);
-    const openModalMes = useCallback(() => {
-        setModalVisibleMes(true);
-    }, []);
-
-    const closeModalMes = useCallback(() => {
-        setModalVisibleMes(false);
-    }, []);
-
-    const [modalVisibleAno, setModalVisibleAno] = React.useState(false);
-    const openModalAno = useCallback(() => {
-        setModalVisibleAno(true);
-    }, []);
-
-    const closeModalAno = useCallback(() => {
-        setModalVisibleAno(false);
-    }, []);
+    const [getView, setView] = useState(0);
+    const setStateView = (tipo:Int32) => {
+        setView(tipo);
+    };
 
     const getMesesText = () => {
         return ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -58,7 +45,7 @@ const ModalCalendar = (props: any) => {
         return <View>
             <View>
                 <View style={{ display: "flex", alignContent: "center", alignItems: "center", width: "100%" }}>
-                    <TouchableOpacity style={{ width: "100%" }} onPress={() => openModalAno()}>
+                    <TouchableOpacity style={{ width: "100%" }} onPress={() => setStateView(2)}>
                         <Text style={{ color: tema.active, textAlign: "center", fontSize: 20, fontWeight: "bold" }}>{anoActual}</Text>
                     </TouchableOpacity>
                 </View>
@@ -66,7 +53,7 @@ const ModalCalendar = (props: any) => {
                     <TouchableOpacity onPress={() => cambiarMes(false)}>
                         <IconComponent nameIcon='arrowLeft' colors={{ color_1: tema.active }} alto={50} ancho={50}></IconComponent>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => openModalMes()}>
+                    <TouchableOpacity onPress={() => setStateView(1)}>
                         <Text style={{ color: tema.active }}> {mesesActual}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => cambiarMes(true)}>
@@ -169,13 +156,13 @@ const ModalCalendar = (props: any) => {
         let year = stateDate.getFullYear();
         let date = new Date(year, mes, 1);
         setStateData(date);
-        closeModalMes();
+        setStateView(0);
     };
     const cambiarAnoManual = (ano: Int32): any => {
         let month = stateDate.getMonth();
         let date = new Date(ano, month, 1);
         setStateData(date);
-        closeModalAno();
+        setStateView(0);
     };
     const selectDayCalendar = (dia: Int32) => {
         let select_date = new Date(stateDate.getFullYear(), stateDate.getMonth(), dia);
@@ -203,10 +190,7 @@ const ModalCalendar = (props: any) => {
                 </TouchableOpacity>
             </View>);
         }
-        return <View key={props.id_modal + '_mes_md'} style={styles.container}>
-            <Modal visible={modalVisibleMes} animationType='fade' transparent>
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
+        return <View>
                         <View style={{ display: "flex", width: "100%", justifyContent: "center", flexDirection: "row" }}>
                             <View style={{ width: "50%", justifyContent: "center", alignItems: 'center' }}>
                                 {array_left}
@@ -215,16 +199,9 @@ const ModalCalendar = (props: any) => {
                                 {array_right}
                             </View>
                         </View>
-                        <View>
-                            <TouchableOpacity key={props.id_modal + '_mes_md_close_btn'} onPress={closeModalMes} style={{ margin: 5, padding: 5, borderRadius: 5, height: 45, backgroundColor: tema.danger, justifyContent: 'center', shadowColor: 'black', shadowOffset: { width: 0, height: 2 }, shadowRadius: 5, shadowOpacity: 0.3 }}>
-                                <Text style={{ textAlign: "center", color: 'white', fontWeight: 'bold' }}>CERRAR</Text>
-                            </TouchableOpacity>
-                        </View>
 
                     </View>
-                </View>
-            </Modal>
-        </View>
+  
     };
     const ModalAno = () => {
         let date = new Date();
@@ -246,14 +223,11 @@ const ModalCalendar = (props: any) => {
             }
         }
        
-        return <View key={props.id_modal + '_ano_md'} style={styles.container}>
-            <Modal visible={modalVisibleAno} animationType='fade' transparent>
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
+        return <View style={{maxHeight:300}}>
                         <View style={{backgroundColor:tema.primary,width:"100%",justifyContent:"center",height:20,alignItems:"center",borderTopLeftRadius:10,borderTopRightRadius:10}}>
                             <Text style={{color:tema.text}}>Selecione un año</Text>
                         </View>
-                        <View style={{ display: "flex", width:"100%",height:"80%",justifyContent: 'center',alignItems:"center"}}>
+                        <View style={{ display: "flex", width:"100%",height:"100%",justifyContent: 'center',alignItems:"center"}}>
                             <FlatList
                                 data={array}
                                 renderItem={itemAno}
@@ -261,15 +235,7 @@ const ModalCalendar = (props: any) => {
                                 pagingEnabled
                             />
                         </View>
-                        <View>
-                            <TouchableOpacity key={props.id_modal + '_ano_md_close_btn'} onPress={closeModalAno} style={{ margin: 5, padding: 5, borderRadius: 5, height: 45, backgroundColor: tema.danger, justifyContent: 'center', shadowColor: 'black', shadowOffset: { width: 0, height: 2 }, shadowRadius: 5, shadowOpacity: 0.3 }}>
-                                <Text style={{ textAlign: "center", color: 'white', fontWeight: 'bold' }}>CERRAR</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
                 </View>
-            </Modal>
-        </View>
     };
     const itemAno = ({ item }: any) => {
         return<View style={{width:"100%",minWidth:"100%",justifyContent:"center",alignItems:"center"}}>
@@ -277,16 +243,15 @@ const ModalCalendar = (props: any) => {
                 <Text style={{ color: tema.active }}>{item.value}</Text>
             </TouchableOpacity>
         </View> 
-            
     }
 
     return <View key={props.id_modal + '_md_date'} style={styles.container}>
         <Modal visible={props.modalVisible} animationType='fade' transparent>
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
-                    <View>
-                        {stateDateInicial? paintCalendar(): <></>}
-                    </View>
+                        {getView == 0 ? stateDateInicial? paintCalendar(): <></>:<></> }
+                        {getView == 1 ? ModalMes() : <></> }
+                        {getView == 2 ? ModalAno() : <></> }
                     <View>
                         <TouchableOpacity key={props.id_modal + '_md_close_btn'} onPress={props.closeModal} style={{ margin: 5, padding: 5, borderRadius: 5, height: 45, backgroundColor: tema.danger, justifyContent: 'center', shadowColor: 'black', shadowOffset: { width: 0, height: 2 }, shadowRadius: 5, shadowOpacity: 0.3 }}>
                             <Text style={{ textAlign: "center", color: 'white', fontWeight: 'bold' }}>CERRAR</Text>
@@ -295,8 +260,6 @@ const ModalCalendar = (props: any) => {
                 </View>
             </View>
         </Modal>
-        {ModalMes()}
-        {ModalAno()}
     </View>
 };
 

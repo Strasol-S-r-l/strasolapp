@@ -20,6 +20,7 @@ import ModalComponent from './ModalComponent';
 import GraficoRadar from './GraficoRadar';
 import IconComponent from './assets/icons/IconComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const Logs = (props: any) => {
@@ -534,7 +535,7 @@ const Logs = (props: any) => {
   };
 
   return (
-    <View style={{ height: Dimensions.get('window').height }}>
+    <SafeAreaView style={{flex:1}}>
         <IconComponent nameIcon='fondo_form' ></IconComponent>
         {
           (!state.logs) ?
@@ -553,7 +554,7 @@ const Logs = (props: any) => {
             </View>
 
         }
-    </View>
+    </SafeAreaView>
   )
 };
 

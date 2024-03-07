@@ -115,13 +115,16 @@ const Login = ({ navigation }: any) => {
     <View style={{ position: 'absolute', width: "100%", height: Dimensions.get('window').height, backgroundColor: "rgba(68,125,209,1)" }}>
       <View style={{ flex: 1, position: 'relative' }}>
         <IconComponent nameIcon='fondo_login' ></IconComponent>
-        <View style={{ display: "flex", justifyContent: 'center', alignItems: 'center', height: "20%" }}>
-          <View style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ width: "80%", color: tema.primary, fontSize: 45, fontWeight: 'bold', textShadowColor: 'rgba(0, 0, 0, 0.75)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5, }}>Insurance<Text style={{ marginTop: 10, color: "black", fontSize: 45, fontWeight: 'bold' }}>Tech</Text> </Text>
+        <View style={{width:'100%',height:'75%',justifyContent:'center'}}>
+        <View style={{ display: "flex", justifyContent: 'center', alignItems: 'center', height: "20%",width:'100%' }}>
+          <View style={{width: "80%",display: "flex", flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{color: tema.primary, fontSize : Dimensions.get('window').width * 0.1, fontWeight: 'bold', textShadowColor: 'rgba(0, 0, 0, 0.75)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5, }}>Insurance<Text style={{marginTop: 10, color: "black", fontSize: Dimensions.get('window').width * 0.1, fontWeight: 'bold' }}>Tech</Text> </Text>
           </View>
-          <Text style={{ width: "80%", color: "black", fontSize: 45, fontWeight: 'bold', textShadowColor: 'rgba(0, 0, 0, 0.75)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5, }}>Bolivia</Text>
+          <View style={{width:'80%'}}>
+            <Text style={{color: "black", fontWeight: 'bold',fontSize:Dimensions.get('window').width * 0.1, textShadowColor: 'rgba(0, 0, 0, 0.75)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5, }}>Bolivia</Text>  
+          </View>
         </View>
-        <View style={{ alignItems: 'center', width: Dimensions.get('screen').width, height: "55%" }}>
+        <View style={{ alignItems: 'center', width: Dimensions.get('screen').width}}>
           {/*
                   <View style={{ width:'100%', height:300, position:'absolute'}}>
                     {
@@ -135,7 +138,7 @@ const Login = ({ navigation }: any) => {
                     }
                   </View>
                 */}
-          <View style={{ width: '100%', alignItems: 'center' }}>
+          <View style={{ width: '100%', alignItems: 'center'}}>
             <View style={{ width: '80%' }}>
               <View>
                 <Text style={{ marginTop: 10, color: tema.text, fontWeight: 'bold' }}>Usuario</Text>
@@ -163,7 +166,7 @@ const Login = ({ navigation }: any) => {
                 />
                   </View>*/}
             </View>
-            <View style={{ marginTop: 105, width: '80%' }}>
+            <View style={{ marginTop: 75, width: '80%' }}>
               {
                 !load ?
                   (
@@ -188,7 +191,8 @@ const Login = ({ navigation }: any) => {
             </View>
           </View>
         </View>
-
+        </View>
+        
         <View style={{ position: "relative", height: "25%", justifyContent: "flex-end" }}>
           <View style={{ ...StyleSheet.absoluteFillObject, overflow: 'hidden' }}>
             <Image
