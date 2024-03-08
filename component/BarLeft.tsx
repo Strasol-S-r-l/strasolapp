@@ -11,6 +11,9 @@ const BarLeft = (props: any) => {
   const toBack = () => {
     navigation.replace("Cotizacion");
   };
+  const action = (text:String) => {
+    navigation.replace(text);
+  };
   return (<SafeAreaView style={{ ...StyleSheet.absoluteFillObject, width: "30%", flexDirection: 'row' }}>
     <Image
       style={{
@@ -36,9 +39,13 @@ const BarLeft = (props: any) => {
                             <IconComponent nameIcon='arrowLeft' colors={{ color_1: "white" }} alto={50} ancho={50} ></IconComponent>
                         </TouchableOpacity>
                     </SafeAreaView>: 
-                    <></>
-                    }
-      <SafeAreaView style={{ flex: 1,justifyContent:'center',display:'flex',top: props?.back ? 50:0,alignItems: "center"}}>
+                    <SafeAreaView style={{...StyleSheet.absoluteFillObject,alignItems:'center',marginBottom:50}}>
+                      <TouchableOpacity style={{ zIndex: 1, top:0 ,alignItems:'center'}} onPress={() => action("Menu")}>
+                      <IconComponent nameIcon='hamburgerIcon' colors={{ color_1: "white" }} alto={50} ancho={50} ></IconComponent>
+                    </TouchableOpacity>
+                </SafeAreaView>
+      }
+      <SafeAreaView style={{ flex: 1,justifyContent:'center',display:'flex',top: 50,alignItems: "center"}}>
         <Text style={{width: Dimensions.get('window').height*0.9, transform: [{ rotate: '90deg' }], fontSize: 24, fontWeight: "bold", color: tema.text }}>{props.titulo}</Text>
       </SafeAreaView>
     </SafeAreaView>

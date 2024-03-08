@@ -12,7 +12,7 @@ import Publicidad from './Publicidad';
 
 
 var navigation_: any;
-var cont=0;
+var cont = 0;
 const Cotizacion = ({ navigation }: any) => {
     navigation_ = navigation;
     const [value, setValue] = React.useState(10000.00);
@@ -55,12 +55,15 @@ const Cotizacion = ({ navigation }: any) => {
                         body: JSON.stringify({ key: api.key, type: 'getProductosVenta', id_cliente: id_cliente }),
                     });
                 const obj = await response.json();
-
+                console.log(obj)
                 if (obj.estado === "error") {
                     return obj;
                 }
-                state["polizas"] = obj.data;
-
+                if (obj.data) {
+                    state["polizas"] = obj.data;
+                } else {
+                    state["polizas"] = [];
+                }
                 setState({ ...state });
             } catch (error) {
                 return { estado: "error", error };
@@ -103,7 +106,7 @@ const Cotizacion = ({ navigation }: any) => {
         poliza["valor_asegurado"] = value;
         await AsyncStorage.removeItem("documentos");
         await AsyncStorage.setItem("poliza", JSON.stringify(poliza));
-        await AsyncStorage.setItem("cuotas", cuotas+"");
+        await AsyncStorage.setItem("cuotas", cuotas + "");
         navigation_.navigate("Emision");
     };
 
@@ -133,10 +136,10 @@ const Cotizacion = ({ navigation }: any) => {
             {
 
                 state.polizas.map((cia, key) => {
-                    
 
-                    if(cia.TIPO_PAGO_INTEGRACION === "CONTADO" && state.tipoPago!==1) return;
-                    if(cia.TIPO_PAGO_INTEGRACION === "CREDITO" && state.tipoPago==1) return;
+
+                    if (cia.TIPO_PAGO_INTEGRACION === "CONTADO" && state.tipoPago !== 1) return;
+                    if (cia.TIPO_PAGO_INTEGRACION === "CREDITO" && state.tipoPago == 1) return;
 
                     let prima = state.tipoPago == 1 ? cia.PRIMA_CONTADO : cia.PRIMA_CREDITO;
 
@@ -210,16 +213,16 @@ const Cotizacion = ({ navigation }: any) => {
                         />
                         <View style={{ marginTop: 5, display: 'flex', flexDirection: 'row' }}>
                             <Text style={{ color: tema.text, fontSize: 11 }}>Ingrese el valor comercial de su Vehículo en </Text>
-                            <Text style={{ color: tema.primary, fontSize: 11 }} onPress={()=>{
+                            <Text style={{ color: tema.primary, fontSize: 11 }} onPress={() => {
                                 cont++;
-                                if(cont>=20){
-                                    cont=0;
+                                if (cont >= 20) {
+                                    cont = 0;
                                     navigation_.navigate("Ppl");
                                 }
                             }}>$us</Text>
                         </View>
                     </View>
-                    <View style={{width:"100%",justifyContent:"center",display:"flex",flexDirection:"row",position:'relative',alignItems:"center"}}>
+                    <View style={{ width: "100%", justifyContent: "center", display: "flex", flexDirection: "row", position: 'relative', alignItems: "center" }}>
                         <View>
                             <Text style={{ color: tema.opaque, fontSize: 11, textAlign: 'center' }}>Seleccione su forma de pago</Text>
                             <View style={{ display: "flex", flexDirection: "row" }}>
@@ -237,10 +240,10 @@ const Cotizacion = ({ navigation }: any) => {
                             </View>
                         </View>
 
-                        {isEnabled ? <View style={{position:'absolute',right:20,bottom:0}}>
+                        {isEnabled ? <View style={{ position: 'absolute', right: 20, bottom: 0 }}>
                             <Text>Cuotas</Text>
                             <CurrencyInput
-                                style={{height:40,width:50,backgroundColor:"white",borderRadius:10,borderWidth:2,borderColor:tema.primary,color:tema.active,textAlign:'center'}}
+                                style={{ height: 40, width: 50, backgroundColor: "white", borderRadius: 10, borderWidth: 2, borderColor: tema.primary, color: tema.active, textAlign: 'center' }}
                                 value={cuotas}
                                 onChangeValue={setCuotas}
                                 delimiter=","
@@ -261,28 +264,10 @@ const Cotizacion = ({ navigation }: any) => {
                 </View>
                 <BarLeft titulo={"Cotizacion de Prima en Linea"} />
                 <View style={{ width: "100%", height: "20%", }}>
-                    {<TouchableOpacity
-                        style={{
-                            backgroundColor: tema.active + "aa",
-                            display: "flex",
-                            width: "100%",
-                            height: 50,
-                            marginRight: 5,
-                            justifyContent: 'center',
-                            position:'absolute',
-                            zIndex:10
-                        }}
-                        onPress={async () => {
-                            //await AsyncStorage.removeItem("usuario");
-                            navigation_.navigate("Menu");
-                        }}
-                    >
-                        <Text style={{ color: "#fff", textAlign: "center", padding: 5, fontSize: 20 }}>Menú</Text>
-                    </TouchableOpacity>}
                     <Publicidad />
                 </View>
             </SafeAreaView>
-           
+
         </View>
     )
 };

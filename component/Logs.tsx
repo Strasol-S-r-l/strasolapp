@@ -395,8 +395,12 @@ const Logs = (props: any) => {
     }).catch((e:any)=>{
       console.log('Error', e);
     });
+  
   };
 
+  const buscarItems=(texto:String)=>{
+    setBuscar(texto);
+  }
 
   const pintarLogs = () => {
     const chartWidth = getDias.length * 50;
@@ -471,17 +475,15 @@ const Logs = (props: any) => {
                 <Text>Excel</Text>
               </TouchableOpacity>
             </View>
+            {/* joseel */}
             <View style={{display:'flex', alignItems:'center', marginTop:10,}}>
               <TextInput
-                onChangeText={(text)=>{
-                  setBuscar("")
-                  setBuscador(text);
-                }}
-                onBlur={() => { 
-                  setBuscar(buscador)
+                
+                onChangeText={(text) => { 
+                  setBuscar(text)
                 }}
                 style={styles.input}
-                value={(props?.state?.automotor?.COLOR)}
+               // value={(props?.state?.automotor?.COLOR)}
                 placeholderTextColor={tema.placeholder}
                 placeholder='Buscar...'
               />
@@ -495,7 +497,9 @@ const Logs = (props: any) => {
       {
         state?.logs.map((log: any, key: string) => {
 
-          if(JSON.stringify(log).toUpperCase().indexOf(buscar.toUpperCase())<0){
+
+
+          if(JSON.stringify(log).toLowerCase().indexOf(buscar.toLowerCase())<0){
             return;
           }
 
