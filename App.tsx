@@ -31,6 +31,7 @@ import Vimeo_ from './component/Vimeo_';
 import Emitiendo from './component/Emitiendo';
 import Web from './component/Web';
 import Registro from './component/Registro';
+import SlipMadre from './component/SlipMadre';
 
 
 const Stack = createNativeStackNavigator();
@@ -69,7 +70,7 @@ function App(): JSX.Element {
         <Stack.Screen name="Emitiendo" component={Emitiendo} />
         <Stack.Screen name="Web" component={Web} />
         <Stack.Screen name="Registro" component={Registro} />
-        
+
       </Stack.Navigator>
     </NavigationContainer>
   );

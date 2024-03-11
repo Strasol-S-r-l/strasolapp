@@ -148,12 +148,12 @@ const Cotizacion = ({ navigation }: any) => {
                         marginBottom: 25,
                         width: 210,
                     }}>
-                        <TouchableOpacity style={{ height: 200, width: "100%" }} onPress={() => { pressPoliza(cia) }}>
-                            <View style={{ borderWidth: 1, justifyContent: "center", borderRadius: 10, backgroundColor: "rgba(34,68,119,0.5)" }}>
-                                <View style={{ alignItems: 'center', justifyContent: 'center', height: 100, padding: 5 }} >
+                        <View style={{ height: 250, width: "100%" }}>
+                            <View style={{ borderWidth: 1, justifyContent: "center", borderRadius: 10 ,backgroundColor: "rgba(34,68,119,0.5)" }}>
+                                <View style={{ alignItems: 'center', justifyContent: 'center', height: 100 }} >
                                     <Image
                                         key={'images_' + cia.NIT}
-                                        style={{ width: "100%", height: "100%", borderRadius: 15, resizeMode: 'contain' }}
+                                        style={{ width: "100%", height: 100, borderRadius: 15, borderBottomLeftRadius:0, borderBottomRightRadius:0, resizeMode: 'contain' }}
                                         source={{ uri: api.url + '/perfilCia/' + cia.NIT + '_bar' }} />
                                 </View>
                                 <View >
@@ -161,17 +161,24 @@ const Cotizacion = ({ navigation }: any) => {
                                     <Text style={{ color: tema.text, textAlign: "center" }}>Tasa: {cia.PORCENTAJE_TASA_REFERENCIAL} %</Text>
                                     <Text style={{ color: tema.text, textAlign: "center", fontSize: 20 }}>Prima anual</Text>
                                 </View>
-                            </View>
-                            <View style={{ marginTop: 5 }}>
-                                <View style={{
-                                    borderWidth: 1,
-                                    backgroundColor: (prima == max ? "rgba(153,0,0,0.5)" : (prima == min ? "rgba(0,102,51,0.5)" : "rgba(255,255,0,0.5)")),
-                                    width: 210, borderRadius: 10
-                                }}>
-                                    <Text style={{ textAlign: 'center', fontSize: 20, color: 'white', fontWeight: 'bold' }}>{prima.toFixed(2)} $us</Text>
+                                <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', margin:20}}>
+                                    <TouchableOpacity
+                                        onPress={() => { pressPoliza(cia) }}
+                                    >
+                                        <Text>Comprar</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity>
+                                        <Text>Ver Slip</Text>
+                                    </TouchableOpacity>
                                 </View>
+                                <View style={{ marginTop: 5 }}>
+                                    <View style={{alignItems:"flex-end"}}>
+                                        <Text style={{ marginRight:10, textAlign: 'center', fontSize: 25, color: (prima == max ? "rgba(153,0,0,0.5)" : (prima == min ? "rgba(0,102,51,0.5)" : "rgba(255,255,0,0.5)")), fontWeight: 'bold' }}> $us {prima.toFixed(2)}</Text>
+                                    </View>
+                                </View>
+
                             </View>
-                        </TouchableOpacity>
+                        </View>
                     </View>
                 })
             }
