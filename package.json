@@ -34,7 +34,6 @@
     "react-native-swiper": "1.6.0",
     "react-native-video": "5.2.1",
     "react-native-vimeo-iframe": "^1.2.1",
-    "react-native-vision-camera": "^3.3.1",
     "react-native-webview": "^13.6.3",
     "react-native-worklets-core": "^0.2.2",
     "xlsx": "^0.18.5"

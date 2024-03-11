@@ -105,7 +105,7 @@ const RecuperarPass = ({ navigation }: any) => {
         }}>
           <Text style={{ textAlign: "center", color: tema.text, fontWeight: 'bold' }}>Buscar usuario</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ ...styles.input_button, backgroundColor: tema.danger, marginTop:8 }} onPress={() => {
+        <TouchableOpacity style={{ ...styles.input_button, backgroundColor: tema.danger, marginTop:8,borderColor: tema.danger,  }} onPress={() => {
             navigation_.goBack()
           }}>
             <Text style={{ textAlign: "center", color: tema.text, fontWeight: 'bold' }}>Volver</Text>

@@ -2,6 +2,8 @@
 #
 .DS_Store
 
+
+
 # Xcode
 #
 build/
@@ -80,6 +82,7 @@ yarn-error.log*
 # SECRETS
 /.env
 /enviroments/api.json
+
 
 /android/app/debug.keystore
 /android/app/app.jks

@@ -36,6 +36,7 @@ const IconComponent = ({ nameIcon, alto, ancho, colors, data }: any) => {
             case "arrowRight": return arrowRight();
             case "warningIcon": return warningIcon();
             case "logoutIcon": return logoutIcon();
+            case "hamburgerIcon": return hamburgerIcon();
         }
 
     }
@@ -313,10 +314,10 @@ const IconComponent = ({ nameIcon, alto, ancho, colors, data }: any) => {
     }
     const logoutIcon = () => {
         return <Svg  width={ancho} height={alto}  viewBox="0 0 24 24" fill="none" >
-            <G id="SVGRepo_bgCarrier" stroke-width="0"></G>
-            <G id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></G>
+            <G id="SVGRepo_bgCarrier" strokeWidth={2}></G>
+            <G id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></G>
             <G id="SVGRepo_iconCarrier"> 
-            <Path d="M15 16.5V19C15 20.1046 14.1046 21 13 21H6C4.89543 21 4 20.1046 4 19V5C4 3.89543 4.89543 3 6 3H13C14.1046 3 15 3.89543 15 5V8.0625M11 12H21M21 12L18.5 9.5M21 12L18.5 14.5" stroke={colors.color_1} stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <Path d="M15 16.5V19C15 20.1046 14.1046 21 13 21H6C4.89543 21 4 20.1046 4 19V5C4 3.89543 4.89543 3 6 3H13C14.1046 3 15 3.89543 15 5V8.0625M11 12H21M21 12L18.5 9.5M21 12L18.5 14.5" stroke={colors.color_1} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
             </Path> 
             </G>
             </Svg>
@@ -353,6 +354,13 @@ const IconComponent = ({ nameIcon, alto, ancho, colors, data }: any) => {
                 </LinearGradient>
             </Defs>
             <Rect x="5%" y="5%" width="90%" height="90%" rx={15} ry={15} fill="none" stroke={"url(#" + data.id + ")"} strokeWidth={5} />
+        </Svg>
+    }
+    const hamburgerIcon =()=>{
+        return <Svg width={ancho} height={alto} viewBox="0 0 20 20">
+        <G id="Menu / Hamburger_MD">
+        <Path id="Vector" d="M5 15H19M5 11H19M5 7H19" stroke={colors.color_1} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"/>
+        </G>
         </Svg>
     }
     return <View>

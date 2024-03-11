@@ -6,6 +6,7 @@ import api from '../enviroments/api.json'
 import Load from './Load';
 import IconComponent from './assets/icons/IconComponent';
 import BarLeft from './BarLeft';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 var navigation_: any;
 const PerfilProducto = ({ route, navigation }: any) => {
@@ -458,7 +459,7 @@ const PerfilProducto = ({ route, navigation }: any) => {
     };
 
     return (
-        <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
             <IconComponent nameIcon='fondo_form' ></IconComponent>
             <View style={{ width: "80%", height: "80%", marginLeft: "20%" }}>
                 <View style={styles.containerTittle}>
@@ -467,7 +468,7 @@ const PerfilProducto = ({ route, navigation }: any) => {
                 {pintar()}
             </View>
 
-            <View style={{ ...StyleSheet.absoluteFillObject, width: "30%", flexDirection: 'row' }}>
+            <SafeAreaView style={{ ...StyleSheet.absoluteFillObject, width: "30%", flexDirection: 'row' }}>
                 <Image
                     style={{
                         flex: 1,
@@ -477,25 +478,22 @@ const PerfilProducto = ({ route, navigation }: any) => {
                     }}
                     source={require('./../images/bar_left.png')}
                 />
-                <View style={{
-                    position: 'absolute',
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
+                <SafeAreaView style={{
+                    ...StyleSheet.absoluteFillObject,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    height: Dimensions.get("window").height,
                     width: "50%",
                     flexDirection: 'column',
                     zIndex: 2
                 }}>
-                    <TouchableOpacity style={{ alignSelf: 'flex-end', top: 5, zIndex: 1, position: 'absolute' }} onPress={() => toBack()}>
-                        <IconComponent nameIcon='arrowLeft' colors={{ color_1: "white" }} alto={50} ancho={50} ></IconComponent>
-                    </TouchableOpacity>
-                    <Text style={{ width: Dimensions.get('window').height - 10, top: 55, transform: [{ rotate: '90deg' }], fontSize: 24, fontWeight: "bold", color: tema.text }}>Cobertura Emitida</Text>
-                </View>
-            </View>
+                    <SafeAreaView style={{...StyleSheet.absoluteFillObject,alignItems:'center',marginBottom:50}}>
+                        <TouchableOpacity style={{ zIndex: 1, top:0 }} onPress={() => toBack()}>
+                            <IconComponent nameIcon='arrowLeft' colors={{ color_1: "white" }} alto={50} ancho={50} ></IconComponent>
+                        </TouchableOpacity>
+                    </SafeAreaView>
+                    <Text style={{ backgroundColor:'red',width: Dimensions.get('window').height ,top: 55, transform: [{ rotate: '90deg' }], fontSize: 24, fontWeight: "bold", color: tema.text }}>Cobertura Emitida</Text>
+                </SafeAreaView>
+            </SafeAreaView>
             <View style={{ width: "100%", height: "20%" }}>
                 <Image
                     style={{
@@ -507,7 +505,7 @@ const PerfilProducto = ({ route, navigation }: any) => {
                     source={require('./../images/foot.png')}
                 />
             </View>
-        </View>
+        </SafeAreaView>
     )
 };
 

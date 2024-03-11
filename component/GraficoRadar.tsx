@@ -77,8 +77,8 @@ const GraficoRadar = (props: any) => {
       
       if (props.action) {
         polygons.push(
-          <G key={"container_press"+j}>
-          <Circle key={"rango_text_press"+j} onPress={() => props.action(j)} r={radius * 0.1} cx={x} cy={y}></Circle>
+          <G key={"container_press_"+j} onPress={() => props.action(j)}>
+          <Circle key={"rango_text_press"+j} r={radius * 0.15} cx={(x<(props.ancho/2))? x-((radius * 0.2)/2) :x+((radius * 0.2)/2)} cy={y}></Circle>
           <Text
               key={"texto_" + j}
               x={x}

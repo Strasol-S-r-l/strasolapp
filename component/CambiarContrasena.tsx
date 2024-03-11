@@ -154,7 +154,7 @@ const CambiarContrasena = ({ navigation }: any) => {
                             <TouchableOpacity onPress={() => enviarCliente()} style={{ backgroundColor: tema.primary, borderRadius: 5, height: 40, justifyContent: 'center', alignItems: "center", marginTop: 10 }}>
                                 <Text style={{ color: tema.text, fontWeight: "bold" }}>Aceptar</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => cancelar()} style={{ backgroundColor: tema.danger, borderRadius: 5, height: 40, justifyContent: 'center', alignItems: "center", marginTop: 10 }}>
+                            <TouchableOpacity onPress={() => cancelar()} style={{ backgroundColor: tema.danger, borderColor:tema.danger, borderRadius: 5, height: 40, justifyContent: 'center', alignItems: "center", marginTop: 10 }}>
                                 <Text style={{ color: tema.text, fontWeight: "bold" }}>Cancelar</Text>
                             </TouchableOpacity>
                         </View>
