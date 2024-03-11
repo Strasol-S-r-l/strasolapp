@@ -110,6 +110,10 @@ const Cotizacion = ({ navigation }: any) => {
         navigation_.navigate("Emision");
     };
 
+    const verSlip = async (poliza: any) => {
+        navigation_.navigate("SlipMadre", {id_cabe:150});
+    };
+
 
     const getCotizaciones = () => {
 
@@ -153,10 +157,10 @@ const Cotizacion = ({ navigation }: any) => {
                     }}>
                         <View style={{ height: 250, width: "100%" }}>
                             <View style={{ borderWidth: 1, justifyContent: "center", borderRadius: 10 ,backgroundColor: "rgba(34,68,119,0.5)" }}>
-                                <View style={{ alignItems: 'center', justifyContent: 'center', height: 100 }} >
+                                <View style={{ alignItems: 'center', marginTop:5, justifyContent: 'center', height: 100 }} >
                                     <Image
                                         key={'images_' + cia.NIT}
-                                        style={{ width: "100%", height: 100, borderRadius: 15, borderBottomLeftRadius:0, borderBottomRightRadius:0, resizeMode: 'contain' }}
+                                        style={{ width: "100%", height: 100, borderRadius: 9, borderBottomLeftRadius:0, borderBottomRightRadius:0, resizeMode: 'contain' }}
                                         source={{ uri: api.url + '/perfilCia/' + cia.NIT + '_bar' }} />
                                 </View>
                                 <View >
@@ -170,7 +174,9 @@ const Cotizacion = ({ navigation }: any) => {
                                     >
                                         <Text>Comprar</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => { verSlip(cia) }}
+                                    >
                                         <Text>Ver Slip</Text>
                                     </TouchableOpacity>
                                 </View>

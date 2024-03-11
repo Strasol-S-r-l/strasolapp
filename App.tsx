@@ -70,6 +70,7 @@ function App(): JSX.Element {
         <Stack.Screen name="Emitiendo" component={Emitiendo} />
         <Stack.Screen name="Web" component={Web} />
         <Stack.Screen name="Registro" component={Registro} />
+        <Stack.Screen name="SlipMadre" component={SlipMadre} />
 
       </Stack.Navigator>
     </NavigationContainer>
