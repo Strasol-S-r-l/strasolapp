@@ -331,8 +331,9 @@ const Logs = (props: any) => {
   };
 
   const exportar= async()=>{
-     // Created Sample data
-     const granted = await PermissionsAndroid.requestMultiple([
+    // Created Sample data
+    
+    const granted = await PermissionsAndroid.requestMultiple([
       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
       PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
     ]);
@@ -463,7 +464,7 @@ const Logs = (props: any) => {
           <View>
             <View style={{display:'flex', alignItems:'center', marginTop:20}}>
               <View style={{backgroundColor:'#fff', display:'flex', justifyContent:'center', borderColor:'#000', borderWidth:2, borderRadius:10, width:180, height:50}}>
-                <Text style={{color:tema.active, fontSize:20, textAlign:'right', marginRight:1, fontWeight:'bold'}}>
+                <Text style={{color:tema.active, fontSize:20, textAlign:'center', marginRight:1, fontWeight:'bold'}}>
                   $us. {dosD(getMonto[getMonto.length-1])}</Text>
               </View>
             </View>

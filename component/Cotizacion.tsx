@@ -110,8 +110,10 @@ const Cotizacion = ({ navigation }: any) => {
         navigation_.navigate("Emision");
     };
 
-    const verSlip = async (poliza: any) => {
-        navigation_.navigate("SlipMadre", {id_cabe:150});
+    const verSlip = async (id_cabe: any) => {
+        console.log(id_cabe);
+        navigation_.navigate("SlipMadre", {id_cabe:id_cabe});
+
     };
 
 
@@ -135,8 +137,7 @@ const Cotizacion = ({ navigation }: any) => {
             min = state.min_credito;
             max = state.max_credito;
         }
-
-        return <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignContent: "center", justifyContent: "center", }}>
+            return <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignContent: "center", justifyContent: "center", }}>
             {
 
                 state.polizas.map((cia, key) => {
@@ -175,13 +176,13 @@ const Cotizacion = ({ navigation }: any) => {
                                         <Text>Comprar</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        onPress={() => { verSlip(cia) }}
+                                        onPress={() => { verSlip(cia.ID_CABE) }}
                                     >
                                         <Text>Ver Slip</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{ marginTop: 5 }}>
-                                    <View style={{alignItems:"flex-end"}}>
+                                    <View style={{marginBottom:8}}>
                                         <Text style={{ marginRight:10, textAlign: 'center', fontSize: 25, color: (prima == max ? "rgba(153,0,0,0.5)" : (prima == min ? "rgba(0,102,51,0.5)" : "rgba(255,255,0,0.5)")), fontWeight: 'bold' }}> $us {prima.toFixed(2)}</Text>
                                     </View>
                                 </View>

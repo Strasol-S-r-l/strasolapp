@@ -370,9 +370,7 @@ const IconComponent = ({ nameIcon, alto, ancho, colors, data }: any) => {
 const styles = StyleSheet.create({
     background: {
         position: 'absolute',
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height,
-        resizeMode: 'stretch'
+        flex:1
     }
 });
 export default IconComponent;
