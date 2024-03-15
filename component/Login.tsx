@@ -216,7 +216,11 @@ const Login = ({ navigation }: any) => {
               <TouchableOpacity onPress={()=>{
                 navigation_.navigate("Registro");
               }}>
+<<<<<<< Updated upstream
                 <Text style={{ textAlign: "center", fontSize: 15, color: tema.primary, textDecorationLine: 'underline', fontWeight: "bold" }}> ¡No puedo ingresar!</Text>
+=======
+                <Text style={{ textAlign: "center", fontSize: 15, color: tema.primary, textDecorationLine: 'underline', fontWeight: "bold" }}>No puedo ingresar!</Text>
+>>>>>>> Stashed changes
               </TouchableOpacity>
             </View>
             <View>

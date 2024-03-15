@@ -7,27 +7,24 @@ import tema from '../enviroments/tema.json'
 import IconComponent from './assets/icons/IconComponent';
 import Load from './Load';
 
-
-var navigation_: any;
-const Perfil = ({ navigation }: any) => {
-    navigation_ = navigation;
+const Perfil = () => {
     const [data, setData] = useState(null);
 
-    const navegation = useNavigation();
+    const navigation = useNavigation();
 
     const action = (nav: String) => {
-        navegation.navigate(nav);
+        navigation.navigate(nav);
     }
 
     useEffect(() => {
-        navigation_.setOptions({ headerShown: false });
+        navigation.setOptions({ headerShown: false });
 
         const fetchData = async () => {
             try {
 
                 const suser: any = await AsyncStorage.getItem("usuario");
                 if (!suser || suser == null) {
-                    navigation_.replace("Login");
+                    navigation.replace("Login");
                     return;
                 }
 
@@ -49,7 +46,7 @@ const Perfil = ({ navigation }: any) => {
     }, []);
 
     const toBack = () => {
-        navigation_.goBack();
+        navigation.goBack();
     }
     const pintarEjecutivoAtiende = () => {
         return <View style={styles.card}>
@@ -99,7 +96,7 @@ const Perfil = ({ navigation }: any) => {
                     <Text style={styles.lineText}>Contraseña</Text>
                     <View style={{ justifyContent: "center", alignItems: "center" }}>
                         <TouchableOpacity style={{ borderWidth: 1, borderRadius: 10, borderColor: "white", width: "auto", padding: 3 }} onPress={() => action("CambiarContrasena")}>
-                            <Text style={{ color: tema.text }}>Cambiar Contraseña</Text>
+                            <Text style={{ color: tema.text }}>Recuperar Contraseña</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
