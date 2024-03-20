@@ -139,10 +139,10 @@ const RecuperarPass = ({ navigation }: any) => {
   return (
     <View style={{ height: Dimensions.get('screen').height }}>
       <IconComponent nameIcon='fondo_login' ></IconComponent>
-      <View style={{ justifyContent: "center", alignItems: "center", width: "100%", height: "90%" }}>
+      <View style={{ justifyContent: "center", alignItems: "center", width: "100%", height: "50%" }}>
         <View style={{ backgroundColor: "rgba(0,0,0,0.5)", borderRadius: 20, width: "90%", padding: 20 }}>
           <View>
-            <Text style={{ textAlign: 'center', fontSize: 25, marginTop: 10 ,color:tema.text, fontWeight:"bold"}}>Recuperar Contraseña</Text>
+            <Text style={{ textAlign: 'center', fontSize: 25, marginTop: 10 ,color:tema.text, fontWeight:"bold"}}></Text>
           </View>
           {!state["loadUsr"] ? buscarUsuario() : <Load />}
         </View>
