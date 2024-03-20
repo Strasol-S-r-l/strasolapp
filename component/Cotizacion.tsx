@@ -55,7 +55,7 @@ const Cotizacion = ({ navigation }: any) => {
                         body: JSON.stringify({ key: api.key, type: 'getProductosVenta', id_cliente: id_cliente }),
                     });
                 const obj = await response.json();
-                console.log(obj)
+                
                 if (obj.estado === "error") {
                     return obj;
                 }

@@ -23,10 +23,10 @@ const Publicidad = () => {
           body: JSON.stringify({ key: api.key, type: 'getPublicidad' }),
         });
       const obj = await response.json();
-
+      console.log(obj)
 
       if (obj.estado === "error") {
-        return obj;
+        obj.data = [];
       }
 
       let array = Object.values(obj.data);

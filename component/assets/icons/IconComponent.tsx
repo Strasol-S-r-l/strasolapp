@@ -377,7 +377,8 @@ const IconComponent = ({ nameIcon, alto, ancho, colors, data }: any) => {
 const styles = StyleSheet.create({
     background: {
         position: 'absolute',
-        flex:1
+        flex:1,
+        width:"101%"
     },
     backgroundScape: {
         height:'100%',
