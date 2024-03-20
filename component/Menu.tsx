@@ -13,6 +13,7 @@ const data = [
     {title:"Videos", action:"Videos"},
     {title:"Reporte de Emisiones", action:"Test"},
     {title:"Términos y condiciones", action:"Agreguement"},
+    {title:"Cuadro Comparativo", action:"CuadroComparativo"},
 ];
 
 const action=(algo:string)=>{

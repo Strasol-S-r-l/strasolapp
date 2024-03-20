@@ -19,8 +19,8 @@ const SlipMadre = () => {
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', },
-                    //body: JSON.stringify({ key: api.key, id_cabe: 128578, type: 'getCobertura' }),
-                    body: JSON.stringify({ key: api.key, id_cabe: route.params.id_cabe, type: 'getCobertura' }),
+                    body: JSON.stringify({ key: api.key, id_cabe: 128578, type: 'getCobertura' }),
+                    //body: JSON.stringify({ key: api.key, id_cabe: route.params.id_cabe, type: 'getCobertura' }),
                 });
             const obj = await response.json();
             if (obj.estado === "error") {
@@ -42,6 +42,7 @@ const SlipMadre = () => {
         }
         let titulo = state.TITULO;
         let descripcion = state.DESCRIPCION;
+        let color = "";
         if (titulo) {
             slip.push(<View style={styles.container_item}><Text style={{ color: tema.text, fontSize: 18, fontWeight: 'bold', marginTop: 5, textAlign: 'center' }}>{titulo}</Text></View>)
         }
@@ -50,14 +51,24 @@ const SlipMadre = () => {
         }
         for (let i = 0; i < obj.length; i++) {
             let json = obj[i];
-
+            //console.log(json.ID_CARACTERISTICA)
+            if(json.ID_CARACTERISTICA){
+                color = tema.succes
+            }else{
+                color = tema.text
+            }
             if (json.DESCRIPCION) {
                 slip.push(<View style={styles.container_item}><Text style={{ color: tema.text, fontWeight: 'bold', marginTop: 20 }}>{json.DESCRIPCION}</Text></View>);
             }
             for (let j = 0; j < json.DETALLE_NIVEL2.length; j++) {
 
                 let nivel_2 = json.DETALLE_NIVEL2[j]
-
+                //console.log(nivel_2.ID_CARACTERISTICA)
+                if(nivel_2.ID_CARACTERISTICA){
+                    color = tema.succes
+                }else{
+                    color = tema.text
+                }
                 if (nivel_2.NEGRILLA) {
                     slip.push(<View style={{ ...styles.sub_nivel, width: '95%' }}><Text style={{ color: tema.text, fontWeight: 'bold' }}>{nivel_2.NEGRILLA}</Text></View>);
                 }
@@ -65,7 +76,14 @@ const SlipMadre = () => {
                     slip.push(<View style={{ ...styles.sub_nivel, width: '95%' }}><Text style={{ color: tema.text }}>{nivel_2.DESCRIPCION}</Text></View>);
                 }
                 for (let k = 0; k < nivel_2.LISTA.length; k++) {
+                    
                     let nivel_2_lista = nivel_2.LISTA[k]
+                    //console.log(nivel_2_lista.ID_CARACTERISTICA)
+                    if(nivel_2_lista.ID_CARACTERISTICA){
+                        color = tema.succes
+                    }else{
+                        color = tema.text
+                    }
                     if (nivel_2_lista.DESCRIPCION) {
                         slip.push(<View style={{ ...styles.sub_nivel, width: '90%' }}><Text style={{ color: tema.text }}> • {nivel_2_lista.DESCRIPCION}</Text></View>);
                     }
@@ -79,8 +97,14 @@ const SlipMadre = () => {
                     let table = [];
 
                     for (let h = 0; h < tabla_cabe.length; h++) {
+                        //console.log(tabla_cabe[h].ID_CARACTERISTICA)
                         tabla_columas = tabla_cabe[h].COLUMNAS;
                         tabla_detalle = tabla_cabe[h].DETALLE;
+                        if(tabla_cabe[h].ID_CARACTERISTICA){
+                            color = tema.succes
+                        }else{
+                            color = tema.text
+                        }
                         if (tabla_cabe[h].TIPO_TABLA) {
                             for (let d = 0; d < tabla_columas.length; d++) {
                                 let col_titulo = tabla_columas[d].TITULO;

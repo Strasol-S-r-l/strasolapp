@@ -32,6 +32,7 @@ import Emitiendo from './component/Emitiendo';
 import Web from './component/Web';
 import Registro from './component/Registro';
 import SlipMadre from './component/SlipMadre';
+import CuadroComparativo from './component/CuadroComparativo';
 
 
 const Stack = createNativeStackNavigator();
@@ -71,6 +72,7 @@ function App(): JSX.Element {
         <Stack.Screen name="Web" component={Web} />
         <Stack.Screen name="Registro" component={Registro} />
         <Stack.Screen name="SlipMadre" component={SlipMadre} />
+        <Stack.Screen name="CuadroComparativo" component={CuadroComparativo} />
 
       </Stack.Navigator>
     </NavigationContainer>

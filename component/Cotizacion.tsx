@@ -186,7 +186,6 @@ const Cotizacion = ({ navigation }: any) => {
                                         <Text style={{ marginRight:10, textAlign: 'center', fontSize: 25, color: (prima == max ? "rgba(153,0,0,0.5)" : (prima == min ? "rgba(0,102,51,0.5)" : "rgba(255,255,0,0.5)")), fontWeight: 'bold' }}> $us {prima.toFixed(2)}</Text>
                                     </View>
                                 </View>
-
                             </View>
                         </View>
                     </View>
@@ -268,7 +267,7 @@ const Cotizacion = ({ navigation }: any) => {
                         </View> : <></>}
                     </View>
                 </View>
-                <View style={{ alignItems: 'center', height: "60%", width: "80", marginLeft: "20%" }}>
+                <View style={{ alignItems: 'center', height: "60%", width: "80%", marginLeft: "20%" }}>
                     <Text style={{ textAlign: 'center', marginTop: 5, marginBottom: 5, color: tema.opaque, fontSize: 11 }}>Seleccione la póliza de su conveniencia</Text>
                     <ScrollView>
                         <View>

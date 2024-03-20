@@ -31,6 +31,7 @@ const IconComponent = ({ nameIcon, alto, ancho, colors, data }: any) => {
             case "fondo_login": return fondo_login();
             case "border_input": return border_input();
             case "fondo_form": return fondo_form();
+            case "fondo_landscape_form": return fondo_landscape_form();
             case "fondo_load": return fondo_load();
             case "arrowLeft": return arrowLeft();
             case "arrowRight": return arrowRight();
@@ -342,6 +343,12 @@ const IconComponent = ({ nameIcon, alto, ancho, colors, data }: any) => {
             source={require('./../../../images/fondo_form.png')}
         />
     }
+    const fondo_landscape_form = () => {
+        return <Image
+            style={styles.backgroundScape}
+            source={require('./../../../images/fondo_form.png')}
+        />
+    }
 
     const border_input = () => {
         return <Svg width="100%" height="100%">
@@ -371,6 +378,10 @@ const styles = StyleSheet.create({
     background: {
         position: 'absolute',
         flex:1
+    },
+    backgroundScape: {
+        height:'100%',
+        width:'100%'
     }
 });
 export default IconComponent;
