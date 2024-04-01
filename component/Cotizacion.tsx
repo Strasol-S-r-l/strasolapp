@@ -79,7 +79,7 @@ const Cotizacion = ({ navigation }: any) => {
     }
     const changeCredito = () => {
         state.tipoPago = 2;
-        setCuotas(1);
+        setCuotas(5);
         setState({ ...state });
     }
 
@@ -169,19 +169,19 @@ const Cotizacion = ({ navigation }: any) => {
                                     <Text style={{ color: tema.text, textAlign: "center" }}>Tasa: {cia.PORCENTAJE_TASA_REFERENCIAL} %</Text>
                                     <Text style={{ color: tema.text, textAlign: "center", fontSize: 20 }}>Prima anual</Text>
                                 </View>
-                                <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', margin:20}}>
+                                <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', margin:10}}>
                                     <TouchableOpacity
                                         onPress={() => { pressPoliza(cia) }}
                                     >
-                                        <Text>Comprar</Text>
+                                        <Image style={{ width: 40, height: 40, marginLeft:20 }} source={require('../images/buy.png')} />
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() => { verSlip(cia.ID_CABE) }}
                                     >
-                                        <Text>Ver Slip</Text>
+                                        <Image style={{ width: 40, height: 40, marginRight:20 }} source={require('../images/slip.png')} />
                                     </TouchableOpacity>
                                 </View>
-                                <View style={{ marginTop: 5 }}>
+                                <View>
                                     <View style={{marginBottom:8}}>
                                         <Text style={{ marginRight:10, textAlign: 'center', fontSize: 25, color: (prima == max ? "rgba(153,0,0,0.5)" : (prima == min ? "rgba(0,102,51,0.5)" : "rgba(255,255,0,0.5)")), fontWeight: 'bold' }}> $us {prima.toFixed(2)}</Text>
                                     </View>
@@ -210,7 +210,7 @@ const Cotizacion = ({ navigation }: any) => {
     }
 
     return (
-        <View style={{ position: 'relative', width: Dimensions.get("window").width, height: Dimensions.get('window').height, padding: 0, margin: 0, backgroundColor: "rgba(68,125,209,1)" }}>
+        <View style={{ position: 'relative', width: Dimensions.get("window").width, height: Dimensions.get('window').height, padding: 0, margin: 0, backgroundColor: tema.background }}>
             <IconComponent nameIcon='fondo_form' ></IconComponent>
             <SafeAreaView style={{ height: "100%" }}>
                 <View style={{ alignItems: 'center', height: "20%", width: "80", marginLeft: "20%" }}>

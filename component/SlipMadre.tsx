@@ -58,7 +58,7 @@ const SlipMadre = () => {
                 color = tema.text
             }
             if (json.DESCRIPCION) {
-                slip.push(<View style={styles.container_item}><Text style={{ color: tema.text, fontWeight: 'bold', marginTop: 20 }}>{json.DESCRIPCION}</Text></View>);
+                slip.push(<View key={i+""} style={styles.container_item}><Text style={{ color: tema.text, fontWeight: 'bold', marginTop: 20 }}>{json.DESCRIPCION}</Text></View>);
             }
             for (let j = 0; j < json.DETALLE_NIVEL2.length; j++) {
 

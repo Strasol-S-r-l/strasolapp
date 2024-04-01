@@ -82,7 +82,6 @@ const PerfilAutomotor = (props: any) => {
     };
 
     return (<View style={{ flex: 1 }}>
-        <Subrogados state={props.state} selectSubrogatario={selectSubrogatario} selectSubrogatarioMonto={selectSubrogatarioMonto} />
         <View style={{ borderBottomWidth: 1, borderBottomColor: tema.opaque, margin: 10, alignItems: 'center' }}>
             <Text style={{ color: tema.text }}>Informacion del automotor</Text>
         </View>
@@ -335,6 +334,25 @@ const PerfilAutomotor = (props: any) => {
                 />
             </View>
         </View>
+        <View style={{justifyContent:'center', alignItems:'center'}}>
+        <TouchableOpacity style={{backgroundColor:tema.primary, padding:15, borderRadius:15, marginTop:15, marginBottom:15}} onPress={()=>{
+            if(state?.issubrogado){
+                state["issubrogado"] = !state["issubrogado"];
+            }else{
+                state["issubrogado"] = true;
+            }
+            
+            setState({...state});
+        }}><Text style={{color:tema.warning, textAlign:'center'}}>{state["issubrogado"]?"Ocultar":"Ver"} entidades financieras.</Text></TouchableOpacity>
+        </View>
+        
+        {
+            state?.issubrogado?(
+            <Subrogados state={props.state} selectSubrogatario={selectSubrogatario} selectSubrogatarioMonto={selectSubrogatarioMonto} />
+            ):<View></View>
+        }
+        
+        <View style={{height:50}}></View>
     </View>
     )
 

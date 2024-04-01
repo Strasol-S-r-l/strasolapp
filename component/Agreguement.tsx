@@ -1,6 +1,7 @@
 import React , { useEffect, useState }from 'react';
 import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import tema from '../enviroments/tema.json'
+import { SafeAreaView } from 'react-native-safe-area-context';
 var navigation_: any;
 const Agreguement = ({ navigation }: any) => {
     navigation_ = navigation;
@@ -13,7 +14,7 @@ const Agreguement = ({ navigation }: any) => {
     }
 
     return (
-        <View style={{ backgroundColor: tema.background, flex: 1 }}>
+        <SafeAreaView style={{ backgroundColor: tema.background, flex: 1 }}>
             <ScrollView style={{ flex:1}}>
                 <View style={{borderWidth:1,borderBlockColor:tema.primary,padding:8}}>
                     <Text style={{ color: tema.active, fontWeight: "bold", textAlign: "center",fontSize:20}}>TÉRMINOS Y CONDICIONES DE USO DE LA APLICACIÓN DE COLOCACIÓN DE SEGUROS</Text>
@@ -71,7 +72,7 @@ const Agreguement = ({ navigation }: any) => {
                     <Text style={{ color: tema.text, fontWeight: "bold" }}>Volver</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </SafeAreaView>
     );
 
 

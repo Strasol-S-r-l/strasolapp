@@ -759,7 +759,7 @@ const Emision = ({ route, navigation }: any) => {
     }
 
     return (
-        <View style={{ position: 'absolute', width: "100%", height: Dimensions.get('window').height, backgroundColor: "rgba(68,125,209,1)" }}>
+        <View style={{ position: 'absolute', width: "100%", height: Dimensions.get('window').height, backgroundColor: tema.background }}>
             <SafeAreaView style={{ position: "relative", height: "100%" }}>
                 <IconComponent nameIcon='fondo_form' ></IconComponent>
                 <View style={{ width: "80%", marginLeft: "20%", height: "25%" }}>
