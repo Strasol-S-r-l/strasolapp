@@ -118,7 +118,7 @@ const Login = ({ navigation }: any) => {
         <View style={{width:'100%',height:'75%',justifyContent:'center'}}>
         <View style={{ display: "flex", justifyContent: 'center', alignItems: 'center', height: "20%",width:'100%' }}>
           <View style={{width: "80%",display: "flex", flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{color: tema.primary, fontSize : Dimensions.get('window').width * 0.1, fontWeight: 'bold', textShadowColor: 'rgba(0, 0, 0, 0.75)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5, }}>Insurance<Text style={{marginTop: 10, color: "black", fontSize: Dimensions.get('window').width * 0.1, fontWeight: 'bold' }}>Tech</Text> </Text>
+            <Text style={{color: tema.primary, fontSize : Dimensions.get('window').width * 0.1, fontWeight: 'bold', textShadowColor: 'rgba(0, 0, 0, 0.75)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5, }}>Seguros</Text>
           </View>
           <View style={{width:'80%'}}>
             <Text style={{color: "black", fontWeight: 'bold',fontSize:Dimensions.get('window').width * 0.1, textShadowColor: 'rgba(0, 0, 0, 0.75)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5, }}>Bolivia</Text>  

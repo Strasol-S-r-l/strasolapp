@@ -61,8 +61,8 @@ const Home = ({navigation}:any) => {
             
             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', }}>
                 <View style={{display:"flex", flexWrap:"wrap", flexDirection:"row"}}>
-                    <Text style={{ alignItems: 'center', fontWeight: 'bold', color: tema.primary, fontSize:35, fontStyle: "italic" }}>Insurance</Text>
-                    <Text style={{ alignItems: 'center', fontWeight: 'bold', color: tema.active, fontSize:35, fontStyle: "italic" }}>Tech Bolivia</Text>
+                    <Text style={{ alignItems: 'center', fontWeight: 'bold', color: tema.primary, fontSize:35, fontStyle: "italic" }}>Seguros</Text>
+                    <Text style={{ alignItems: 'center', fontWeight: 'bold', color: tema.active, fontSize:35, fontStyle: "italic" }}>Bolivia</Text>
                 </View>
                 <View style={{height:160}}></View>
                 {/*<Svg src={LogoServi} srcw={logoServiw} style={{ width: 50, height: 50, justifyContent: 'center', }} />*/}

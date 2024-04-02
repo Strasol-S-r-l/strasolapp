@@ -19,7 +19,7 @@ const Agreguement = ({ navigation }: any) => {
                 <View style={{borderWidth:1,borderBlockColor:tema.primary,padding:8}}>
                     <Text style={{ color: tema.active, fontWeight: "bold", textAlign: "center",fontSize:20}}>TÉRMINOS Y CONDICIONES DE USO DE LA APLICACIÓN DE COLOCACIÓN DE SEGUROS</Text>
                     <View style={{ width: "90%", marginLeft: "5%", marginRight: "5%" }}>
-                        <Text style={{ color: tema.active }}>Bienvenido a nuestra aplicación de cotización y colocación de seguros. Que operan bajo las licencias de los sistemas y tecnologías InsuranceTech de CloudBroker®. Antes de utilizar nuestros servicios, te pedimos que leas detenidamente los siguientes términos y condiciones. Al acceder y utilizar nuestra aplicación, aceptas cumplir con estos términos y condiciones.</Text>
+                        <Text style={{ color: tema.active }}>Bienvenido a nuestra aplicación de cotización y colocación de seguros. Que operan bajo las licencias de los sistemas y tecnologías SegurosBolivia de CloudBroker®. Antes de utilizar nuestros servicios, te pedimos que leas detenidamente los siguientes términos y condiciones. Al acceder y utilizar nuestra aplicación, aceptas cumplir con estos términos y condiciones.</Text>
                         <Text style={{ color: tema.active, fontWeight: "bold" }}>1.	Información Veraz:</Text>
                         <Text style={{ color: tema.active, width: "90%", marginLeft: "10%" }}>
                             o	Al utilizar nuestra aplicación, reconoces y aceptas que la veracidad de la información proporcionada es de tu exclusiva responsabilidad.
