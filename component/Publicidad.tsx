@@ -52,7 +52,7 @@ const Publicidad = () => {
           move = (move + 1) % state.length;
           flatListRef.current.scrollToIndex({ index: move })
         }
-      }, 3000);
+      }, 5000);
       return () => clearInterval(timer);
     }
   }, [state]);

@@ -135,7 +135,7 @@ const SlipMadre = () => {
                                 for (let n = 0; n < tabla_columas.length; n++) {
                                     let col_descrip = tabla_detalle[cant]?.DESCRIPCION;
                                     cant++;
-                                    row.push(<View key={n+""+c} style={{ width: 100, borderColor: tema.text, borderWidth: 1 }}><Text style={{ color: tema.text,minHeight: 30  }}> {col_descrip}</Text></View>);
+                                    row.push(<View key={cant} style={{ width: 100, borderColor: tema.text, borderWidth: 1 }}><Text style={{ color: tema.text,minHeight: 30  }}> {col_descrip}</Text></View>);
                                 }
                                 table.push(<View key={c+""} style={{ display: 'flex', flexDirection: (tabla_cabe[h].TIPO_TABLA == '0') ? 'row' : 'column', }}>{row}</View>)
                             }
@@ -164,16 +164,19 @@ const SlipMadre = () => {
             {
                 state ?
                     <View>
-                        <ScrollView style={{ height: '90%',  backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                            <View style={{ marginLeft: '5%', marginTop: 20, alignItems: 'flex-end' }}>
+                        <ScrollView style={{ height: '100%',  backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                            <View>
+                                <TouchableOpacity style={{position:'absolute',top:5,left:5}} onPress={() => {
+                                    action('')
+                                }}>
+                                    <IconComponent nameIcon='arrowLeft' colors={{ color_1: "white" }} alto={50} ancho={50} ></IconComponent>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ marginTop:30, marginLeft: '5%', alignItems: 'flex-end' }}>
                                 {paintSlipMadre()}
                             </View>
+                            <View style={{height:50}}></View>
                         </ScrollView>
-                        <View style={{ height: '10%', justifyContent: 'center', alignItems: 'center' }}>
-                            <TouchableOpacity onPress={() => { action('') }} style={{ backgroundColor: tema.primary, borderRadius: 10, height: 40, width: '90%', justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={{ color: tema.text, fontWeight: 'bold' }}>VOLVER</Text>
-                            </TouchableOpacity>
-                        </View>
                     </View>
 
                     :

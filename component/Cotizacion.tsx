@@ -111,7 +111,7 @@ const Cotizacion = ({ navigation }: any) => {
     };
 
     const verSlip = async (id_cabe: any) => {
-        console.log(id_cabe);
+        //console.log(id_cabe);
         navigation_.navigate("SlipMadre", {id_cabe:id_cabe});
 
     };
