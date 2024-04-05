@@ -76,7 +76,7 @@ const SlipMadre = () => {
                 
                 if(nivel_2.NEGRILLA || nivel_2.DESCRIPCION){
                     slip.push(
-                        <View style={{ width: '95%', display:'flex', flexDirection:'row', marginTop:5 }}>
+                        <View key={i+"_"+j} style={{ width: '95%', display:'flex', flexDirection:'row', marginTop:5 }}>
                             <Text style={{ color: tema.text, fontWeight: 'bold' }}>{nivel_2.NEGRILLA}</Text> 
                             <Text style={{ color: tema.text, marginLeft:8 }}>{nivel_2.DESCRIPCION}</Text>
                         </View>
@@ -85,7 +85,7 @@ const SlipMadre = () => {
                 
                 
                 if (nivel_2.SUBTITULO) {
-                    slip.push(<View style={{  width: '95%', marginTop:5 }}><Text style={{ color: tema.text }}>{nivel_2.SUBTITULO}</Text></View>);
+                    slip.push(<View key={i+"_"+j} style={{  width: '95%', marginTop:5 }}><Text style={{ color: tema.text }}>{nivel_2.SUBTITULO}</Text></View>);
                 }
                 for (let k = 0; k < nivel_2.LISTA.length; k++) {
                     
@@ -97,7 +97,7 @@ const SlipMadre = () => {
                         color = tema.text
                     }
                     if (nivel_2_lista.DESCRIPCION) {
-                        slip.push(<View style={{ width: '90%' }}><Text style={{ color: tema.text }}> • {nivel_2_lista.DESCRIPCION}</Text></View>);
+                        slip.push(<View key={i+"_"+j} style={{ width: '90%' }}><Text style={{ color: tema.text }}> • {nivel_2_lista.DESCRIPCION}</Text></View>);
                     }
                 }
 
@@ -120,10 +120,10 @@ const SlipMadre = () => {
                         if (tabla_cabe[h].TIPO_TABLA) {
                             for (let d = 0; d < tabla_columas.length; d++) {
                                 let col_titulo = tabla_columas[d].TITULO;
-                                row.push(<View key={d+""} style={{ width: 100, borderColor: tema.text, borderWidth: 1, justifyContent: 'center', alignItems: 'center',minHeight: 32  }}><Text style={{ color: tema.text, fontWeight: 'bold' }}>{col_titulo?col_titulo:""}</Text></View>);
+                                row.push(<View key={d+"_"+h} style={{ width: 100, borderColor: tema.text, borderWidth: 1, justifyContent: 'center', alignItems: 'center',minHeight: 32  }}><Text style={{ color: tema.text, fontWeight: 'bold' }}>{col_titulo?col_titulo:""}</Text></View>);
                             }
 
-                            table.push(<View style={{ display: 'flex', flexDirection: (tabla_cabe[h].TIPO_TABLA == '0') ? 'row' : 'column'}}>{row}</View>)
+                            table.push(<View key={h} style={{ display: 'flex', flexDirection: (tabla_cabe[h].TIPO_TABLA == '0') ? 'row' : 'column'}}>{row}</View>)
 
                             
                             let num_rows = tabla_detalle.length / tabla_columas.length
@@ -141,7 +141,7 @@ const SlipMadre = () => {
                             }
 
                             slip.push(
-                            <View style={{width:"100%"}}>
+                            <View key={h} style={{width:"100%"}}>
                                 <ScrollView style={{width:'100%', marginTop:5, backgroundColor:"#00000055"}}>
                                     <View style={{ flexDirection: (tabla_cabe[h].TIPO_TABLA == '0') ? 'column' : 'row' }}>
                                         {table}

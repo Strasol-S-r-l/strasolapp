@@ -226,7 +226,7 @@ const PerfilAutomotor = (props: any) => {
                     style={styles.input}
                     onPress={() => {
                         let anos = [];
-                        for (let i = 2000; i < 2030; i++) {
+                        for (let i = 2030; i > 2000; i--) {
                             let obj = {
                                 key: i + "",
                                 value: i + ""
