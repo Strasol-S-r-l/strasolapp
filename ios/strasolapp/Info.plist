@@ -82,7 +82,12 @@
 		        <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
 		        <key>NSPrivacyAccessedAPIReason</key>
 		        <string>La aplicación utiliza UserDefaults para almacenar preferencias y configuraciones del usuario de manera segura.</string>
-	    </dict>
+		</dict>
+		<dict>
+			<key>NSCameraUsageDescription</key>
+			<string>Tu mensaje de permiso aquí</string>
+		</dict>
+
 	</array>
 </dict>
 </plist>
