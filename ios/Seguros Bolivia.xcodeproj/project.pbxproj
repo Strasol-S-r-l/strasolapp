@@ -8,12 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* strasolappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* strasolappTests.m */; };
+		0C80B921A6F3F58F76C31292 /* libPods-strasolapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-strasolapp.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		58A2141F930F6F17BB6F24D1 /* libPods-Seguros Bolivia-Seguros BoliviaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EAF7762CA51845C420F536A /* libPods-Seguros Bolivia-Seguros BoliviaTests.a */; };
+		7699B88040F8A987B510C191 /* libPods-strasolapp-strasolappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-strasolapp-strasolappTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		F1761E73CA5A1B5046BB5B11 /* libPods-Seguros Bolivia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0365406166BE32BE04B2AF0 /* libPods-Seguros Bolivia.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,17 +36,13 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = strasolapp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = strasolapp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = strasolapp/main.m; sourceTree = "<group>"; };
+		19F6CBCC0A4E27FBF8BF4A61 /* libPods-strasolapp-strasolappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-strasolapp-strasolappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-strasolapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-strasolapp.debug.xcconfig"; path = "Target Support Files/Pods-strasolapp/Pods-strasolapp.debug.xcconfig"; sourceTree = "<group>"; };
-		4CFE00F18451B50D9482B70E /* Pods-Seguros Bolivia-Seguros BoliviaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Seguros Bolivia-Seguros BoliviaTests.debug.xcconfig"; path = "Target Support Files/Pods-Seguros Bolivia-Seguros BoliviaTests/Pods-Seguros Bolivia-Seguros BoliviaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-strasolapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-strasolapp.release.xcconfig"; path = "Target Support Files/Pods-strasolapp/Pods-strasolapp.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-strasolapp-strasolappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-strasolapp-strasolappTests.debug.xcconfig"; path = "Target Support Files/Pods-strasolapp-strasolappTests/Pods-strasolapp-strasolappTests.debug.xcconfig"; sourceTree = "<group>"; };
-		6AD55A6C06A6412CF7C56456 /* Pods-Seguros Bolivia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Seguros Bolivia.debug.xcconfig"; path = "Target Support Files/Pods-Seguros Bolivia/Pods-Seguros Bolivia.debug.xcconfig"; sourceTree = "<group>"; };
-		6EAF7762CA51845C420F536A /* libPods-Seguros Bolivia-Seguros BoliviaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Seguros Bolivia-Seguros BoliviaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7FCAC21AEB5E47EF6416F94A /* Pods-Seguros Bolivia-Seguros BoliviaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Seguros Bolivia-Seguros BoliviaTests.release.xcconfig"; path = "Target Support Files/Pods-Seguros Bolivia-Seguros BoliviaTests/Pods-Seguros Bolivia-Seguros BoliviaTests.release.xcconfig"; sourceTree = "<group>"; };
+		5DCACB8F33CDC322A6C60F78 /* libPods-strasolapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-strasolapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = strasolapp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-strasolapp-strasolappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-strasolapp-strasolappTests.release.xcconfig"; path = "Target Support Files/Pods-strasolapp-strasolappTests/Pods-strasolapp-strasolappTests.release.xcconfig"; sourceTree = "<group>"; };
-		BA8620F87EE3241AD9738FA9 /* Pods-Seguros Bolivia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Seguros Bolivia.release.xcconfig"; path = "Target Support Files/Pods-Seguros Bolivia/Pods-Seguros Bolivia.release.xcconfig"; sourceTree = "<group>"; };
-		E0365406166BE32BE04B2AF0 /* libPods-Seguros Bolivia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Seguros Bolivia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -55,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				58A2141F930F6F17BB6F24D1 /* libPods-Seguros Bolivia-Seguros BoliviaTests.a in Frameworks */,
+				7699B88040F8A987B510C191 /* libPods-strasolapp-strasolappTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,7 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F1761E73CA5A1B5046BB5B11 /* libPods-Seguros Bolivia.a in Frameworks */,
+				0C80B921A6F3F58F76C31292 /* libPods-strasolapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,8 +100,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				E0365406166BE32BE04B2AF0 /* libPods-Seguros Bolivia.a */,
-				6EAF7762CA51845C420F536A /* libPods-Seguros Bolivia-Seguros BoliviaTests.a */,
+				5DCACB8F33CDC322A6C60F78 /* libPods-strasolapp.a */,
+				19F6CBCC0A4E27FBF8BF4A61 /* libPods-strasolapp-strasolappTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -148,10 +144,6 @@
 				5709B34CF0A7D63546082F79 /* Pods-strasolapp.release.xcconfig */,
 				5B7EB9410499542E8C5724F5 /* Pods-strasolapp-strasolappTests.debug.xcconfig */,
 				89C6BE57DB24E9ADA2F236DE /* Pods-strasolapp-strasolappTests.release.xcconfig */,
-				6AD55A6C06A6412CF7C56456 /* Pods-Seguros Bolivia.debug.xcconfig */,
-				BA8620F87EE3241AD9738FA9 /* Pods-Seguros Bolivia.release.xcconfig */,
-				4CFE00F18451B50D9482B70E /* Pods-Seguros Bolivia-Seguros BoliviaTests.debug.xcconfig */,
-				7FCAC21AEB5E47EF6416F94A /* Pods-Seguros Bolivia-Seguros BoliviaTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -280,15 +272,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Seguros Bolivia/Pods-Seguros Bolivia-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-strasolapp/Pods-strasolapp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Seguros Bolivia/Pods-Seguros Bolivia-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-strasolapp/Pods-strasolapp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Seguros Bolivia/Pods-Seguros Bolivia-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-strasolapp/Pods-strasolapp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
@@ -306,7 +298,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Seguros Bolivia-Seguros BoliviaTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-strasolapp-strasolappTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -328,7 +320,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Seguros Bolivia-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-strasolapp-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -341,15 +333,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Seguros Bolivia-Seguros BoliviaTests/Pods-Seguros Bolivia-Seguros BoliviaTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-strasolapp-strasolappTests/Pods-strasolapp-strasolappTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Seguros Bolivia-Seguros BoliviaTests/Pods-Seguros Bolivia-Seguros BoliviaTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-strasolapp-strasolappTests/Pods-strasolapp-strasolappTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Seguros Bolivia-Seguros BoliviaTests/Pods-Seguros Bolivia-Seguros BoliviaTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-strasolapp-strasolappTests/Pods-strasolapp-strasolappTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
@@ -358,15 +350,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Seguros Bolivia/Pods-Seguros Bolivia-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-strasolapp/Pods-strasolapp-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Seguros Bolivia/Pods-Seguros Bolivia-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-strasolapp/Pods-strasolapp-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Seguros Bolivia/Pods-Seguros Bolivia-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-strasolapp/Pods-strasolapp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
@@ -375,15 +367,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Seguros Bolivia-Seguros BoliviaTests/Pods-Seguros Bolivia-Seguros BoliviaTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-strasolapp-strasolappTests/Pods-strasolapp-strasolappTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Seguros Bolivia-Seguros BoliviaTests/Pods-Seguros Bolivia-Seguros BoliviaTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-strasolapp-strasolappTests/Pods-strasolapp-strasolappTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Seguros Bolivia-Seguros BoliviaTests/Pods-Seguros Bolivia-Seguros BoliviaTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-strasolapp-strasolappTests/Pods-strasolapp-strasolappTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -438,7 +430,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4CFE00F18451B50D9482B70E /* Pods-Seguros Bolivia-Seguros BoliviaTests.debug.xcconfig */;
+			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-strasolapp-strasolappTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -465,7 +457,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7FCAC21AEB5E47EF6416F94A /* Pods-Seguros Bolivia-Seguros BoliviaTests.release.xcconfig */;
+			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-strasolapp-strasolappTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -489,12 +481,12 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6AD55A6C06A6412CF7C56456 /* Pods-Seguros Bolivia.debug.xcconfig */;
+			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-strasolapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 3PA236W34L;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = strasolapp/Info.plist;
@@ -504,7 +496,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -525,12 +517,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BA8620F87EE3241AD9738FA9 /* Pods-Seguros Bolivia.release.xcconfig */;
+			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-strasolapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 3PA236W34L;
 				INFOPLIST_FILE = strasolapp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Seguros Bolivia";
@@ -539,7 +531,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
