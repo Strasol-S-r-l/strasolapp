@@ -57,5 +57,33 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	
+	<key>NSPrivacyAccessedAPITypes</key>
+	<array>
+	    <dict>
+	        <key>NSPrivacyAccessedAPICategory</key>
+	        <string>NSPrivacyAccessedAPICategoryDiskSpace</string>
+	        <key>NSPrivacyAccessedAPIReason</key>
+	        <string>La aplicación necesita acceso al espacio en disco para almacenar datos importantes y garantizar su correcto funcionamiento.</string>
+	    </dict>
+	    <dict>
+	        <key>NSPrivacyAccessedAPICategory</key>
+	        <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+	        <key>NSPrivacyAccessedAPIReason</key>
+	        <string>La aplicación utiliza marcas de tiempo de archivos para organizar y gestionar documentos de manera eficiente.</string>
+	    </dict>
+	    <dict>
+	        <key>NSPrivacyAccessedAPICategory</key>
+	        <string>NSPrivacyAccessedAPICategorySystemBootTime</string>
+	        <key>NSPrivacyAccessedAPIReason</key>
+	        <string>La aplicación requiere información sobre el tiempo de inicio del sistema para optimizar el rendimiento y la experiencia del usuario.</string>
+	    </dict>
+	    <dict>
+	        <key>NSPrivacyAccessedAPICategory</key>
+	        <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+	        <key>NSPrivacyAccessedAPIReason</key>
+	        <string>La aplicación utiliza UserDefaults para almacenar preferencias y configuraciones del usuario de manera segura.</string>
+	    </dict>
+	</array>
 </dict>
 </plist>
