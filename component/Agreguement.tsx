@@ -19,7 +19,7 @@ const Agreguement = ({ navigation }: any) => {
                 <View style={{borderWidth:1,borderBlockColor:tema.primary,padding:8}}>
                     <Text style={{ color: tema.active, fontWeight: "bold", textAlign: "center",fontSize:20}}>TÉRMINOS Y CONDICIONES DE USO DE LA APLICACIÓN DE COLOCACIÓN DE SEGUROS</Text>
                     <View style={{ width: "90%", marginLeft: "5%", marginRight: "5%" }}>
-                        <Text style={{ color: tema.active }}>Bienvenido a nuestra aplicación de cotización y colocación de seguros. Que operan bajo las licencias de los sistemas y tecnologías SegurosBolivia de CloudBroker®. Antes de utilizar nuestros servicios, te pedimos que leas detenidamente los siguientes términos y condiciones. Al acceder y utilizar nuestra aplicación, aceptas cumplir con estos términos y condiciones.</Text>
+                        <Text style={{ color: tema.active }}>Bienvenido a nuestra aplicación de cotización y colocación de seguros. Que operan bajo las licencias de los sistemas y tecnologías SegurosBolivia de CloudBroker®, operadas actualmente por la empresa Strasol Srl. Antes de utilizar nuestros servicios, te pedimos que leas detenidamente los siguientes términos y condiciones. Al acceder y utilizar nuestra aplicación, aceptas cumplir con estos términos y condiciones.</Text>
                         <Text style={{ color: tema.active, fontWeight: "bold" }}>1.	Información Veraz:</Text>
                         <Text style={{ color: tema.active, width: "90%", marginLeft: "10%" }}>
                             o	Al utilizar nuestra aplicación, reconoces y aceptas que la veracidad de la información proporcionada es de tu exclusiva responsabilidad.
@@ -62,7 +62,30 @@ const Agreguement = ({ navigation }: any) => {
                         <Text style={{ color: tema.active, width: "90%", marginLeft: "10%" }}>
                             o	Es responsabilidad del usuario revisar periódicamente los términos y condiciones actualizados.
                         </Text>
-                        <Text style={{ color: tema.active }}>Al utilizar nuestra aplicación, aceptas todos los términos y condiciones establecidos anteriormente. Si no estás de acuerdo con alguno de estos términos, te instamos a que no utilices nuestros servicios. Estos términos y condiciones son efectivos a partir de la fecha de su última actualización.</Text>
+                        <Text style={{ color: tema.active, width: "90%", marginLeft: "10%" }}>
+                        Al utilizar nuestra aplicación, aceptas todos los términos y condiciones establecidos anteriormente. Si no estás de acuerdo con alguno de estos términos, te instamos a que no utilices nuestros servicios. Estos términos y condiciones son efectivos a partir del uso y registro de su usuario.
+                        </Text>
+                        <Text style={{ color: tema.active, width: "90%", marginLeft: "10%" }}>
+                        La aplicación "Seguros Bolivia" es propiedad y está operada por STRASOL SRL.  Al utilizar esta aplicación, usted acepta los siguientes términos y condiciones:
+                        </Text>
+                        <Text style={{ color: tema.active, width: "90%", marginLeft: "10%" }}>
+                        Propiedad Intelectual: La aplicación "Seguros Bolivia" y todo su contenido, incluyendo pero no limitado a texto, gráficos, logotipos, imágenes, clips de audio, descargas digitales y software, son propiedad de STRASOL SRL bajo las licencias de CloudBroker®  y están protegidos por las leyes de propiedad intelectual aplicables.
+                        </Text>
+                        <Text style={{ color: tema.active, width: "90%", marginLeft: "10%" }}>
+                        Uso Autorizado: Usted puede utilizar la aplicación "Seguros Bolivia" únicamente con fines personales y no comerciales. No está autorizado a modificar, copiar, distribuir, transmitir, mostrar, realizar, reproducir, publicar, otorgar licencias, crear trabajos derivados, transferir o vender ningún contenido de esta aplicación sin el consentimiento previo por escrito de STRASOL SRL.
+                        </Text>
+                        <Text style={{ color: tema.active, width: "90%", marginLeft: "10%" }}>
+                        Datos Personales: La aplicación "Seguros Bolivia" recopila y almacena cierta información personal del usuario para proporcionar los servicios de seguros. STRASOL SRL se compromete a proteger la privacidad y seguridad de sus datos personales de acuerdo con las leyes y regulaciones aplicables.
+                        </Text>
+                        <Text style={{ color: tema.active, width: "90%", marginLeft: "10%" }}>
+                        Responsabilidad del Usuario: Usted es responsable de mantener la confidencialidad de su información de inicio de sesión y de cualquier actividad que ocurra bajo su cuenta. Usted acepta notificar a STRASOL SRL de inmediato cualquier uso no autorizado de su cuenta o cualquier otra violación de seguridad.
+                        </Text>
+                        <Text style={{ color: tema.active, width: "90%", marginLeft: "10%" }}>
+                        Limitación de Responsabilidad: STRASOL SRL no será responsable por ningún daño directo, indirecto, incidental, especial, consecuente o punitivo que surja del uso o la imposibilidad de uso de la aplicación "Seguros Bolivia".
+                        </Text>
+                        <Text style={{ color: tema.active, width: "90%", marginLeft: "10%" }}>
+                        Al utilizar la aplicación "Seguros Bolivia", usted reconoce y acepta estos términos y condiciones. Si no está de acuerdo con estos términos, por favor no utilice la aplicación.
+                        </Text>
                     </View>
                 </View>
 
