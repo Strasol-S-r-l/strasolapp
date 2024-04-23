@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, SafeAreaView, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView, StatusBar } from 'react-native';
+import { View, SafeAreaView, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView, StatusBar, Image } from 'react-native';
 import api from '../enviroments/api.json'
 import IconComponent from './assets/icons/IconComponent';
 import Load from './Load';
@@ -16,7 +16,7 @@ const CuadroComparativo = ({ navigation }: any) => {
     }
 
     useEffect(() => {
-        console.log(navigation_)
+        
         navigation_.setOptions({ headerShown: false });
         navigation.setOptions({ headerShown: false });
 
@@ -40,7 +40,7 @@ const CuadroComparativo = ({ navigation }: any) => {
             if (obj.estado === "error") {
                 return obj;
             }
-            console.log(obj.data)
+            
 
             setState(obj.data);
 
@@ -63,9 +63,29 @@ const CuadroComparativo = ({ navigation }: any) => {
     };
     const paintItemPoliza = () => {
         return <View >
+            <View style={{display:'flex', flexDirection:'row'}}>
+                <View style={{ width: 250, }}>
+                    <Text style={{ color: tema.text, textAlign:'center' }}></Text>
+                </View>
+                {
+                     Object.keys(state?.SLIP).map((key: any) => {
+                        let slip = state?.SLIP[key]
+                        return <View style={{ width: 250, }}>
+                            <View>
+                                <Text style={{ color: tema.text, textAlign:'center' }}>{slip.NUMERO_POLIZA}</Text>
+                                <Image
+                                    key={'images_' + slip.NIT}
+                                    style={{ width: 250, height: 50, resizeMode: 'cover' }}
+                                    source={{ uri: api.url + '/perfilCia/' + slip.NIT + '_bar' }} />
+                            </View>
+                        </View>
+                     })
+                }
+
+            </View>
             {Object.keys(state?.CARACTERISTICAS).map((key: any) => {
                 return <View style={{ display: 'flex', flexDirection: 'row' }}>
-                    <View style={{ width: 200, borderColor: tema.text, borderWidth: 1, }}>
+                    <View style={{ width: 250, borderColor: tema.text, borderWidth: 1, justifyContent:'center' }}>
                         <Text style={{ color: tema.text }}>{state.CARACTERISTICAS[key].DESCRIPCION}</Text>
                     </View>
                     {paintSlipCaracteristica(key)}
@@ -75,38 +95,39 @@ const CuadroComparativo = ({ navigation }: any) => {
     };
     const paintSlipCaracteristica = (id_caract: any) => {
 
-        return <View style={{display:'flex',flexDirection:'row'}}>{
+        return <View style={{display:'flex',flexDirection:'row',  width: 250}}>
+            {
             Object.keys(state?.SLIP).map((key: any) => {
                 let slip = state?.SLIP[key]
                 if (slip.CARACTERISTICAS) {
                     let caract = [];
                     for (let index = 0; index < slip.CARACTERISTICAS.length; index++) {
-                            if(id_caract == slip.CARACTERISTICAS[index].ID_CARACTERISTICA)
-                            caract.push(<Text style={{ color: tema.text }}> - {slip.CARACTERISTICAS[index].DESCRIPCION}</Text>)
+                        if(id_caract == slip.CARACTERISTICAS[index].ID_CARACTERISTICA)
+                        caract.push(<Text style={{ color: tema.text }}> - {slip.CARACTERISTICAS[index].DESCRIPCION}</Text>)
                     }
                     if(caract.length > 0){
                         return <View style={{ borderColor: tema.text, borderWidth: 2,width:250}}>
-                        {caract}
+                            {caract}
                         </View>
                     }else{
                         return <View style={{ borderColor: tema.text, borderWidth: 1, justifyContent:'center',alignItems:'center', width:250}}>
-                        <IconComponent nameIcon='iconCheckFalse' alto={25} ancho={25} colors={{color_1:'gray'}}></IconComponent>
-            </View>  
+                            <Text style={{ color: tema.text }}>❌</Text>
+                        </View>  
                     }
                 } else {
-                    return <View style={{ width:50,borderColor: tema.text, borderWidth: 1, justifyContent:'center',alignItems:'center'}}>
-                                <IconComponent nameIcon='iconCheckFalse' alto={25} ancho={25} colors={{color_1:'gray'}}></IconComponent>
+                    return <View style={{ width:250,borderColor: tema.text, borderWidth: 1, justifyContent:'center',alignItems:'center'}}>
+                        <Text style={{ color: tema.text }}>❌</Text>
                     </View>
                 }
 
             })}</View>
     }
-    return <View style={{ backgroundColor: 'skyblue', position: 'relative', flex: 1 }}>
+    return <SafeAreaView style={{ backgroundColor: 'skyblue', position: 'relative', flex: 1 }}>
         <View style={styles.MainCardContainer}>
             <View style={{ width: '100%', height: '10%' }}>
                 <Text style={styles.tittle}>CUADRO COMPARATIVO</Text>
             </View>
-            <View style={{ width: '100%', height: '75%' }}>
+            <View style={{ width: '100%', height: '90%' }}>
                 {
                     (state.length == 0) ?
                         <Load></Load>
@@ -126,17 +147,14 @@ const CuadroComparativo = ({ navigation }: any) => {
                 <Text style={{ color: 'white' }}>VOLVER</Text>
             </TouchableOpacity>
         </View>
-    </View>
+    </SafeAreaView>
 };
 const styles = StyleSheet.create({
     MainCardContainer: {
         backgroundColor: 'rgba(0,0,0,0.5)',
-        width: '90%',
-        marginTop: '5%',
-        marginLeft: '5%',
+        width: '100%',
         marginRight: '5%',
-        marginBottom: '2%',
-        borderRadius: 15
+        height:"90%"
     },
     sub_nivel: {
         margin: 2,
@@ -144,6 +162,7 @@ const styles = StyleSheet.create({
     tittle: {
         color: tema.text,
         width: '100%',
+        marginTop:20,
         textAlign: 'center',
         fontWeight: 'bold',
         fontSize: 20
