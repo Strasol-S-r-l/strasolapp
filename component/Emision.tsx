@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Dimensions, Text, ScrollView, Image, TextInput, TouchableOpacity, Animated, Modal } from 'react-native';
+import { View, StyleSheet, Dimensions, Text, ScrollView, Image, TextInput, TouchableOpacity, Animated, Modal, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Circle, G, Line, Rect, Svg, Text as SvgText, TSpan } from 'react-native-svg';
@@ -759,7 +759,11 @@ const Emision = ({ route, navigation }: any) => {
     }
 
     return (
-        <View style={{ position: 'absolute', width: "100%", height: Dimensions.get('window').height, backgroundColor: tema.background }}>
+        <KeyboardAvoidingView 
+            style={{ flex: 1, position: 'absolute', width: "100%", height: Dimensions.get('window').height, backgroundColor: tema.background}} 
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >   
+        
             <SafeAreaView style={{ position: "relative", height: "100%" }}>
                 <IconComponent nameIcon='fondo_form' ></IconComponent>
                 <View style={{ width: "80%", marginLeft: "20%", height: "25%" }}>
@@ -857,8 +861,8 @@ const Emision = ({ route, navigation }: any) => {
             </SafeAreaView>
 
             {ModalError(modalState, closeModal)}
-        </View>
-
+        
+        </KeyboardAvoidingView>    
     )
 
 };

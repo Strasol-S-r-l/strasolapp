@@ -70,6 +70,8 @@ const RecCamera = (navigation:any) => {
       let permiso = false;
       if (Platform.OS === 'android') {
         permiso = await requestCameraPermissionAndroid();
+      }else if (Platform.OS === 'ios') {
+        permiso = await requestCameraPermissionIos();
       }
       setState({ ...state, permiso, estado: false })
     };
@@ -101,6 +103,28 @@ const RecCamera = (navigation:any) => {
       return false;
     }
   };
+
+  const requestCameraPermissionIos = async () => {
+    try {
+      console.log("Pidiendo permiso cam");
+      const granted = await Camera.requestCameraPermission();
+      console.log("Camera "+granted);
+      console.log("Pidiendo permiso mic");
+      //const granted2 = await Camera.requestMicrophonePermission();
+      const granted2 = true;
+      console.log("Mic "+granted2);
+
+      if (granted && granted2 ) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.warn(err);
+      return false;
+    }
+  };
+
 
   const espera = async () => {
     await setTimeout(() => {

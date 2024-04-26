@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Image, TextInput, FlatList } from 'react-native';
+import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Image, TextInput, FlatList, KeyboardAvoidingView, SafeAreaView, Platform, Dimensions } from 'react-native';
 import tema from '../enviroments/tema.json'
 import ItemSelect from './ItemSelect';
 
@@ -34,28 +34,33 @@ const Select = (navigation:any) => {
 
 
     return (
-        <View style={{width:"100%", height:"100%", backgroundColor:tema.background, paddingBottom:50}}>
-            <View style={{alignItems:'center', marginTop:15}}>
-                <TextInput
-                    ref={ref_buscador}
-                    style={styles.input}
-                    onChangeText={setBuscar}
-                    value={buscar}
-                    placeholder='Buscar...'
-                    placeholderTextColor={tema.opaque}
-                    />
-            </View>
-            <View>
-                <FlatList
-                    data={filteredAndSortedData}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.key +"_"+ Math.random}
-                    initialNumToRender={15} 
-                    maxToRenderPerBatch={15}
-                    />
-            </View>
-            
-        </View>
+        <KeyboardAvoidingView 
+            style={{ flex: 1, }} 
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >   
+            <SafeAreaView style={{ position: "relative", height: "100%" }}>
+                <View style={{alignItems:'center', marginTop:15}}>
+                    <TextInput
+                        ref={ref_buscador}
+                        style={styles.input}
+                        onChangeText={setBuscar}
+                        value={buscar}
+                        placeholder='Buscar...'
+                        placeholderTextColor={tema.opaque}
+                        />
+                </View>
+                <View>
+                    <FlatList
+                        data={filteredAndSortedData}
+                        renderItem={renderItem}
+                        keyExtractor={item => item.key +"_"+ Math.random}
+                        initialNumToRender={15} 
+                        maxToRenderPerBatch={15}
+                        />
+                </View>
+                
+            </SafeAreaView>
+        </KeyboardAvoidingView>
     )
 };
 

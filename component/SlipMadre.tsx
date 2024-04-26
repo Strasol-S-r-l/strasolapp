@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import api from '../enviroments/api.json'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Load from './Load';
@@ -19,14 +19,16 @@ const SlipMadre = () => {
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', },
-                    body: JSON.stringify({ key: api.key, id_cabe: 128578, type: 'getCobertura' }),
+                    body: JSON.stringify({ key: api.key, id_cabe: route?.params?.id_cabe, type: 'getCobertura' }),
                     //body: JSON.stringify({ key: api.key, id_cabe: route.params.id_cabe, type: 'getCobertura' }),
                 });
             const obj = await response.json();
+            
             if (obj.estado === "error") {
                 return obj;
             }
             obj.data.SLIP = JSON.parse(obj.data.SLIP);
+            
             setState(obj.data);
         };
         init();
@@ -44,11 +46,12 @@ const SlipMadre = () => {
         let descripcion = state.DESCRIPCION;
         let color = "";
         if (titulo) {
-            slip.push(<View style={styles.container_item}><Text style={{ color: tema.text, fontSize: 18, fontWeight: 'bold', marginTop: 5, textAlign: 'center' }}>{titulo}</Text></View>)
+            slip.push(<View style={styles.container_item}><Text style={{ color: tema.text, fontSize: 18, fontWeight: 'bold',  textAlign: 'center' }}>{titulo}</Text></View>)
         }
         if (descripcion) {
-            slip.push(<View style={styles.container_item}><Text style={{ color: tema.text, fontSize: 16, fontWeight: 'bold', marginTop: 5, textAlign: 'center' }}>{descripcion}</Text></View>)
+            slip.push(<View style={styles.container_item}><Text style={{ color: tema.text, fontSize: 16, fontWeight: 'bold',  textAlign: 'center', marginBottom:20 }}>{descripcion}</Text></View>)
         }
+        
         for (let i = 0; i < obj.length; i++) {
             let json = obj[i];
             //console.log(json.ID_CARACTERISTICA)
@@ -58,8 +61,9 @@ const SlipMadre = () => {
                 color = tema.text
             }
             if (json.DESCRIPCION) {
-                slip.push(<View key={i+""} style={styles.container_item}><Text style={{ color: tema.text, fontWeight: 'bold', marginTop: 20 }}>{json.DESCRIPCION}</Text></View>);
+                slip.push(<View key={i+""} style={{...styles.container_item, marginTop:5}}><Text style={{ color: tema.text, fontWeight: 'bold',  }}>{json.DESCRIPCION}</Text></View>);
             }
+            
             for (let j = 0; j < json.DETALLE_NIVEL2.length; j++) {
 
                 let nivel_2 = json.DETALLE_NIVEL2[j]
@@ -69,11 +73,19 @@ const SlipMadre = () => {
                 }else{
                     color = tema.text
                 }
-                if (nivel_2.NEGRILLA) {
-                    slip.push(<View style={{ ...styles.sub_nivel, width: '95%' }}><Text style={{ color: tema.text, fontWeight: 'bold' }}>{nivel_2.NEGRILLA}</Text></View>);
+                
+                if(nivel_2.NEGRILLA || nivel_2.DESCRIPCION){
+                    slip.push(
+                        <View key={i+"_"+j} style={{ width: '95%', display:'flex', flexDirection:'row', marginTop:5 }}>
+                            <Text style={{ color: tema.text, fontWeight: 'bold' }}>{nivel_2.NEGRILLA}</Text> 
+                            <Text style={{ color: tema.text, marginLeft:8 }}>{nivel_2.DESCRIPCION}</Text>
+                        </View>
+                    );
                 }
-                if (nivel_2.DESCRIPCION) {
-                    slip.push(<View style={{ ...styles.sub_nivel, width: '95%' }}><Text style={{ color: tema.text }}>{nivel_2.DESCRIPCION}</Text></View>);
+                
+                
+                if (nivel_2.SUBTITULO) {
+                    slip.push(<View key={i+"_"+j} style={{  width: '95%', marginTop:5 }}><Text style={{ color: tema.text }}>{nivel_2.SUBTITULO}</Text></View>);
                 }
                 for (let k = 0; k < nivel_2.LISTA.length; k++) {
                     
@@ -85,7 +97,7 @@ const SlipMadre = () => {
                         color = tema.text
                     }
                     if (nivel_2_lista.DESCRIPCION) {
-                        slip.push(<View style={{ ...styles.sub_nivel, width: '90%' }}><Text style={{ color: tema.text }}> • {nivel_2_lista.DESCRIPCION}</Text></View>);
+                        slip.push(<View key={i+"_"+j} style={{ width: '90%' }}><Text style={{ color: tema.text }}> • {nivel_2_lista.DESCRIPCION}</Text></View>);
                     }
                 }
 
@@ -108,27 +120,40 @@ const SlipMadre = () => {
                         if (tabla_cabe[h].TIPO_TABLA) {
                             for (let d = 0; d < tabla_columas.length; d++) {
                                 let col_titulo = tabla_columas[d].TITULO;
-                                row.push(<View style={{ width: 100, borderColor: tema.text, borderWidth: 1, justifyContent: 'center', alignItems: 'center',minHeight: 32  }}><Text style={{ color: tema.text, fontWeight: 'bold' }}>{col_titulo}</Text></View>);
+                                row.push(<View key={d+"_"+h} style={{ width: 100, borderColor: tema.text, borderWidth: 1, justifyContent: 'center', alignItems: 'center',minHeight: 32  }}><Text style={{ color: tema.text, fontWeight: 'bold' }}>{col_titulo?col_titulo:""}</Text></View>);
                             }
 
-                            table.push(<View style={{ display: 'flex', flexDirection: (tabla_cabe[h].TIPO_TABLA == '0') ? 'row' : 'column'}}>{row}</View>)
+                            table.push(<View key={h} style={{ display: 'flex', flexDirection: (tabla_cabe[h].TIPO_TABLA == '0') ? 'row' : 'column'}}>{row}</View>)
 
-                            row = [];
+                            
                             let num_rows = tabla_detalle.length / tabla_columas.length
+                            //console.log(tabla_detalle)
+                            let cant=0;
                             for (let c = 0; c < num_rows; c++) {
-                                for (let n = 0; n < tabla_detalle.length; n++) {
-                                    let col_descrip = tabla_detalle[n].DESCRIPCION;
-                                    row.push(<View style={{ width: 100, borderColor: tema.text, borderWidth: 1 }}><Text style={{ color: tema.text,minHeight: 30  }}> {col_descrip}</Text></View>);
+                                
+                                row = [];
+                                for (let n = 0; n < tabla_columas.length; n++) {
+                                    let col_descrip = tabla_detalle[cant]?.DESCRIPCION;
+                                    cant++;
+                                    row.push(<View key={cant} style={{ width: 100, borderColor: tema.text, borderWidth: 1 }}><Text style={{ color: tema.text,minHeight: 30  }}> {col_descrip}</Text></View>);
                                 }
-                                table.push(<View style={{ display: 'flex', flexDirection: (tabla_cabe[h].TIPO_TABLA == '0') ? 'row' : 'column', }}>{row}</View>)
+                                table.push(<View key={c+""} style={{ display: 'flex', flexDirection: (tabla_cabe[h].TIPO_TABLA == '0') ? 'row' : 'column', }}>{row}</View>)
                             }
 
-                            slip.push(<ScrollView style={{flex:1,width:'100%'}}><View style={{justifyContent:'center',alignItems:'center', flexDirection: (tabla_cabe[h].TIPO_TABLA == '0') ? 'column' : 'row', marginBottom: 5 }}>{table}</View></ScrollView>)
-                            table = [];
+                            slip.push(
+                            <View key={h} style={{width:"100%"}}>
+                                <ScrollView style={{width:'100%', marginTop:5, backgroundColor:"#00000055"}}>
+                                    <View style={{ flexDirection: (tabla_cabe[h].TIPO_TABLA == '0') ? 'column' : 'row' }}>
+                                        {table}
+                                    </View>
+                                </ScrollView>
+                            </View>
+                            )
+
+                            
                         }
                     }
                 }
-
             }
         }
         return slip
@@ -139,16 +164,19 @@ const SlipMadre = () => {
             {
                 state ?
                     <View>
-                        <ScrollView style={{ width: '90%', marginLeft: '5%', height: '90%', borderRadius: 15, backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                            <View style={{ marginLeft: '5%', marginTop: 20, alignItems: 'flex-end' }}>
+                        <ScrollView style={{ height: '100%',  backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                            <View>
+                                <TouchableOpacity style={{position:'absolute',top:5,left:5}} onPress={() => {
+                                    action('')
+                                }}>
+                                    <IconComponent nameIcon='arrowLeft' colors={{ color_1: "white" }} alto={50} ancho={50} ></IconComponent>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ marginTop:30, marginLeft: '5%', alignItems: 'flex-end' }}>
                                 {paintSlipMadre()}
                             </View>
+                            <View style={{height:50}}></View>
                         </ScrollView>
-                        <View style={{ height: '10%', justifyContent: 'center', alignItems: 'center' }}>
-                            <TouchableOpacity onPress={() => { action('') }} style={{ backgroundColor: tema.primary, borderRadius: 10, height: 40, width: '90%', justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={{ color: tema.text, fontWeight: 'bold' }}>VOLVER</Text>
-                            </TouchableOpacity>
-                        </View>
                     </View>
 
                     :

@@ -504,7 +504,12 @@ const PerilCliente = (props: any) => {
                     <TouchableOpacity
                         style={styles.input}
                         onPress={() => {
+                            
                             if (!stateDataCliente["dataClient"]) {
+                                return;
+                            }
+                            console.log(stateDataCliente["dataClient"])
+                            if (!stateDataCliente["dataClient"]["ACTIVIDADES"]) {
                                 return;
                             }
                             let arr: any = [];

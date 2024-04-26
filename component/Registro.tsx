@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, ScrollView, SafeAreaView, Text, View, Alert, StyleSheet, Image, Dimensions, ImageBackground, TextInput, KeyboardAvoidingView } from 'react-native';
+import { TouchableOpacity, ScrollView, SafeAreaView, Text, View, Alert, StyleSheet, Image, Dimensions, ImageBackground, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../enviroments/api.json'
 import { useNavigation } from '@react-navigation/native';
@@ -87,7 +87,10 @@ const Registro = () => {
     };
 
     return (
-        <KeyboardAvoidingView >
+        <KeyboardAvoidingView 
+            style={{ flex: 1 }} 
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
             <IconComponent nameIcon='fondo_login' ></IconComponent>
             <ScrollView style={{ marginTop: 20 }}>
                 <View style={{ display: "flex", justifyContent: 'center', alignItems: 'center', height: "15%" }}>
