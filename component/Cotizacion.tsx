@@ -119,6 +119,8 @@ const Cotizacion = ({ navigation }: any) => {
 
     const getCotizaciones = () => {
 
+        
+
         if (!state.polizas) return <Load />
 
         addPrimas();
@@ -142,6 +144,7 @@ const Cotizacion = ({ navigation }: any) => {
 
                 state.polizas.map((cia, key) => {
 
+                    console.log(cia);
 
                     if (cia.TIPO_PAGO_INTEGRACION === "CONTADO" && state.tipoPago !== 1) return;
                     if (cia.TIPO_PAGO_INTEGRACION === "CREDITO" && state.tipoPago == 1) return;

@@ -18,7 +18,7 @@ const ReadText = (props:any) => {
             console.log("subiendo..........................")
             
             const imageBlob = await RNFS.readFile(props.photo.path, 'base64')
-            //console.log(imageBlob)
+            console.log(imageBlob)
             let send={
                 requests:[
                     {
@@ -29,13 +29,19 @@ const ReadText = (props:any) => {
             };
             const uploadResponse = await fetch(api.url_gvision, {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(send), // FormData will be sent as multipart/form-data
             });
+
+            console.log(uploadResponse)
             if (!uploadResponse.ok) {
                 throw new Error(`Failed to upload image: ${uploadResponse.statusText}`);
             }
             
             let text = await uploadResponse.json();
+            console.log(text)
             text = text["responses"][0]["textAnnotations"][0]["description"]
             state["texto"] = text;
             setState({...state})

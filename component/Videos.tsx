@@ -61,11 +61,11 @@ const Videos = ({ navigation }: any) => {
                 openVideo(video.uri.split("/")[2])
             }}>
               <View style={styles.videoContainer}>
-              <Image style={styles.thumbnail} source={{ uri: video.pictures.base_link }} />
+              <Image style={styles.thumbnail} source={{ uri: video?.pictures?.base_link }} />
                 <View style={styles.videoDetails}>
                   <Text style={styles.videoTitle}>{video.name}</Text>
-                  <Text style={styles.videoDescription}>{video.description.length>20?video.description.substring(0,19):video.description}</Text>
-                  <Text style={styles.videoDescription}>{new Date(video.created_time).toLocaleString()}</Text>
+                  <Text style={styles.videoDescription}>{video?.description?.length>20?video?.description.substring(0,19):video?.description}</Text>
+                  <Text style={styles.videoDescription}>{new Date(video?.created_time).toLocaleString()}</Text>
                 </View>
               </View>
             </TouchableOpacity>
