@@ -1,4 +1,4 @@
-package com.strasolapp;
+package com.segurosbolivia;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

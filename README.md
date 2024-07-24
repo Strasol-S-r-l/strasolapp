@@ -14,9 +14,9 @@ Bienvenido a la app de Strasol, esta app se encarga de emitir seguros en el sist
 Clona el proyecto
 
 ```bash
-git clone https://github.com/Strasol-S-r-l/strasolapp
+git clone https://github.com/Strasol-S-r-l/segurosbolivia
 
-cd strasolapp
+cd segurosbolivia
 
 ```
 
