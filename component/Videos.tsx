@@ -74,7 +74,7 @@ const Videos = ({ navigation }: any) => {
     
 
     return (
-        <View style={{ height: Dimensions.get('screen').height }}>
+        <SafeAreaView style={{ height: Dimensions.get('screen').height }}>
             <IconComponent nameIcon='fondo_form' ></IconComponent>
             {
                 loading ?
@@ -90,7 +90,7 @@ const Videos = ({ navigation }: any) => {
                         </ScrollView>
                     </View>
             }
-        </View>
+        </SafeAreaView>
     )
 };
 

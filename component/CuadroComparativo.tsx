@@ -62,13 +62,16 @@ const CuadroComparativo = ({ navigation }: any) => {
 
     };
     const paintItemPoliza = () => {
+        if(!state.SLIP) return <View></View>
         return <View >
             <View style={{display:'flex', flexDirection:'row'}}>
                 <View style={{ width: 250, }}>
                     <Text style={{ color: tema.text, textAlign:'center' }}></Text>
                 </View>
                 {
-                     Object.keys(state?.SLIP).map((key: any) => {
+                    
+
+                    Object.keys(state?.SLIP).map((key: any) => {
                         let slip = state?.SLIP[key]
                         return <View key={key} style={{ width: 250, }}>
                             <View key={key+"p"}>
@@ -84,7 +87,7 @@ const CuadroComparativo = ({ navigation }: any) => {
                                 </View>
                             </View>
                         </View>
-                     })
+                    })
                 }
 
             </View>
